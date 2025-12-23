@@ -24,9 +24,9 @@ const page = () => {
       <MeetingSuccess/>
       <FeatureSection />
       <BussinessSection />
-      <TestimonialSection />
+      {/* <TestimonialSection />
       <Faq/>
-      <NextMeeting/>
+      <NextMeeting/> */}
     </div>
   );
 };

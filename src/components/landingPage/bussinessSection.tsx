@@ -9,7 +9,7 @@ function BussinessSection() {
 
     return (
         <div className='max-w-[1040px] mx-auto'>
-            <div className='pt-6 md:pt-14'>
+            <div className=''>
                 < div className="text-center px-3 md:px-0" >
                     <h3 className="text-3xl md:text-5xl font-medium text-[#2D2D2D]">
                         Our Plans scale
@@ -19,15 +19,15 @@ function BussinessSection() {
                             with your
                         </h3>
                         <button className='text-3xl md:text-5xl text-[#6E51E0] font-medium bg-[#FCF1FE] px-2 py-1 md:px-[10px] md:py-[14px] rounded-sm'>Business</button>
-                        <img src="/landingPage/bussinessSection/bussinessSectionImage.png" alt="" className='hidden md:flex'/>
+                        <img src="/landingPage/bussinessSection/bussinessSectionImage.png" alt="" className='hidden md:flex' />
                     </div>
                 </div >
                 <div className='my-12 flex items-center justify-center gap-4'>
-                    <p className='text-[16px] text-[#2D2D2D]'>Monthly</p>
+                    <p className='text-[16px] text-headingColor'>Monthly</p>
                     <button
                         onClick={() => setOn(!on)}
                         className={`w-14 h-8 rounded-full relative flex items-center p-1 transition-all cursor-pointer
-                           ${on ? "bg-primaryBgColor" : "bg-primaryBgColor"}
+                           ${on ? "bg-gray-300" : "bg-primaryColor"}
                          `}
                     >
                         <span
@@ -37,7 +37,7 @@ function BussinessSection() {
                         ></span>
                     </button>
                     <p className='text-[16px] text-[#2D2D2D]'>Yearly</p>
-                    <p className='text-[#6E51E0] text-sm border rounded-full px-3 py-1'>30% Off</p>
+                    {/* <p className='text-[#6E51E0] text-sm border rounded-full px-3 py-1'>30% Off</p> */}
                 </div>
             </div>
             {/* -------------------- CONDITIONAL CARDS -------------------- */}
@@ -45,13 +45,13 @@ function BussinessSection() {
                 < div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 justify-items-center'>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
                             <div className="flex items-center gap-1">
-                                <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
-                                <span className="text-[#6A7381] text-[16px]">/ Yearly</span>
+                                <span className="text-[40px] font-medium text-headingColor">Free</span>
+                                {/* <span className="text-[#6A7381] text-[16px]">/ Yearly</span> */}
                             </div>
                         </div>
 
@@ -78,7 +78,7 @@ function BussinessSection() {
                         </div>
 
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
@@ -87,8 +87,8 @@ function BussinessSection() {
                     </div>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
-                            <p className="text-[#3C4049] text-sm mb-4 mt-6">
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Advanced</span>
+                            <p className="text-headingColor text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
                             <div className="flex items-center gap-1">
@@ -132,7 +132,7 @@ function BussinessSection() {
                         </div>
 
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
@@ -141,8 +141,8 @@ function BussinessSection() {
                     </div>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
-                            <p className="text-[#3C4049] text-sm mb-4 mt-6">
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Expert</span>
+                            <p className="text-headingColor text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
                             <div className="flex items-center gap-1">
@@ -182,7 +182,7 @@ function BussinessSection() {
                         </div>
                         {/* Button */}
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
@@ -194,13 +194,13 @@ function BussinessSection() {
                 < div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 justify-items-center'>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
                             <div className="flex items-center gap-1">
-                                <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
-                                <span className="text-[#6A7381] text-[16px]">/ Monthly</span>
+                                <span className="text-[40px] font-medium text-[#2D2D2D]">Free</span>
+                                {/* <span className="text-[#6A7381] text-[16px]">/ Monthly</span> */}
                             </div>
                         </div>
 
@@ -227,7 +227,7 @@ function BussinessSection() {
                         </div>
 
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
@@ -236,7 +236,7 @@ function BussinessSection() {
                     </div>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Advance</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
@@ -281,7 +281,7 @@ function BussinessSection() {
                         </div>
 
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
@@ -290,7 +290,7 @@ function BussinessSection() {
                     </div>
                     <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
-                            <span className="text-[#6E51E0] text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryBgColor cursor-pointer">Basic</span>
+                            <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Expert</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
                                 The Slate necessities. Every thing you need to get up and running.
                             </p>
@@ -331,7 +331,7 @@ function BussinessSection() {
                         </div>
                         {/* Button */}
                         <div className="w-full py-2 bg-[#FBFBFB] border border-gray-200 text-sm text-[#2D2D2D] font-medium rounded-full flex items-center justify-center cursor-pointer transition
-                                         hover:bg-primaryBgColor hover:text-white"
+                                         hover:bg-primaryColor hover:text-white"
                             style={{ boxShadow: 'inset 0 2px 8px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.5)' }}
                         >
                             <span>Get Started</span>
