@@ -29,12 +29,9 @@ const Navbar = () => {
                 </Link>
                 {/* Center Menu */}
                 <div className="hidden lg:flex items-center md:gap-6 lg:gap-12 text-[#000000] text-[16px] font-medium">
-                    <Link href="/" className={pathName === "/e" ? "text-[#563FB1] font-semibold" : ""}>Home</Link>
-                    <Link href="/" className={pathName === "/f" ? "text-[#563FB1] font-semibold" : ""}>Pricing</Link>
-                    <Link href="/" className={pathName === "/d" ? "text-[#563FB1] font-semibold" : ""}>FAQ</Link>
-                    {/* <Link href="/about" className={pathName === "/about" ? "text-[#563FB1] font-semibold" : ""}>About</Link> */}
-                    {/* <Link href="/pricing" className={pathName === "/pricing" ? "text-[#563FB1] font-semibold" : ""}>Pricing</Link> */}
-                    {/* <Link href="/contact" className={pathName === "/contact" ? "text-[#563FB1] font-semibold" : ""}>Contact</Link> */}
+                    <Link href="/" className={pathName === "/" ? "text-[#563FB1] font-semibold" : ""}>Home</Link>
+                    <Link href="/pricing" className={pathName === "/pricing" ? "text-[#563FB1] font-semibold" : ""}>Pricing</Link>
+                    <Link href="/faq" className={pathName === "/faq" ? "text-[#563FB1] font-semibold" : ""}>FAQ</Link>
                     {/* <Link href="/dashboard/home" className={pathName === "/dashboard" ? "text-[#563FB1] font-semibold" : ""}>My Portal</Link> */}
                 </div>
 
@@ -75,15 +72,6 @@ const Navbar = () => {
 
                             <DropdownMenuItem className='px-2 py-0.5 hover:text-[#563FB1]'>
                                 <Link
-                                    href="/about"
-                                    className={`${pathName === "/about" ? "text-[#563FB1] font-semibold" : ""}`}
-                                >
-                                    About
-                                </Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuItem className='px-2 py-0.5 hover:text-[#563FB1]'>
-                                <Link
                                     href="/pricing"
                                     className={`${pathName === "/pricing" ? "text-[#563FB1] font-semibold" : ""}`}
                                 >
@@ -91,14 +79,6 @@ const Navbar = () => {
                                 </Link>
                             </DropdownMenuItem>
 
-                            <DropdownMenuItem className='px-2 py-0.5 hover:text-[#563FB1]'>
-                                <Link
-                                    href="/contact"
-                                    className={`w-full ${pathName === "/contact" ? "text-[#563FB1] font-semibold" : ""}`}
-                                >
-                                    Contact
-                                </Link>
-                            </DropdownMenuItem>
                             <DropdownMenuItem className='px-2 py-0.5 hover:text-[#563FB1]'>
                                 <Link
                                     href="/dashboard/home"

@@ -59,14 +59,6 @@ export default function Footer() {
                   href="#"
                   className="hover:text-primaryColor transition-colors text-[16px] front-semibold text-[#666666]"
                 >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-primaryColor transition-colors text-[16px] front-semibold text-[#666666]"
-                >
                   Pricing
                 </a>
               </li>
