@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className='pt-6 px-3 md:px-0'>
             <Container className="bg-[#FFFFFF66] border border-white rounded-2xl py-2 px-3 backdrop-blur-[2px] flex items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="text-xl text-[#000000]">
+                <Link href="/" className="text-xl">
                     <div>
                         <img src="/navbar/logo.svg" alt="logo" className='w-8 md:w-[97px] h-8 md:h-[50px]' />
                     </div>

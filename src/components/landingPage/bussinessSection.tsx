@@ -47,7 +47,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                Best for individuals and small operations.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-headingColor">Free</span>
@@ -59,20 +59,20 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">3 meeting preparations per month</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">AI calculation engine</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Basic company insightsZ</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Basic reports</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Meeting summary export</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Single-user access</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Email support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">10 monthly analyses</span>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Advanced</span>
                             <p className="text-headingColor text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                Ideal for growing teams. Ideal for growing teams.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
@@ -101,32 +101,32 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Unlimited meeting preparations</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Everything in Basic</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Advanced Al insights & scripts</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Full analysis modules</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">-ompetitor analysis</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Visual chemistry graphs</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Risk alerts & red flags</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Customer dashboard access</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Meeting templates</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">50 monthly analyses</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Priority support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Priority support</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Team collaboration (coming soon)</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">3D view</span>
                                 </div>
                             </div>
                         </div>
@@ -143,7 +143,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Expert</span>
                             <p className="text-headingColor text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                For enterprises and chemistry professionals.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
@@ -155,28 +155,28 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Unlimited meeting preparations</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Everything in Advanced</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Team collaboration (coming soon)</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Unlimited analyses</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">-ompetitor analysis</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Custom recommendations</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Risk alerts & red flags</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Advanced reporting</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Priority support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Priority support</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Advanced Al insights & scripts</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Advanced Al insights & scripts</span>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +196,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                Best for individuals and small operations.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-[#2D2D2D]">Free</span>
@@ -208,20 +208,20 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">3 meeting preparations per month</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">AI calculation engine</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Basic company insightsZ</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Basic reports</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Meeting summary export</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Single-user access</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Email support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">10 monthly analyses</span>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +238,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Advance</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                Ideal for growing teams. Ideal for growing teams.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
@@ -250,32 +250,32 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Unlimited meeting preparations</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Everything in Basic</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Advanced Al insights & scripts</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Full analysis modules</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">-ompetitor analysis</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Visual chemistry graphs</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Risk alerts & red flags</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Customer dashboard access</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Meeting templates</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">50 monthly analyses</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Priority support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Priority support</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Team collaboration (coming soon)</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">3D view</span>
                                 </div>
                             </div>
                         </div>
@@ -292,7 +292,7 @@ function BussinessSection() {
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white hover:border-none shadow-sm px-8 py-1.5 rounded-full hover:text-white hover:bg-primaryColor cursor-pointer">Expert</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
-                                The Slate necessities. Every thing you need to get up and running.
+                                For enterprises and chemistry professionals.
                             </p>
                             <div className="flex items-center gap-1">
                                 <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
@@ -304,28 +304,28 @@ function BussinessSection() {
                             <h4 className="text-[#2D2D2D] font-semibold text-[16px] mb-4">Featured Include :</h4>
                             <div className="space-y-3">
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Unlimited meeting preparations</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Everything in Advanced</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Team collaboration (coming soon)</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Unlimited analyses</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">-ompetitor analysis</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Custom recommendations</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Risk alerts & red flags</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Advanced reporting</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Priority support</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Priority support</span>
                                 </div>
                                 <div className="flex items-center gap-2 mb-4">
-                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#6A7381]" />
-                                    <span className="text-[#636F85] text-sm font-semibold">Advanced Al insights & scripts</span>
+                                    <IoCheckmarkDoneOutline className="w-6 h-6 text-[#666666]" />
+                                    <span className="text-[#666666] text-sm font-semibold">Advanced Al insights & scripts</span>
                                 </div>
                             </div>
                         </div>

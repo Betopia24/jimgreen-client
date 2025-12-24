@@ -7,12 +7,12 @@ function FeatureSection() {
     return (
         <div
             className="pt-6 pb-[50px] md:pt-14 md:pb-[140px]"
-            // style={{
-            //     backgroundImage: "url('/landingPage/featureSection/FeatureSectionIamge.jpg')",
-            //     backgroundPosition: "center",
-            //     backgroundSize: "cover",
-            //     backgroundRepeat: "no-repeat",
-            // }}
+        // style={{
+        //     backgroundImage: "url('/landingPage/featureSection/FeatureSectionIamge.jpg')",
+        //     backgroundPosition: "center",
+        //     backgroundSize: "cover",
+        //     backgroundRepeat: "no-repeat",
+        // }}
         >
             {/* Header Section */}
             < div className="text-center px-3 md:px-0" >

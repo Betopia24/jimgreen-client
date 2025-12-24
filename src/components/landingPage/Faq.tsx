@@ -1,7 +1,7 @@
 "use client"
 import Container from "@/lib/Container"
 import { useState } from "react";
-import { GoArrowDown, GoArrowRight  } from "react-icons/go";
+import { GoArrowDown, GoArrowRight } from "react-icons/go";
 
 
 function Faq() {
@@ -36,14 +36,14 @@ function Faq() {
     <Container className="my-20">
       {/* Header Section */}
       < div className="text-center mx-3 md:px-0 mb-12" >
-        <p className="text-[#6E51E0] font-semibold text-[16px] mb-3">
+        <p className="text-primaryColor font-semibold text-[16px] mb-3">
           FAQ
         </p>
-        <h1 className="text-3xl md:text-4xl font-medium text-[#2D2D2D] mb-3">
+        <h1 className="text-3xl md:text-4xl font-medium text-headingColor mb-3">
           Frequently Asked
         </h1>
-        <button className='text-4xl md:text-5xl text-[#6E51E0] font-medium bg-[#FCF1FE] px-[10px] py-[14px] rounded-sm mb-8'>Questions</button>
-        <p className="text-[18px] text-[#636F85]">Your success is our top priority. Our dedicated support team <br />
+        <button className='text-4xl md:text-5xl text-primaryColor font-medium bg-gradient-to-l from-[#267af8] to-[#DAE9FF] px-[10px] py-[14px] rounded-sm mb-8'>Questions</button>
+        <p className="text-[18px] text-[#666666]">Your success is our top priority. Our dedicated support team <br />
           is here to assist you every step of  the way</p>
       </div >
       <div className="lg:flex justify-center items-center">
@@ -68,11 +68,11 @@ function Faq() {
 
                   >
                     <div className="flex-1 pr-4">
-                      <h3 className="text-base font-semibold text-gray-900 leading-relaxed">
+                      <h3 className="text-base font-semibold text-headingColor leading-relaxed">
                         {faq.question}
                       </h3>
                       {openIndex === index && (
-                        <p className="mt-3 text-sm text-[#636F85] leading-relaxed">
+                        <p className="mt-3 text-sm text-[#666666] leading-relaxed">
                           {faq.answer}
                         </p>
                       )}

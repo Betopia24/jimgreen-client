@@ -1,6 +1,7 @@
 import Container from '@/lib/Container'
 import Link from "next/link"
-import { GoArrowRight } from "react-icons/go";
+import { FaPlayCircle } from 'react-icons/fa';
+import { IoIosSend } from 'react-icons/io';
 
 function NextMeeting() {
   return (
@@ -14,28 +15,30 @@ function NextMeeting() {
             </h3>
 
             {/* buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-4 mt-10 mb-12">
-              <Link href="">
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
+              <Link href="" className="group">
                 <div
-                  className="bg-white px-6 py-3 font-medium transition flex items-center gap-2 hover:bg-primaryBgColor border-2
-                                         border-[#6E51E0] rounded-sm hover:text-white text-primaryBgColor text-[16px]"
+                  className="bg-white px-6 py-3 font-medium transition flex items-center gap-2 hover:bg-primaryColor border-2
+                                     border-primaryColor rounded-full hover:text-white text-primaryColor text-[16px]"
                 >
-                  <span className="">
-                    Prepare My Meeting
+                  <span>
+                    Start Free Trial
                   </span>
-                  <GoArrowRight className="w-5 h-5" />
+                  <div className="w-7 h-7 bg-primaryColor group-hover:bg-white flex justify-center items-center rounded-full transition">
+                    <IoIosSend className="w-5 h-5 text-white group-hover:text-primaryColor transition" />
+                  </div>
                 </div>
               </Link>
 
-              <Link href="" className="">
+              <Link href="" className="group">
                 <div
-                  className="bg-white px-6 py-3 font-medium transition flex items-center gap-2 hover:bg-primaryBgColor border-2
-                                         border-[#6E51E0] rounded-sm hover:text-white text-primaryBgColor text-[16px]"
+                  className="bg-white px-6 py-3 font-medium transition flex items-center gap-2 hover:bg-primaryColor border-2
+                                        border-primaryColor rounded-full hover:text-white text-primaryColor text-[16px]"
                 >
-                  <span className="">
-                    Try it Free
+                  <span>
+                    Explore Demo
                   </span>
-                  <GoArrowRight className="w-5 h-5" />
+                  <FaPlayCircle className="w-7 h-7 text-primaryColor group-hover:text-white transition" />
                 </div>
               </Link>
 
@@ -47,12 +50,12 @@ function NextMeeting() {
       {/* background images behind content */}
       <div className='absolute inset-0 z-0'>
         <img
-          src="/landingPage/NextMeeting/nextMeetingImageTop.png"
+          src="/landingPage/NextMeeting/nextMeetingImageTop.svg"
           alt=""
           className='absolute top-0 left-0 right-0 w-full h-auto'
         />
         <img
-          src="/landingPage/NextMeeting/nextMeetingImageBottom.png"
+          src="/landingPage/NextMeeting/nextMeetingImageBottom.svg"
           alt=""
           className='absolute bottom-0 left-0 right-0 w-full h-auto'
         />
