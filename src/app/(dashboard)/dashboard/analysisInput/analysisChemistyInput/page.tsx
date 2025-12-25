@@ -196,9 +196,9 @@ export default function AnalysisChemistyInput() {
                 title="Water Chemistry Analysis Input"
                 description="Enter raw water chemistry values for comprehensive analysis"
             />
-            <div className="bg-gray-50 py-6">
-                <div className="bg-white rounded-xl shadow-sm p-8">
-                    <h2 className="text-3xl font-medium text-headingColor mb-8">
+            <div className="bg-gray-50 pb-6">
+                <div className="bg-white rounded-xl shadow-sm p-6">
+                    <h2 className="text-3xl font-medium text-headingColor mb-6">
                         Water Chemistry Parameters
                     </h2>
 

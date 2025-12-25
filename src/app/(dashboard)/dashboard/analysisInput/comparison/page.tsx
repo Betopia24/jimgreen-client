@@ -1,9 +1,11 @@
+import ComparisonChart from '@/components/dashboard/analysisInput/comparisonChart';
 import PageHeader from '@/components/dashboard/PageHeader'
 import { GoArrowRight } from "react-icons/go";
 
 function Comparison() {
     return (
         <div>
+            {/* heading part  */}
             <div className='flex items-center justify-between'>
                 <PageHeader
                     title="Chemical Analysis Graphs"
@@ -17,6 +19,8 @@ function Comparison() {
                     <GoArrowRight size={20} className='text-white' />
                 </button>
             </div>
+            {/* rechart  */}
+            <ComparisonChart/>
         </div>
     )
 }
