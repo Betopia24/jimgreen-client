@@ -59,7 +59,7 @@ export default function AppSidebar() {
                   </Link>
 
 
-                  <button
+                  {/* <button
                     className={`flex items-center w-full gap-2 rounded-sm px-7 py-3 transition-colors text-[16px] text-[#4B5563]
                     ${pathname === "/dashboard/settingPage"
                         ? "bg-primaryColor text-[#FAFAFA]"
@@ -70,7 +70,7 @@ export default function AppSidebar() {
                       <GrHomeRounded size={16} />
                       <span className="text-[16px]">Settings</span>
                     </Link>
-                  </button>
+                  </button> */}
                 </div>
               </SidebarMenu>
             </SidebarGroupContent>
