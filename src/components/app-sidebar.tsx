@@ -27,37 +27,35 @@ export default function AppSidebar() {
             <SidebarGroupContent>
               <SidebarMenu>
                 {/* Logo */}
-                <Link href="/" className="text-xl mb-6">
+                <Link href="/" className="text-xl">
                   <div className="flex justify-center items-center">
-                    <img src="/navbar/logo.svg" alt="logo" className='w-8 md:w-[130px] h-8 md:h-[60px]' />
+                    <img src="/navbar/logo.svg" alt="logo" className='w-8 md:w-[150px] h-8 md:h-[60px]' />
                   </div>
                 </Link>
                 <div className="space-y-2">
                   {/* navigation  */}
-                  <button
-                    className={`flex items-center w-full gap-2 rounded-sm px-7 py-3 transition-colors text-[16px] text-[#4B5563]
-                    ${pathname === "/dashboard/dashboard"
-                        ? "bg-primaryColor text-[#FAFAFA]"
-                        : "text-[#000407] hover:bg-primaryColor hover:text-[#FAFAFA]"
+                  <Link
+                    href="/dashboard/dashboard"
+                    className={`flex items-center gap-2 w-full rounded-sm px-7 py-3 text-[16px] transition-colors
+                      ${pathname === "/dashboard/dashboard"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
                       }`}
                   >
-                    <Link href="/dashboard/dashboard" className="flex items-center gap-2 w-full">
-                      <GrHomeRounded size={16} />
-                      <span className="text-[16px]">dashboard</span>
-                    </Link>
-                  </button>
+                    <GrHomeRounded size={16} />
+                    <span className="text-[16px]">Dashboard</span>
+                  </Link>
 
                   <Link
                     href="/dashboard/analysisInput"
-                    className={`flex items-center gap-2 w-full rounded-sm px-7 py-3 transition-colors text-[16px]
-                     ${pathname === "/dashboard/analysisInput"
-                                         ? "bg-primaryColor text-white"
-                                         : "text-[#000407] hover:bg-primaryColor hover:text-white"
-                                       }
-                   `}
-                                   >
-                    <Droplet size={24} className="text-[16px]" />
-                    <span>Analysis Input</span>
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/analysisInput"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
+                      }`}
+                  >
+                    <Droplet size={24} />
+                    <span className="text-[16px]">Analysis Input</span>
                   </Link>
 
 
@@ -65,7 +63,7 @@ export default function AppSidebar() {
                     className={`flex items-center w-full gap-2 rounded-sm px-7 py-3 transition-colors text-[16px] text-[#4B5563]
                     ${pathname === "/dashboard/settingPage"
                         ? "bg-primaryColor text-[#FAFAFA]"
-                        : "text-[#000407] hover:bg-primaryColor hover:text-[#FAFAFA]"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-[#FAFAFA]"
                       }`}
                   >
                     <Link href="/dashboard/settingPage" className="flex items-center gap-2 w-full">

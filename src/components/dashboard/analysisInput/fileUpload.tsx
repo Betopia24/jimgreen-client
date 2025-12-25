@@ -2,11 +2,13 @@
 
 import React, { useState, useRef } from 'react';
 import { Upload, FileText } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function FileUpload() {
     const [isDragging, setIsDragging] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const router = useRouter()
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -98,7 +100,27 @@ export default function FileUpload() {
                             </p>
                         </div>
 
-                        <button
+                        {
+                            selectedFile ? (
+                                <button
+                                    onClick={() => router.push("/dashboard/analysisInput/analysisChemistyInput")}
+                                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#004AAD] hover:bg-[#004AAD] text-white text-[16px] font-medium rounded-lg cursor-pointer"
+                                >
+                                    Next
+                                </button>
+                            ) : (
+
+                                <button
+                                    onClick={handleUploadClick}
+                                    className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#004AAD] hover:bg-[#004AAD] text-white text-[16px] font-medium rounded-lg cursor-pointer"
+                                >
+                                    <Upload className="w-4 h-4" />
+                                    Upload File
+                                </button>
+                            )
+                        }
+
+                        {/* <button
                             onClick={handleUploadClick}
                             className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#004AAD] hover:bg-[#004AAD] text-white text-[16px] font-medium rounded-lg cursor-pointer"
                         >
@@ -115,7 +137,7 @@ export default function FileUpload() {
                                     Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                                 </p>
                             </div>
-                        )}
+                        )} */}
                     </div>
                 </div>
             </div>
