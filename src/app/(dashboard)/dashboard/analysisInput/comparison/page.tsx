@@ -1,4 +1,5 @@
 import ComparisonChart from '@/components/dashboard/analysisInput/comparisonChart';
+import InputParametersCard from '@/components/dashboard/analysisInput/inputParametersCard';
 import PageHeader from '@/components/dashboard/PageHeader'
 import { GoArrowRight } from "react-icons/go";
 
@@ -21,6 +22,8 @@ function Comparison() {
             </div>
             {/* rechart  */}
             <ComparisonChart/>
+            {/* input parameter cards  */}
+            <InputParametersCard/>
         </div>
     )
 }
