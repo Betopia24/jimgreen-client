@@ -23,13 +23,13 @@ export default function ComparisonChart() {
     const getColor = (status: string) => {
         switch (status) {
             case 'optimal':
-                return '#10b981'; // green
+                return '#009D34'; // green
             case 'good':
-                return '#06b6d4'; // cyan
+                return '#00D4FF'; // cyan
             case 'warning':
-                return '#f59e0b'; // orange/yellow
+                return '#FFB800'; // orange/yellow
             case 'critical':
-                return '#ec4899'; // pink/red
+                return '#FF3366'; // pink/red
             default:
                 return '#6b7280'; // gray
         }
@@ -45,13 +45,13 @@ export default function ComparisonChart() {
                     </h2>
 
                     {/* Prompt Input */}
-                    <div className="relative">
+                    <div className="relative w-[389px] h-[65px] p-2.5 bg-[#F3F3F3] rounded-lg">
                         <input
                             type="text"
                             value={prompt}
                             onChange={(e) => setPrompt(e.target.value)}
                             placeholder="write your prompt which graph you want"
-                            className="w-[389px] h-[65px] p-2.5 bg-[#F3F3F3] rounded-lg text-sm placeholder-[#666666] focus:outline-none"
+                            className="w-full bg-transparent text-sm placeholder-[#666666] focus:outline-none"
                         />
                     </div>
                 </div>
@@ -63,13 +63,14 @@ export default function ComparisonChart() {
                             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                             <XAxis
                                 dataKey="name"
-                                axisLine={false}
+                                // axisLine={false}
+                                axisLine={{ stroke: '#737373', strokeWidth: 1 }}
                                 tickLine={false}
                                 tick={{ fill: '#6b7280', fontSize: 13 }}
                                 dy={10}
                             />
                             <YAxis
-                                axisLine={false}
+                                axisLine={{ stroke: '#737373', strokeWidth: 1 }}
                                 tickLine={false}
                                 tick={{ fill: '#6b7280', fontSize: 12 }}
                                 ticks={[0, 150, 300, 450, 600]}
@@ -86,13 +87,6 @@ export default function ComparisonChart() {
                             </Bar>
                         </BarChart>
                     </ResponsiveContainer>
-
-                    {/* Floating Button */}
-                    <button className="absolute bottom-6 right-6 w-12 h-12 bg-green-600 hover:bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg transition-colors">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
-                    </button>
                 </div>
 
                 {/* Legend */}
