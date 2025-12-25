@@ -48,7 +48,7 @@ export default function AnalysisChemistyInput() {
         if(data.ph) {
             alert("data submited")
         }
-        // router.push("/dashboard/analysisInput/comparison")
+        router.push("/dashboard/analysisInput/comparison")
         // Handle form submission here
         // You can send data to API or perform calculations
     };
