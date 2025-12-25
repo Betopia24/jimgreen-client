@@ -1,26 +1,17 @@
-import QualificationTrendChart from '@/components/dashboard/QualificationTrendChart'
-import StatsCards from '@/components/dashboard/StatsCards'
-import TalkRatioChart from '@/components/dashboard/TalkRatioChart '
-import HomeAiInsights from '@/components/home/HomeAiInsights'
-import React from 'react'
+
+import AnalysisTrends from '@/components/dashboard/dashboard/AnalysisTrends'
+import LatestRepostTable from '@/components/dashboard/dashboard/latestRepostTable'
+import StatsCards from '@/components/dashboard/dashboard/StatsCards'
 
 function Dashboard() {
   return (
     <div>
-      <StatsCards/>
-      <div className='lg:flex items-center justify-between gap-6'>
-        {/* chart part  */}
-       <div className='flex-1'>
-         <QualificationTrendChart/>
-       </div>
-        {/* progress part  */}
-        <div className='flex-1'>
-          <TalkRatioChart />
-        </div>
-      </div>
-      <div className='my-6'>
-        <HomeAiInsights/>
-      </div>
+      {/* card  */}
+      <StatsCards />
+      {/* chart part  */}
+      <AnalysisTrends />
+      {/* latest report table  */}
+      <LatestRepostTable/>
     </div>
   )
 }
