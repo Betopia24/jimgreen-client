@@ -16,6 +16,7 @@ import { GrHomeRounded } from "react-icons/gr";
 import { Building, Droplet } from "lucide-react";
 import { CiGlass } from "react-icons/ci";
 import { BsBoxSeam } from "react-icons/bs";
+import { MdHistory } from "react-icons/md";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -92,6 +93,17 @@ export default function AppSidebar() {
                   >
                     <Building size={20} className="mr-1" />
                     <span className="text-[16px]">customers</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/history"
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/history"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
+                      }`}
+                  >
+                    <MdHistory size={24} className="mr-1" />
+                    <span className="text-[16px]">History</span>
                   </Link>
 
 
