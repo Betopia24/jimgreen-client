@@ -141,7 +141,7 @@ export default function RowMeterialsTable() {
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-3">
                                                 <Link href={`/dashboard/rowMeterials/editmeterials${material.id}`}>
-                                                    <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors cursor-pointer">
+                                                    <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors cursor-pointer mt-2">
                                                         <FiEdit className="w-4 h-4" />
                                                     </button></Link>
                                                 <button className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer">

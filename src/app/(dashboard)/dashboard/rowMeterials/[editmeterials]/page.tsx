@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import PageHeader from '@/components/dashboard/PageHeader';
 
 export default function EditMaterials() {
   const { register, handleSubmit, control, formState: { errors } } = useForm({
@@ -34,12 +35,14 @@ export default function EditMaterials() {
   };
 
   return (
-    <div className=" py-6">
-      <div className='bg-white rounded-lg'>
-        <div className="p-6 mb-6">
-          <h1 className="text-2xl font-semibold text-[#101828] mb-6">Chemical</h1>
+    <div className='mb-6'>
+      {/* header section  */}
+      <PageHeader title='Chemical' description='Treatment Chemical Details'/>
+      <div className='bg-white rounded-lg border border-[#E5E7EB] hover:shadow-sm'>
+        <div className="p-6">
+          <h1 className="text-3xl font-semibold text-headingColor mb-2">Chemical</h1>
 
-          <h2 className="text-lg font-medium text-[#101828] mb-4">Treatment Chemical Details</h2>
+          <h2 className="text-xl font-medium text-headingColor mb-4">Treatment Chemical Details</h2>
 
           <div className="grid grid-cols-2 gap-6">
             {/* Chemical Name */}
@@ -52,7 +55,7 @@ export default function EditMaterials() {
                   type="text"
                   placeholder="Enter ph"
                   {...register('chemicalName', { required: true })}
-                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
               </div>
             </div>
@@ -67,7 +70,7 @@ export default function EditMaterials() {
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger className="w-full bg-gray-50 border-gray-300">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -90,7 +93,7 @@ export default function EditMaterials() {
                 type="text"
                 placeholder="Enter magnesium (mg)"
                 {...register('supplierName')}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -103,7 +106,7 @@ export default function EditMaterials() {
                 <input
                   type="text"
                   {...register('dosageRate')}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
                   name="dosageUnit"
@@ -134,7 +137,7 @@ export default function EditMaterials() {
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger className="w-full bg-gray-50 border-gray-300">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select frequency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -158,7 +161,7 @@ export default function EditMaterials() {
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <SelectTrigger className="w-full bg-gray-50 border-gray-300">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select classification" />
                     </SelectTrigger>
                     <SelectContent>
@@ -175,7 +178,7 @@ export default function EditMaterials() {
         </div>
 
         {/* Additional Information */}
-        <div className="p-6 mb-6">
+        <div className="p-6">
           <h2 className="text-lg font-medium text-[#101828] mb-4">Additional Information</h2>
 
           <div>
@@ -185,13 +188,13 @@ export default function EditMaterials() {
             <textarea
               placeholder="Enter any special handling requirements..."
               {...register('specialHandling')}
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50 resize-none"
+              className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm placeholder:text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
             />
           </div>
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end">
+        <div className="flex justify-end m-6 mt-0">
           <button
             onClick={handleFormSubmit}
             className="px-6 py-3 bg-[#0058DD] text-white font-medium rounded-lg hover:bg-[#0046b8] transition-colors text-sm"
