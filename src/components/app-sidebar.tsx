@@ -15,6 +15,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { GrHomeRounded } from "react-icons/gr";
 import { Droplet } from "lucide-react";
 import { CiGlass } from "react-icons/ci";
+import { BsBoxSeam } from "react-icons/bs";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -69,6 +70,17 @@ export default function AppSidebar() {
                   >
                     <CiGlass size={24} />
                     <span className="text-[16px]">Raw Materials</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/product"
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/product"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
+                      }`}
+                  >
+                    <BsBoxSeam size={18} className="mr-1" />
+                    <span className="text-[16px]">Product</span>
                   </Link>
 
 

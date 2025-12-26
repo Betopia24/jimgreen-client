@@ -77,7 +77,8 @@ export default function EditMaterials() {
                       <SelectItem value="Biocide">Biocide</SelectItem>
                       <SelectItem value="Corrosion Inhibitor">Corrosion Inhibitor</SelectItem>
                       <SelectItem value="Scale Inhibitor">Scale Inhibitor</SelectItem>
-                      <SelectItem value="pH Adjuster">pH Adjuster</SelectItem>
+                      <SelectItem value="Dispersant">Dispersant</SelectItem>
+                      <SelectItem value="Other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -141,10 +142,10 @@ export default function EditMaterials() {
                       <SelectValue placeholder="Select frequency" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="Continuous">Continuous</SelectItem>
                       <SelectItem value="Daily">Daily</SelectItem>
-                      <SelectItem value="Weekly">Weekly</SelectItem>
+                      <SelectItem value="weekly">weekly</SelectItem>
                       <SelectItem value="Monthly">Monthly</SelectItem>
-                      <SelectItem value="As Needed">As Needed</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
@@ -197,7 +198,7 @@ export default function EditMaterials() {
         <div className="flex justify-end m-6 mt-0">
           <button
             onClick={handleFormSubmit}
-            className="px-6 py-3 bg-[#0058DD] text-white font-medium rounded-lg hover:bg-[#0046b8] transition-colors text-sm cursor-pointer"
+            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
           >
             Save Raw Material
           </button>

@@ -5,65 +5,65 @@ import { Search, Trash2 } from 'lucide-react';
 import { FiEdit } from "react-icons/fi";
 import Link from 'next/link';
 
-export default function RowMeterialsTable() {
+export default function ProductRowMeterialTable() {
     const materials = [
         {
             id: "1",
-            name: 'Sodium Hypochlorite',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Active',
             statusColor: 'bg-[#34A85333] text-[#34A853]',
         },
         {
             id: "2",
-            name: 'Phosphonate Scale Inhibitor',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Active',
             statusColor: 'bg-[#34A85333] text-[#34A853]',
         },
         {
             id: "3",
-            name: 'Molybdate Corrosion Inhibitor',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Active',
             statusColor: 'bg-[#34A85333] text-[#34A853]',
         },
         {
             id: "4",
-            name: 'Polyacrylate Dispersant',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Inactive',
             statusColor: 'bg-[#E5E7EB] text-[#2D2D2D]',
         },
         {
             id: "5",
-            name: 'Bromine Biocide',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Active',
             statusColor: 'bg-[#34A85333] text-[#34A853]',
         },
         {
             id: "6",
-            name: 'Zinc Orthophosphate',
-            supplier: 'ChemSupply Co.',
-            dosageRate: '5.0 ppm',
-            feedFrequency: "Continuous",
-            lastModified: "Dec 18, 2024",
+            name: 'ScaleGuard 500',
+            manufacturer: 'ChemPure Water Solutions',
+            productCategory: 'Biocide',
+            productprice: "$45.50",
+            replacementFrequency: "Monthly",
             status: 'Inactive',
             statusColor: 'bg-[#E5E7EB] text-[#2D2D2D]',
         },
@@ -93,16 +93,16 @@ export default function RowMeterialsTable() {
                                         Name
                                     </th>
                                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                                        Supplier
+                                        manufacturer
                                     </th>
                                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                                        Dosage Rate
+                                        Product Category
                                     </th>
                                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                                        Feed Frequency
+                                        Product Price
                                     </th>
                                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                                        Last Modified
+                                        Replacement Frequency
                                     </th>
                                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
                                         Status
@@ -122,16 +122,16 @@ export default function RowMeterialsTable() {
                                             {material.name}
                                         </td>
                                         <td className="py-4 px-6 text-[#636F85] text-sm">
-                                            {material.supplier}
+                                            {material.manufacturer}
                                         </td>
                                         <td className="py-4 px-6 text-[#191919] text-sm">
-                                            {material.dosageRate}
+                                            {material.productCategory}
                                         </td>
                                         <td className="py-4 px-6 text-[#636F85] text-sm">
-                                            {material.feedFrequency}
+                                            {material.productprice}
                                         </td>
                                         <td className="py-4 px-6 text-[#4A5565] text-sm">
-                                            {material.lastModified}
+                                            {material.replacementFrequency}
                                         </td>
                                         <td className="py-4 px-6">
                                             <span className={`inline-flex items-center px-3 py-1 rounded text-xs font-medium ${material.statusColor}`}>
@@ -140,7 +140,7 @@ export default function RowMeterialsTable() {
                                         </td>
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-3">
-                                                <Link href={`/dashboard/rowMeterials/${material.id}`}>
+                                                <Link href={`/dashboard/product/${material.id}`}>
                                                     <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors cursor-pointer mt-2">
                                                         <FiEdit className="w-4 h-4" />
                                                     </button></Link>
