@@ -1,28 +1,20 @@
-// import React from 'react'
-
-// function ShowCustomerEdit() {
-//   return (
-//     <div>ShowCustomerEdit</div>
-//   )
-// }
-
-// export default ShowCustomerEdit
-
 "use client";
 
-import PageHeader from '@/components/dashboard/PageHeader';
-import { useForm, Controller } from 'react-hook-form';
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
+
+import PageHeader from "@/components/dashboard/PageHeader";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Calendar } from '@/components/ui/calendar'; // assuming you have a calendar popover component
-import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils'; // common utility for className merging (if using shadcn)
+} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface AssetFormData {
   assetName: string;
@@ -38,59 +30,54 @@ interface AssetFormData {
   knownIssues: string;
 }
 
-export default function CoolingWaterAssetConfiguration() {
+export default function ShowCustomerEdit() {
+  const [open, setOpen] = useState(false);
+
   const {
     register,
     handleSubmit,
     control,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<AssetFormData>({
     defaultValues: {
-      assetName: '',
-      locationZone: 'Biocide',
-      assetType: '',
+      assetName: "",
+      locationZone: "Biocide",
+      assetType: "",
       installationDate: undefined,
-      systemVolume: '',
-      operatingTemperature: '',
-      flowRate: '',
-      cyclesOfConcentration: '',
-      materialType: 'Carbon Steel',
-      currentCondition: 'excellent',
-      knownIssues: '',
+      systemVolume: "",
+      operatingTemperature: "",
+      flowRate: "",
+      cyclesOfConcentration: "",
+      materialType: "Carbon Steel",
+      currentCondition: "excellent",
+      knownIssues: "",
     },
   });
 
-  const installationDate = watch('installationDate');
-
   const onSubmit = (data: AssetFormData) => {
-    console.log('Asset Configuration Data:', data);
+    console.log("Asset Configuration Data:", data);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className=" bg-gray-50 mb-6">
       <PageHeader
         title="Cooling Water Asset Configuration"
         description="Describe the physical cooling system assets used at your facility."
       />
 
-      <div className="max-w-5xl mx-auto mt-8">
+      <div className="mt-6">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white rounded-xl shadow-sm border border-gray-200 p-8"
+          className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
         >
-          {/* Asset Header with Icon */}
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-2xl font-semibold text-gray-900">Asset</h2>
-            <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
-              J
-            </div>
-          </div>
+          {/* Header */}
+          <h2 className="text-2xl font-semibold text-gray-900 mb-8">Asset</h2>
 
           {/* Asset Details Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Details</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Asset Details
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Left Column */}
@@ -100,10 +87,9 @@ export default function CoolingWaterAssetConfiguration() {
                     Asset Name
                   </label>
                   <input
-                    type="text"
-                    placeholder="Enter ph"
-                    {...register('assetName')}
-                    className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    {...register("assetName")}
+                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                    placeholder="Enter asset name"
                   />
                 </div>
 
@@ -112,10 +98,9 @@ export default function CoolingWaterAssetConfiguration() {
                     Location / Zone
                   </label>
                   <input
-                    type="text"
-                    defaultValue="Biocide"
-                    {...register('locationZone')}
-                    className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    {...register("locationZone")}
+                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                    placeholder="Enter ph"
                   />
                 </div>
               </div>
@@ -130,8 +115,8 @@ export default function CoolingWaterAssetConfiguration() {
                     name="assetType"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
@@ -147,34 +132,46 @@ export default function CoolingWaterAssetConfiguration() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-3.5">
                     Installation Date
                   </label>
+
                   <Controller
                     name="installationDate"
                     control={control}
                     render={({ field }) => (
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <button
-                            className={cn(
-                              "w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-left text-sm flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500",
-                              !field.value && "text-gray-500"
-                            )}
-                          >
-                            {field.value ? format(field.value, "MM/dd/yyyy") : "MM/DD/YYYY"}
-                            <CalendarIcon className="w-5 h-5 text-gray-400" />
-                          </button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setOpen((prev) => !prev)}
+                          className={cn(
+                            "flex justify-between items-center w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]",
+                            !field.value && "text-gray-500"
+                          )}
+                        >
+                          {field.value
+                            ? format(field.value, "MM/dd/yyyy")
+                            : "MM/DD/YYYY"}
+                          <CalendarIcon className="w-4 h-4 text-gray-400 ml-2" />
+                        </button>
+
+                        {open && (
+                          <div className="absolute z-50 mt-2 bg-white border rounded-lg shadow-lg">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => {
+                                field.onChange(date);
+                                setOpen(false);
+                              }}
+                              disabled={(date) =>
+                                date > new Date() || date < new Date("1900-01-01")
+                              }
+                              initialFocus
+                            />
+                          </div>
+                        )}
+                      </>
                     )}
                   />
                 </div>
@@ -184,7 +181,9 @@ export default function CoolingWaterAssetConfiguration() {
 
           {/* Operational Parameters Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Operational Parameters</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Operational Parameters
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
@@ -192,10 +191,9 @@ export default function CoolingWaterAssetConfiguration() {
                   System Volume (m³)
                 </label>
                 <input
-                  type="text"
+                  {...register("systemVolume")}
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter ph"
-                  {...register('systemVolume')}
-                  className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -204,10 +202,9 @@ export default function CoolingWaterAssetConfiguration() {
                   Flow Rate (m³/hr)
                 </label>
                 <input
-                  type="text"
+                  {...register("flowRate")}
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter ph"
-                  {...register('flowRate')}
-                  className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -216,10 +213,9 @@ export default function CoolingWaterAssetConfiguration() {
                   Operating Temperature (°C)
                 </label>
                 <input
-                  type="text"
+                  {...register("operatingTemperature")}
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter ph"
-                  {...register('operatingTemperature')}
-                  className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 
@@ -228,10 +224,9 @@ export default function CoolingWaterAssetConfiguration() {
                   Cycles of Concentration
                 </label>
                 <input
-                  type="text"
+                  {...register("cyclesOfConcentration")}
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter ph"
-                  {...register('cyclesOfConcentration')}
-                  className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -239,9 +234,11 @@ export default function CoolingWaterAssetConfiguration() {
 
           {/* Asset Condition Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Condition</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Asset Condition
+            </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Material Type
@@ -250,8 +247,8 @@ export default function CoolingWaterAssetConfiguration() {
                   name="materialType"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -274,8 +271,8 @@ export default function CoolingWaterAssetConfiguration() {
                   name="currentCondition"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <SelectTrigger className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -291,42 +288,29 @@ export default function CoolingWaterAssetConfiguration() {
               </div>
             </div>
 
-            <div className="mt-6">
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Known Issues
               </label>
               <textarea
+                {...register("knownIssues")}
                 rows={4}
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 placeholder="Describe any known issues, maintenance concerns, or performance problems..."
-                {...register('knownIssues')}
-                className="w-full px-4 py-3 bg-gray-100 border border-gray-100 rounded-lg text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
             </div>
           </div>
 
-          {/* Save Button */}
+          {/* Submit Button */}
           <div className="flex justify-end mt-10">
             <button
               type="submit"
-              className="px-8 py-3 bg-blue-700 text-white font-medium rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2"
+              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
             >
               Save Water Analysis
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
             </button>
           </div>
+
         </form>
       </div>
     </div>
