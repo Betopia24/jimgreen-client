@@ -49,7 +49,7 @@ export default function LatestRepostTable() {
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="bg-gray-50 border-b border-gray-200">
+                            <tr className="bg-[#F3F4F6] border-b border-gray-200">
                                 <th className="text-left py-4 px-6 font-semibold text-[16px] text-[#4A5565]">
                                     Report ID
                                 </th>
