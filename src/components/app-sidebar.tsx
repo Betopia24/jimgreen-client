@@ -13,7 +13,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { IoIosLogOut } from "react-icons/io";
 import { GrHomeRounded } from "react-icons/gr";
-import { Droplet } from "lucide-react";
+import { Building, Droplet } from "lucide-react";
 import { CiGlass } from "react-icons/ci";
 import { BsBoxSeam } from "react-icons/bs";
 
@@ -81,6 +81,17 @@ export default function AppSidebar() {
                   >
                     <BsBoxSeam size={18} className="mr-1" />
                     <span className="text-[16px]">Product</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/customers"
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/customers"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
+                      }`}
+                  >
+                    <Building size={20} className="mr-1" />
+                    <span className="text-[16px]">customers</span>
                   </Link>
 
 
