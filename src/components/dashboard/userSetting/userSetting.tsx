@@ -74,7 +74,7 @@ const AdminSettingsPage = () => {
   };
 
   return (
-    <div className="">
+    <div className="mb-6">
       <div className="space-y-6">
         {/* Profile Information Section */}
         <div className="rounded-lg bg-white p-6 shadow-sm">

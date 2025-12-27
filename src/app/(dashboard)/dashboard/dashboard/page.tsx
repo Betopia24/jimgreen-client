@@ -4,16 +4,16 @@ import LatestRepostTable from '@/components/dashboard/dashboard/latestRepostTabl
 import StatsCards from '@/components/dashboard/dashboard/StatsCards'
 
 function Dashboard() {
-  return (
-    <div>
-      {/* card  */}
-      <StatsCards />
-      {/* chart part  */}
-      <AnalysisTrends />
-      {/* latest report table  */}
-      <LatestRepostTable/>
-    </div>
-  )
+    return (
+        <div>
+            {/* card  */}
+            <StatsCards />
+            {/* chart part  */}
+            <AnalysisTrends />
+            {/* latest report table  */}
+            <LatestRepostTable />
+        </div>
+    )
 }
 
 export default Dashboard

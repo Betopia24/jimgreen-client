@@ -21,7 +21,7 @@ interface CustomerFormData {
     contactPhone: string;
 }
 
-export default function EditCustomer() {
+export default function AddCustomer() {
     const { register, handleSubmit, control } = useForm<CustomerFormData>({
         defaultValues: {
             customerName: '',
@@ -42,7 +42,7 @@ export default function EditCustomer() {
         <div className="min-h-screen bg-gray-50">
             {/* header section  */}
             <div>
-                <PageHeader title='Edit Customer' description='Enter customer and site information' />
+                <PageHeader title='Add Customer' description='Enter customer and site information' />
             </div>
             {/* edit section  */}
             <div className="">

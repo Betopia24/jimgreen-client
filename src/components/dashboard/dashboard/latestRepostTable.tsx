@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Clock } from 'lucide-react';
+import Link from 'next/link';
 
 export default function LatestRepostTable() {
     const reports = [
@@ -97,9 +98,11 @@ export default function LatestRepostTable() {
                                         </span>
                                     </td>
                                     <td className="py-4 px-6">
-                                        <button className="text-[#0058DD] hover:text-[#0058DD] text-sm font-medium hover:underline transition-colors">
-                                            View Details
-                                        </button>
+                                        <Link href={`/dashboard/dashboard/${report.id}`}>
+                                            <button className="text-[#0058DD] hover:text-[#0058DD] text-sm font-medium hover:underline transition-colors cursor-pointer">
+                                                View Details
+                                            </button>
+                                        </Link>
                                     </td>
                                 </tr>
                             ))}

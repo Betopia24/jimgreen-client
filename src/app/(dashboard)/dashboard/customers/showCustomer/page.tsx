@@ -93,13 +93,15 @@ export default function AssetsList() {
                             Manage, view, edit and add assets associated with this customer site.
                         </p>
                     </div>
-                    <button
-                        type="submit"
-                        className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
-                    >
-                        <GoPlus size={20} className='text-white' />
-                        <span>Add Asset</span>
-                    </button>
+                    <Link href="/dashboard/customers/showCustomer/addAset">
+                        <button
+                            type="submit"
+                            className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
+                        >
+                            <GoPlus size={20} className='text-white' />
+                            <span>Add Asset</span>
+                        </button>
+                    </Link>
                 </div>
 
                 {/* Table Card */}
