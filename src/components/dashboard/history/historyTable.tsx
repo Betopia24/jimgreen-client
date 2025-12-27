@@ -4,6 +4,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Eye, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import { IoIosGitCompare } from 'react-icons/io';
+import Link from 'next/link';
 
 export default function HistoryTable() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +14,7 @@ export default function HistoryTable() {
     // Extended data to ensure pagination is visible (18 items → 2 pages)
     const reportsData = [
         {
+            id: "1",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -22,6 +24,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "2",
             reportId: 'WA-2024-1247',
             customer: 'Wastewater Discharge A',
             sample: 'Supply Line #4',
@@ -31,6 +34,7 @@ export default function HistoryTable() {
             risk: 'high',
         },
         {
+            id: "3",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -40,6 +44,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "4",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -49,6 +54,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "5",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Tower 3 Water Supply',
@@ -58,6 +64,7 @@ export default function HistoryTable() {
             risk: 'medium',
         },
         {
+            id: "6",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -67,6 +74,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "7",
             reportId: 'WA-2024-1247',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -76,6 +84,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "8",
             reportId: 'WA-2024-1246',
             customer: 'Central City Utilities',
             sample: 'Cooling Tower Basin',
@@ -85,6 +94,7 @@ export default function HistoryTable() {
             risk: 'medium',
         },
         {
+            id: "9",
             reportId: 'WA-2024-1245',
             customer: 'Industrial Park Co.',
             sample: 'Makeup Water',
@@ -94,6 +104,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "10",
             reportId: 'WA-2024-1244',
             customer: 'Riverside Municipal Water',
             sample: 'Blowdown Line',
@@ -103,6 +114,7 @@ export default function HistoryTable() {
             risk: 'high',
         },
         {
+            id: "11",
             reportId: 'WA-2024-1243',
             customer: 'Metro Water District',
             sample: 'Chilled Water Loop',
@@ -112,6 +124,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "12",
             reportId: 'WA-2024-1242',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -121,6 +134,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "13",
             reportId: 'WA-2024-1241',
             customer: 'Power Plant Alpha',
             sample: 'Condenser Water',
@@ -130,6 +144,7 @@ export default function HistoryTable() {
             risk: 'medium',
         },
         {
+            id: "14",
             reportId: 'WA-2024-1240',
             customer: 'Riverside Municipal Water',
             sample: 'Tower 2 Basin',
@@ -139,6 +154,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "15",
             reportId: 'WA-2024-1239',
             customer: 'Wastewater Discharge A',
             sample: 'Effluent Line',
@@ -148,6 +164,7 @@ export default function HistoryTable() {
             risk: 'high',
         },
         {
+            id: "16",
             reportId: 'WA-2024-1238',
             customer: 'Central City Utilities',
             sample: 'Makeup Water Intake',
@@ -157,6 +174,7 @@ export default function HistoryTable() {
             risk: 'low',
         },
         {
+            id: "17",
             reportId: 'WA-2024-1237',
             customer: 'Industrial Park Co.',
             sample: 'Cooling Tower #5',
@@ -166,6 +184,7 @@ export default function HistoryTable() {
             risk: 'medium',
         },
         {
+            id: "18",
             reportId: 'WA-2024-1236',
             customer: 'Riverside Municipal Water',
             sample: 'Supply Line #4',
@@ -305,9 +324,11 @@ export default function HistoryTable() {
                                             </div>
                                         </td>
                                         <td className="py-4 px-6">
-                                            <button className="text-gray-400 hover:text-gray-700 transition-colors">
-                                                <Eye className="w-5 h-5" />
-                                            </button>
+                                            <Link href={`/dashboard/history/${report?.id}`}>
+                                                <button className="text-[#004AAD] transition-colors cursor-pointer">
+                                                    <Eye className="w-5 h-5" />
+                                                </button>
+                                            </Link>
                                         </td>
                                     </tr>
                                 ))
