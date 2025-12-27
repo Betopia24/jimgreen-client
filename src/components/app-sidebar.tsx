@@ -17,6 +17,8 @@ import { Building, Droplet } from "lucide-react";
 import { CiGlass } from "react-icons/ci";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdHistory } from "react-icons/md";
+import { FiCreditCard } from "react-icons/fi";
+import { IoSettingsOutline } from "react-icons/io5";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -91,7 +93,7 @@ export default function AppSidebar() {
                         : "text-[##666666] hover:bg-primaryColor hover:text-white"
                       }`}
                   >
-                    <Building size={20} className="mr-1" />
+                    <Building size={20} />
                     <span className="text-[16px]">customers</span>
                   </Link>
                   <Link
@@ -102,23 +104,31 @@ export default function AppSidebar() {
                         : "text-[##666666] hover:bg-primaryColor hover:text-white"
                       }`}
                   >
-                    <MdHistory size={24} className="mr-1" />
+                    <MdHistory size={24} />
                     <span className="text-[16px]">History</span>
                   </Link>
-
-
-                  {/* <button
-                    className={`flex items-center w-full gap-2 rounded-sm px-7 py-3 transition-colors text-[16px] text-[#4B5563]
-                    ${pathname === "/dashboard/settingPage"
-                        ? "bg-primaryColor text-[#FAFAFA]"
-                        : "text-[##666666] hover:bg-primaryColor hover:text-[#FAFAFA]"
+                  <Link
+                    href="/dashboard/subscription"
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/subscription"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
                       }`}
                   >
-                    <Link href="/dashboard/settingPage" className="flex items-center gap-2 w-full">
-                      <GrHomeRounded size={16} />
-                      <span className="text-[16px]">Settings</span>
-                    </Link>
-                  </button> */}
+                    <FiCreditCard size={18} />
+                    <span className="text-[16px]">subscription</span>
+                  </Link>
+                  <Link
+                    href="/dashboard/settingPage"
+                    className={`flex items-center gap-1 w-full rounded-sm px-6 py-3 text-[16px] transition-colors
+                    ${pathname === "/dashboard/settingPage"
+                        ? "bg-primaryColor text-white"
+                        : "text-[##666666] hover:bg-primaryColor hover:text-white"
+                      }`}
+                  >
+                    <IoSettingsOutline size={20} />
+                    <span className="text-[16px]">Settings</span>
+                  </Link>
                 </div>
               </SidebarMenu>
             </SidebarGroupContent>
