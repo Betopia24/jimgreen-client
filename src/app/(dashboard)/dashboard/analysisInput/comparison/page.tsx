@@ -2,6 +2,7 @@
 import ComparisonChart from '@/components/dashboard/analysisInput/comparisonChart';
 import InputParametersCard from '@/components/dashboard/analysisInput/inputParametersCard';
 import PageHeader from '@/components/dashboard/PageHeader'
+import Link from 'next/link';
 import { GoArrowRight } from "react-icons/go";
 
 function Comparison() {
@@ -77,13 +78,15 @@ function Comparison() {
                     title="Chemical Analysis Graphs"
                     description="Interactive visualization of water quality parameters"
                 />
-                <button
-                    type="submit"
-                    className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
-                >
-                    <span>Recalculation </span>
-                    <GoArrowRight size={20} className='text-white' />
-                </button>
+                <Link href="/dashboard/analysisInput/recalculation">
+                    <button
+                        type="submit"
+                        className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
+                    >
+                        <span>Recalculation </span>
+                        <GoArrowRight size={20} className='text-white' />
+                    </button>
+                </Link>
             </div>
             {/* rechart  */}
             <ComparisonChart />
