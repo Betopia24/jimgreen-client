@@ -44,7 +44,7 @@ export default function LatestRepostTable() {
         <div className="w-full bg-gray-50 pb-6">
             <div className="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div className="p-6 border-b border-gray-200">
-                    <h2 className="text-3xl font-medium text-[#101828]">Latest Reports</h2>
+                    <h2 className="text-2xl md:text-3xl font-medium text-[#101828]">Latest Reports</h2>
                 </div>
 
                 <div className="overflow-x-auto">

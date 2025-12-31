@@ -10,7 +10,7 @@ export function SiteHeader() {
 
   return (
     <header className="flex h-auto shrink-0 items-center border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
-      <div className="flex w-full flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-2 px-4 py-4 lg:px-6 lg:py-6">
+      <div className="flex w-full flex-col lg:flex-row items-start lg:items-center gap-3 lg:gap-2 py-4 lg:py-6">
         {/* Left section: Trigger + Welcome text */}
         <div className="flex items-start gap-2 w-full lg:w-auto">
           <SidebarTrigger className="mt-1 lg:mt-0" />

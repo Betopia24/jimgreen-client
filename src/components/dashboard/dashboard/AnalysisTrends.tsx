@@ -19,7 +19,7 @@ export default function AnalysisTrends() {
                 {/* Header */}
                 <div className="flex items-start justify-between mb-6">
                     <div>
-                        <h2 className="text-4xl font-bold text-headingColor mb-1">
+                        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-headingColor mb-1">
                             Analysis Trends
                         </h2>
                         <p className="text-[16px] text-[#666666]">
