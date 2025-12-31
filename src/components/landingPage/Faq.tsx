@@ -33,7 +33,7 @@ function Faq() {
     setOpenIndex(openIndex === index ? -1 : index);
   };
   return (
-    <Container className="my-20">
+    <Container className="my-20 relative">
       {/* Header Section */}
       < div className="text-center mx-3 md:px-0 mb-12" >
         <p className="text-primaryColor font-semibold text-[16px] mb-3">

@@ -45,7 +45,7 @@ export default function AnalysisChemistyInput() {
 
     const onSubmit = (data: WaterChemistryFormData) => {
         console.log('Form submitted:', data);
-        if(data.ph) {
+        if (data.ph) {
             alert("data submited")
         }
         router.push("/dashboard/analysisInput/comparison")
@@ -198,12 +198,12 @@ export default function AnalysisChemistyInput() {
             />
             <div className="bg-gray-50 pb-6">
                 <div className="bg-white rounded-xl shadow-sm p-6">
-                    <h2 className="text-3xl font-medium text-headingColor mb-6">
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium text-headingColor mb-6">
                         Water Chemistry Parameters
                     </h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {parameters.map((param, index) => (
                                 <div key={index} className="flex flex-col">
                                     <label className="flex items-center gap-2 mb-2 text-[16px] font-medium text-headingColor">

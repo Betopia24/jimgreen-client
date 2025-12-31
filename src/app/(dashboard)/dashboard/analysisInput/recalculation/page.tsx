@@ -203,7 +203,7 @@ export default function Recalculation() {
                     </h2>
 
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {parameters.map((param, index) => (
                                 <div key={index} className="flex flex-col">
                                     <label className="flex items-center gap-2 mb-2 text-[16px] font-medium text-headingColor">
