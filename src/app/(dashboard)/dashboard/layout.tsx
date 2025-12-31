@@ -19,12 +19,10 @@ export default function DashboardLayout({
       }
     >
       {/* <AppSidebar variant="inset" /> */}
-      <AppSidebar/>
-      <div className="flex flex-1 flex-col">
+      <AppSidebar />
+      <div className="w-full bg-[#F9FAFB] px-6">
         <SiteHeader />
-        <main className="flex-1 bg-[#F9FAFB] px-6">
-          {children}
-        </main>
+        {children}
       </div>
     </SidebarProvider>
   )
