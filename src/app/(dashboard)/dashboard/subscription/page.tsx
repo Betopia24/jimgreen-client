@@ -16,7 +16,7 @@ function Subscription() {
                             Best for individuals and small operations.
                         </p>
                         <div className="flex items-center gap-1">
-                            <span className="text-[40px] font-medium text-[#2D2D2D]">Free</span>
+                            <span className="text-xl lg:text-[40px] font-medium text-[#2D2D2D]">Free</span>
                         </div>
                     </div>
 
@@ -57,7 +57,7 @@ function Subscription() {
                             Ideal for growing teams. Ideal for growing teams.
                         </p>
                         <div className="flex items-center gap-1">
-                            <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
+                            <span className="text-xl lg:text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
                             <span className="text-[#6A7381] text-[16px]">/ Monthly</span>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ function Subscription() {
                             For enterprises and chemistry professionals.
                         </p>
                         <div className="flex items-center gap-1">
-                            <span className="text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
+                            <span className="text-xl lg:text-[40px] font-medium text-[#2D2D2D]">$16.00</span>
                             <span className="text-[#6A7381] text-[16px]">/ Monthly</span>
                         </div>
                     </div>
