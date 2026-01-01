@@ -9,6 +9,7 @@ import {
   FileText,
   Droplets,
 } from "lucide-react";
+import PageHeader from "../../PageHeader";
 
 const ReportsDetailsOne: React.FC = () => {
   const [expandedSections, setExpandedSections] = useState<{
@@ -31,15 +32,8 @@ const ReportsDetailsOne: React.FC = () => {
     <div className="">
       <div className="">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl">
-            Complete Water Quality Report
-          </h1>
-          <p className="text-sm text-gray-600 sm:text-base">
-            A detailed breakdown of all quality indicators, trends, and risk
-            evaluations.
-          </p>
-        </div>
+        <PageHeader title="Complete Water Quality Report" description="A detailed breakdown of all quality indicators, trends, and risk
+            evaluations."/>
 
         {/* Key Metrics Cards */}
         <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
