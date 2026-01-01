@@ -8,12 +8,12 @@ function Customers() {
     return (
         <div>
             {/* header section  */}
-            <div className='flex items-center justify-between'>
+            <div className='lg:flex items-center justify-between'>
                 <PageHeader title='Customers' description='Manage all customers, sites, and their associated assets' />
                 <Link href="/dashboard/customers/addCustomer">
                     <button
                         type="submit"
-                        className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
+                        className="lg:px-4 lg:py-3 px-3 py-2 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
                     >
                         <GoPlus size={20} className='text-white' />
                         <span>Add Customer</span>

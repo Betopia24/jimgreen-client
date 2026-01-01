@@ -81,8 +81,8 @@ export default function AssetsList() {
         <div className="min-h-screen bg-gray-50 py-6">
             {/* Header Section */}
             <div>
-                <div className="flex items-start justify-between mb-4">
-                    <div>
+                <div className="lg:flex items-start justify-between mb-4">
+                    <div className='mb-4 lg:mb-0'>
                         <h1 className="text-2xl font-semibold text-[#2D2D2D]">
                             Assets for Global Manufacturing Corp – Houston
                         </h1>
@@ -107,16 +107,14 @@ export default function AssetsList() {
                 {/* Table Card */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 mt-8">
                     <div className="p-6">
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                             <h2 className="text-xl font-semibold text-[#2D2D2D]">Raw Materials List</h2>
-                            <div className="relative">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#64748B] w-5 h-5" />
+                            <div className="relative w-50 lg:w-64">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                                 <input
                                     type="text"
                                     placeholder="Search users..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+                                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-nonew-64"
                                 />
                             </div>
                         </div>

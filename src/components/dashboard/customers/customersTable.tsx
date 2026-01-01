@@ -82,16 +82,14 @@ export default function CustomerTable() {
         <div className="py-6">
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="p-6">
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                         <h2 className="text-xl font-semibold text-[#2D2D2D]">Raw Materials List</h2>
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#64748B] w-5 h-5" />
+                        <div className="relative w-50 lg:w-64">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                             <input
                                 type="text"
                                 placeholder="Search users..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
+                                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-nonew-64"
                             />
                         </div>
                     </div>
@@ -158,9 +156,9 @@ export default function CustomerTable() {
                                                         </button>
                                                     </Link>
                                                     <Link href='/dashboard/customers/showCustomer'>
-                                                    <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer">
-                                                        <Eye className="w-4 h-4" />
-                                                    </button>
+                                                        <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer">
+                                                            <Eye className="w-4 h-4" />
+                                                        </button>
                                                     </Link>
                                                     <button className="text-[#E7000B] hover:text-[#c40009] transition-colors">
                                                         <Trash2 className="w-4 h-4" />
