@@ -237,7 +237,7 @@ export default function HistoryTable() {
     return (
         <div className="bg-gray-50 py-6">
             {/* Header Controls */}
-            <div className="bg-white rounded-xl hover:shadow-sm p-6 mb-6">
+            {/* <div className="bg-white rounded-xl hover:shadow-sm p-6 mb-6">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="relative flex-1">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#B4B4B4] w-5 h-5" />
@@ -264,7 +264,41 @@ export default function HistoryTable() {
                         </button>
                     </div>
                 </div>
+            </div> */}
+
+            <div className="bg-white rounded-xl hover:shadow-sm p-4 sm:p-6 mb-6">
+                <div className="flex flex-col md:flex-row lg:items-center lg:justify-between gap-4">
+
+                    {/* Search Input */}
+                    <div className="relative w-full lg:w-0 lg:flex-1">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#B4B4B4] w-5 h-5" />
+                        <input
+                            type="text"
+                            placeholder="Search by ID, customer, or sample..."
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                setCurrentPage(1);
+                            }}
+                            className="w-full pl-11 pr-4 py-3 border border-[#F3F3F3] rounded-lg text-sm text-[#191919] placeholder-[#B4B4B4] bg-[#F3F3F3] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                        <button className="flex items-center justify-center gap-2 px-4 py-3 border border-[#F3F3F3] rounded-lg text-sm font-medium text-[#191919] bg-[#F3F3F3] w-full sm:w-auto">
+                            <Filter className="w-4 h-4" />
+                            Filter
+                        </button>
+
+                        <button className="flex items-center justify-center gap-2 px-4 py-3 border border-[#F3F3F3] rounded-lg text-sm font-medium text-[#191919] bg-[#F3F3F3] transition w-full sm:w-auto">
+                            <IoIosGitCompare size={22} />
+                            Compare Reports
+                        </button>
+                    </div>
+                </div>
             </div>
+
 
             {/* Table */}
             <div className="bg-white rounded-xl hover:shadow-sm border border-gray-200 overflow-hidden">
