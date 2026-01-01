@@ -50,7 +50,7 @@ export default function AddCustomer() {
                     onSubmit={handleSubmit(onSubmit)}
                     className="bg-white rounded-xl hover:shadow-sm border border-[#E5E7EB] p-6"
                 >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {/* Customer Name */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -59,8 +59,8 @@ export default function AddCustomer() {
                             <input
                                 type="text"
                                 placeholder="Enter ph"
-                                {...register('customerName')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("customerName")}
+                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm bg-[#F3F3F3]"
                             />
                         </div>
 
@@ -74,7 +74,7 @@ export default function AddCustomer() {
                                 control={control}
                                 render={({ field }) => (
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                                        <SelectTrigger className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]">
                                             <SelectValue placeholder="Select type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -94,9 +94,8 @@ export default function AddCustomer() {
                             </label>
                             <input
                                 type="text"
-                                defaultValue="Biocide"
-                                {...register('location')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("location")}
+                                className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]"
                             />
                         </div>
 
@@ -107,9 +106,8 @@ export default function AddCustomer() {
                             </label>
                             <input
                                 type="text"
-                                placeholder="e.g. 4500 Industrial Blvd"
-                                {...register('address')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("address")}
+                                className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]"
                             />
                         </div>
 
@@ -120,9 +118,8 @@ export default function AddCustomer() {
                             </label>
                             <input
                                 type="text"
-                                placeholder="Enter ph"
-                                {...register('contactPerson')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("contactPerson")}
+                                className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]"
                             />
                         </div>
 
@@ -133,25 +130,24 @@ export default function AddCustomer() {
                             </label>
                             <input
                                 type="email"
-                                placeholder="xyz@gmail.com"
-                                {...register('contactEmail')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("contactEmail")}
+                                className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]"
                             />
                         </div>
 
-                        {/* Contact Phone - Full Width */}
-                        <div className="md:col-span-2">
+                        {/* Contact Phone - Full width on lg */}
+                        <div className="lg:col-span-2">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Contact Phone
                             </label>
                             <input
                                 type="tel"
-                                defaultValue="052126262"
-                                {...register('contactPhone')}
-                                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                                {...register("contactPhone")}
+                                className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]"
                             />
                         </div>
                     </div>
+
 
                     {/* Submit Button */}
                     <div className="flex justify-end mt-10">
