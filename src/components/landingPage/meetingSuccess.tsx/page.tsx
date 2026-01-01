@@ -10,10 +10,10 @@ function MeetingSuccess() {
                 <p className="text-primaryColor font-semibold text-[16px] mb-3">
                     How It Works
                 </p>
-                <h1 className="text-3xl md:text-4xl font-medium text-headingColor mb-3">
+                <h1 className="text-2xl md:text-4xl font-medium text-headingColor mb-3">
                     Turn raw chemistry data into clear insights <br /> in minutes.
                 </h1>
-                <p className="text-paragraphColor text-[16px] mb-6">
+                <p className="text-paragraphColor text-sm sm:text-[16px] mb-6">
                     Go from zero to fully prepared in minutes with our AI-powered platform
                 </p>
             </div>

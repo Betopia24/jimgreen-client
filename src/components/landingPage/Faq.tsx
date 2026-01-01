@@ -39,10 +39,10 @@ function Faq() {
         <p className="text-primaryColor font-semibold text-[16px] mb-3">
           FAQ
         </p>
-        <h1 className="text-3xl md:text-4xl font-medium text-headingColor mb-3">
+        <h1 className="text-2xl md:text-4xl font-medium text-headingColor mb-3">
           Frequently Asked
         </h1>
-        <button className='text-4xl md:text-5xl text-primaryColor font-medium bg-gradient-to-l from-[#3f8afc] to-[#DAE9FF] px-[10px] py-[14px] rounded-sm mb-8'>Questions</button>
+        <button className='text-2xl md:text-4xl text-primaryColor font-medium bg-gradient-to-l from-[#3f8afc] to-[#DAE9FF] px-[10px] py-[14px] rounded-sm mb-8'>Questions</button>
         <p className="text-[18px] text-[#666666]">Your success is our top priority. Our dedicated support team <br />
           is here to assist you every step of  the way</p>
       </div >

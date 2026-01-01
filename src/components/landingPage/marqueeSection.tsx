@@ -6,7 +6,7 @@ function MarqueeSection() {
             {/* <div className="w-full h-12 bg-white -mb-6"></div> */}
             <div className='border-t border-b border-gray-200 bg-white'>
                 <div className="my-12">
-                    <h3 className='md:text-xl text-lg font-semibold text-[#2D2D2D] text-center mb-8'>Built by water treatment engineers, researchers,
+                    <h3 className='md:text-xl sm:text-lg px-3 font-semibold text-[#2D2D2D] text-center mb-8'>Built by water treatment engineers, researchers,
                         and business operators for industry professionals just like you.</h3>
                     <Marquee speed={50} gradient={false} className="flex items-center space-x-8 px-4 sm:px-8 md:px-12">
                         <img src="/landingPage/marqueeSection/openZpp.png" alt="OpenZeppelin" className="px-12 h-11" />

@@ -12,7 +12,7 @@ function HerroSection() {
                 <main className="px-6">
                     <div className="mt-16">
                         {/* Main Heading */}
-                        <h1 className="text-4xl md:text-6xl font-bold text-center text-[#191919] mb-5 leading-tight">
+                        <h1 className="xs:text-xl sm:text-3xl md:text-6xl font-bold text-center text-[#191919] mb-5 leading-tight">
                             Advanced Chemistry <br /> Analysis and AI Field Companion
                         </h1>
 

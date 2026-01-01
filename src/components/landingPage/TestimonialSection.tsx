@@ -176,7 +176,7 @@ function TestimonialSection() {
         <p className="text-[#6E51E0] font-semibold text-[16px] mb-3">
           Testimonials
         </p>
-        <h1 className="text-3xl md:text-4xl font-medium text-[#2D2D2D] mb-3">
+        <h1 className="text-2xl md:text-4xl font-medium text-[#2D2D2D] mb-3">
           Check what our clients are saying
         </h1>
       </div>

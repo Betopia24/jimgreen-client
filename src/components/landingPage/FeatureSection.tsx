@@ -19,7 +19,7 @@ function FeatureSection() {
                 <p className="text-primaryColor font-semibold text-[16px] mb-3">
                     Core Feature
                 </p>
-                <h1 className="text-3xl md:text-4xl font-medium text-headingColor mb-3">
+                <h1 className="xs:text-lg sm:text-2xl md:text-4xl font-medium text-headingColor mb-3">
                     Why businesses love using <br />
                     our platform
                 </h1>

@@ -10,7 +10,7 @@ function NextMeeting() {
       <div className="relative z-20">
         <Container>
           <div className='text-center py-[60px] md:py-[126px]'>
-            <h3 className='text-4xl font-semibold text-[#2D2D2D]'>
+            <h3 className='text-2xl md:text-4xl font-semibold text-[#2D2D2D]'>
               Walk Into Your Next Meeting <br /> Fully Prepared.
             </h3>
 
