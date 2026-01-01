@@ -52,7 +52,7 @@ const ReportsDetailsOne: React.FC = () => {
                     Water Quality Index
                   </span>
                   <div className="mb-2 flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-gray-900">
+                    <span className="text-2xl lg:text-4xl font-bold text-gray-900">
                       87.4
                     </span>
                     <span className="text-lg text-gray-500">/ 100</span>
@@ -77,7 +77,7 @@ const ReportsDetailsOne: React.FC = () => {
               <div>
                 <span className="text-sm text-gray-600">Compliance Score</span>
                 <div className="mb-2 flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-gray-900">
+                  <span className="text-2xl lg:text-4xl font-bold text-gray-900">
                     92.2%
                   </span>
                   <span className="text-lg text-gray-500">/ 100</span>
@@ -101,7 +101,7 @@ const ReportsDetailsOne: React.FC = () => {
               <div>
                 <span className="text-sm text-gray-600">Risk Factor</span>
                 <div className="mb-2 flex items-baseline gap-2">
-                  <span className="text-4xl font-bold text-gray-900">32.4</span>
+                  <span className="text-2xl lg:text-4xl font-bold text-gray-900">32.4</span>
                   <span className="text-lg text-gray-500">/ 100</span>
                 </div>
                 <span className="inline-block rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">

@@ -44,7 +44,7 @@ export default function AddRowMeterials() {
 
           <h2 className="text-xl font-medium text-headingColor mb-4">Treatment Chemical Details</h2>
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-2 gap-6">
             {/* Chemical Name */}
             <div>
               <label className="block text-sm font-medium text-[#344054] mb-2">

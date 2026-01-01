@@ -73,10 +73,10 @@ export default function ProductRowMeterialTable() {
         <div className="bg-gray-50 py-6">
             <div className="bg-white rounded-lg hover:shadow-sm overflow-hidden">
                 <div className="p-6">
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                         <h2 className="text-xl font-semibold text-[#2D2D2D]">Raw Materials List</h2>
-                        <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#64748B] w-5 h-5" />
+                        <div className="relative w-50 lg:w-64">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                             <input
                                 type="text"
                                 placeholder="Search users..."

@@ -48,7 +48,7 @@ function AddProduct() {
                     <h1 className="text-3xl font-semibold text-headingColor mb-2">Product</h1>
                     <h2 className="text-xl font-medium text-headingColor mb-4">Product Identification</h2>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid lg:grid-cols-2 gap-6">
                         {/* Product Name */}
                         <div>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
@@ -126,9 +126,9 @@ function AddProduct() {
                 <div className=" mb-6">
                     <h2 className="text-xl font-medium text-headingColor mb-4">Performance Parameters</h2>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid lg:grid-cols-2 gap-6">
                         {/* Operating pH Range */}
-                        <div>
+                        <div className='col-span-2'>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
                                 Operating pH Range
                             </label>
@@ -150,7 +150,7 @@ function AddProduct() {
                         </div>
 
                         {/* Temperature Tolerance (°C) */}
-                        <div>
+                        <div className='col-span-2'>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
                                 Temperature Tolerance (°C)
                             </label>
@@ -204,9 +204,9 @@ function AddProduct() {
                 <div className="mb-6">
                     <h2 className="text-xl font-medium text-headingColor mb-4">Cost & Consumption</h2>
 
-                    <div className="grid grid-cols-2 gap-6">
+                    <div className="grid lg:grid-cols-2 gap-6">
                         {/* Cost per Unit ($) */}
-                        <div>
+                        <div className='col-span-2'>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
                                 Cost per Unit ($)
                             </label>
@@ -219,7 +219,7 @@ function AddProduct() {
                         </div>
 
                         {/* Average Monthly Consumption */}
-                        <div>
+                        <div className='col-span-2'>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
                                 Average Monthly Consumption
                             </label>
@@ -234,7 +234,7 @@ function AddProduct() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <SelectTrigger className="w-24 px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                                            <SelectTrigger className="w-24 px-4 py-5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -249,7 +249,7 @@ function AddProduct() {
                         </div>
 
                         {/* Replacement Frequency */}
-                        <div>
+                        <div className='col-span-2'>
                             <label className="block text-sm font-medium text-[#344054] mb-2">
                                 Replacement Frequency
                             </label>

@@ -81,8 +81,8 @@ const Navbar = () => {
 
                             <DropdownMenuItem className='px-2 py-0.5 hover:text-[#563FB1]'>
                                 <Link
-                                    href="/dashboard/home"
-                                    className={`w-full ${pathName === "/dashboard" ? "text-[#563FB1] font-semibold" : ""}`}
+                                    href="/dashboard/dashboard"
+                                    className={`w-full ${pathName === "/dashboard/dashboard" ? "text-[#563FB1] font-semibold" : ""}`}
                                 >
                                     My Portal
                                 </Link>
