@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
 import ReduxProvider from "@/redux/Provider";
 import Loading from "@/components/Others/Loading";
 
-const rubik = Rubik({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-rubik",
+  variable: "--font-dm-sans",
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}  className={rubik.className}>
+      <body suppressHydrationWarning={true} className={dmSans.variable}>
         <div className="bg-[#FFFFFF]">
           <ReduxProvider>
           <Toaster position="top-center" expand={true} richColors />
