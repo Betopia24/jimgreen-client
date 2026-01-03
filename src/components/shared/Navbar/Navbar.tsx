@@ -24,6 +24,7 @@ const Navbar = () => {
                 {/* Logo */}
                 <Link href="/" className="text-xl">
                     <div>
+                        {/* <img src="/navbar/logo2.png" alt="logo" className='w-8 md:w-[97px] h-8 md:h-[50px]' /> */}
                         <img src="/navbar/logo.svg" alt="logo" className='w-12 md:w-[97px] h-8 md:h-[50px]' />
                     </div>
                 </Link>

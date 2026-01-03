@@ -2,7 +2,7 @@ import Marquee from "react-fast-marquee";
 
 function MarqueeSection() {
     return (
-        <div className="bg-white pb-6 pt-6 -mt-1">
+        <div className="bg-white pb-6 pt-6 ">
             {/* <div className="w-full h-12 bg-white -mb-6"></div> */}
             <div className='border-t border-b border-gray-200 bg-white'>
                 <div className="my-12">

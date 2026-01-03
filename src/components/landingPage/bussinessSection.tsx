@@ -43,7 +43,7 @@ function BussinessSection() {
             {/* -------------------- CONDITIONAL CARDS -------------------- */}
             {on ? (
                 < div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 justify-items-center'>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
@@ -85,7 +85,7 @@ function BussinessSection() {
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Advance</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
@@ -139,7 +139,7 @@ function BussinessSection() {
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Expert</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
@@ -192,7 +192,7 @@ function BussinessSection() {
                 </div>
             ) : (
                 < div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 justify-items-center'>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Basic</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
@@ -234,7 +234,7 @@ function BussinessSection() {
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Advance</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
@@ -288,7 +288,7 @@ function BussinessSection() {
                             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                         </div>
                     </div>
-                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] hover:scale-105 group">
+                    <div className="bg-white rounded-[16px] max-w-sm w-full p-6 flex flex-col transition-transform duration-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.15)] group">
                         <div className="bg-[#F6F6F6] rounded-2xl p-6 mb-6">
                             <span className="text-primaryColor text-md font-semibold border-2 border-white group-hover:border-none shadow-sm px-8 py-1.5 rounded-full group-hover:text-white group-hover:bg-primaryColor cursor-pointer">Expert</span>
                             <p className="text-[#3C4049] text-sm mb-4 mt-6">
