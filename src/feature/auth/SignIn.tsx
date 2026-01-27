@@ -47,22 +47,19 @@ export default function SignInPage() {
   const dispatch = useDispatch();
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Form Data:", data)
+    console.log("Form Data:", data);
     try {
       const response = await signIn(data).unwrap();
+      console.log(response);
       if (response?.success) {
-        if (response.data.verify) {
-          Cookies.set("token", response.data.accessToken);
-          dispatch(
-            setUser({
-              token: response.data.accessToken,
-            })
-          );
-          toast.success("Login successful");
-          router.push("/");
-        } else {
-          router.push("/otp");
-        }
+        Cookies.set("token", response.data.accessToken);
+        dispatch(
+          setUser({
+            token: response.data.accessToken,
+          }),
+        );
+        toast.success("Login successful");
+        router.push("/dashboard");
       }
     } catch (error: any) {
       console.log("Error during sign-in:", error);
@@ -79,7 +76,9 @@ export default function SignInPage() {
           type="email"
           label="Email"
           placeholder="Enter your email"
-          leftIcon={<img src="/authImage/mailIcon.png" alt="icon" className="w-5 h-5" />}
+          leftIcon={
+            <img src="/authImage/mailIcon.png" alt="icon" className="w-5 h-5" />
+          }
           {...register("email")}
           error={errors.email?.message}
         />
@@ -92,7 +91,13 @@ export default function SignInPage() {
           placeholder="Enter your password"
           showPasswordToggle={true}
           error={errors.password?.message}
-          leftIcon={<img src="/authImage/passwordIcon.png" alt="icon" className="w-5 h-5" />}
+          leftIcon={
+            <img
+              src="/authImage/passwordIcon.png"
+              alt="icon"
+              className="w-5 h-5"
+            />
+          }
           {...register("password")}
         />
 
@@ -110,7 +115,10 @@ export default function SignInPage() {
       </form>
       <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">
         Don’t have an account?{" "}
-        <Link href="/signUp" className="text-primaryColor text-[16px] font-semibold hover:underline">
+        <Link
+          href="/signUp"
+          className="text-primaryColor text-[16px] font-semibold hover:underline"
+        >
           Sign up
         </Link>
         <div className="flex items-center gap-4 w-[80%] mx-auto my-3">
@@ -118,17 +126,16 @@ export default function SignInPage() {
           <span className="text-[16px] text-primaryColor">or</span>
           <div className="flex-1 h-[1px] bg-[#D1D6DB]" />
         </div>
-        <button
-          className="w-full flex items-center justify-center gap-3 border border-[#D1D6DB] rounded-md py-2.5 transition"
-        >
+        <button className="w-full flex items-center justify-center gap-3 border border-[#D1D6DB] rounded-md py-2.5 transition">
           <img
             src="/authImage/googleIcon.png"
             alt="google icon"
             className="w-5 h-5"
           />
-          <span className="text-[#2D2D2D] font-medium text-[16px]">Sign in with Google</span>
+          <span className="text-[#2D2D2D] font-medium text-[16px]">
+            Sign in with Google
+          </span>
         </button>
-
       </div>
     </div>
   );
