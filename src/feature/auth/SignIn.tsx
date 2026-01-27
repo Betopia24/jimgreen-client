@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
-import { useSignInMutation } from "@/redux/api/auth/authApi";
+import {
+  useGoogleLoginMutation,
+  useSignInMutation,
+} from "@/redux/api/auth/authApi";
 import { setUser } from "@/redux/features/user/userSlice";
 import CustomInput from "@/ui/CustomeInput";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +14,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
+
 import * as z from "zod";
 
 // Define Zod schema for validation
@@ -42,27 +48,25 @@ export default function SignInPage() {
   });
 
   const [signIn, { isLoading }] = useSignInMutation();
+  const [googleSignIn] = useGoogleLoginMutation();
 
   const router = useRouter();
   const dispatch = useDispatch();
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Form Data:", data)
+    console.log("Form Data:", data);
     try {
       const response = await signIn(data).unwrap();
+      console.log(response);
       if (response?.success) {
-        if (response.data.verify) {
-          Cookies.set("token", response.data.accessToken);
-          dispatch(
-            setUser({
-              token: response.data.accessToken,
-            })
-          );
-          toast.success("Login successful");
-          router.push("/");
-        } else {
-          router.push("/otp");
-        }
+        Cookies.set("token", response.data.accessToken);
+        dispatch(
+          setUser({
+            token: response.data.accessToken,
+          }),
+        );
+        toast.success("Login successful");
+        router.push("/dashboard");
       }
     } catch (error: any) {
       console.log("Error during sign-in:", error);
@@ -70,6 +74,52 @@ export default function SignInPage() {
     }
   };
 
+  // google login working for functonalti
+  const handleSuccess = async (credentialResponse: any) => {
+    // console.log("yesTonek= ", credentialResponse);
+    try {
+      const googleToken = {
+        token: credentialResponse.credential,
+        provider: "GOOGLE",
+      };
+
+      const response = await googleSignIn(googleToken).unwrap();
+      console.log("response", response);
+
+      if (response?.success) {
+        // localStorage.setItem("accessToken", response?.data?.accessToken);
+        Cookies.set("accessToken", response?.data?.accessToken);
+        const decoded = jwtDecode(response?.data?.accessToken);
+
+        // const email = decoded.email;
+        // console.log("Google Email:", email);
+
+        // console.log(response?.data?.userData?.role);
+
+        dispatch(
+          setUser({
+            token: response.data.accessToken,
+          }),
+        );
+        toast.success(response?.message);
+        router.push("/dashboard");
+        // if (response?.data?.teeRegistration === null) {
+        //   router.push(`/role?email=${email}`);
+        // } else {
+        //   router.push("/new-project");
+        // }
+      }
+
+      console.log("Login successful", response.data);
+      // Handle successful login (store tokens, redirect, etc.)
+    } catch (error) {
+      console.error("Login failed", error);
+    }
+  };
+
+  const onError = () => {
+    console.log("Login Failed");
+  };
   return (
     <div className="max-w-[540px] lg:w-[540px] h-auto mx-auto bg-[#FFF] p-6 rounded-2xl border border-[#6E51E01A] shadow-[0_0_20px_0_rgba(110,81,224,0.10)]">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full">
@@ -79,7 +129,9 @@ export default function SignInPage() {
           type="email"
           label="Email"
           placeholder="Enter your email"
-          leftIcon={<img src="/authImage/mailIcon.png" alt="icon" className="w-5 h-5" />}
+          leftIcon={
+            <img src="/authImage/mailIcon.png" alt="icon" className="w-5 h-5" />
+          }
           {...register("email")}
           error={errors.email?.message}
         />
@@ -92,7 +144,13 @@ export default function SignInPage() {
           placeholder="Enter your password"
           showPasswordToggle={true}
           error={errors.password?.message}
-          leftIcon={<img src="/authImage/passwordIcon.png" alt="icon" className="w-5 h-5" />}
+          leftIcon={
+            <img
+              src="/authImage/passwordIcon.png"
+              alt="icon"
+              className="w-5 h-5"
+            />
+          }
           {...register("password")}
         />
 
@@ -110,7 +168,10 @@ export default function SignInPage() {
       </form>
       <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">
         Don’t have an account?{" "}
-        <Link href="/signUp" className="text-primaryColor text-[16px] font-semibold hover:underline">
+        <Link
+          href="/signUp"
+          className="text-primaryColor text-[16px] font-semibold hover:underline"
+        >
           Sign up
         </Link>
         <div className="flex items-center gap-4 w-[80%] mx-auto my-3">
@@ -118,17 +179,23 @@ export default function SignInPage() {
           <span className="text-[16px] text-primaryColor">or</span>
           <div className="flex-1 h-[1px] bg-[#D1D6DB]" />
         </div>
-        <button
-          className="w-full flex items-center justify-center gap-3 border border-[#D1D6DB] rounded-md py-2.5 transition"
-        >
+        {/* <button className="w-full flex items-center justify-center gap-3 border border-[#D1D6DB] rounded-md py-2.5 transition">
           <img
             src="/authImage/googleIcon.png"
             alt="google icon"
             className="w-5 h-5"
           />
-          <span className="text-[#2D2D2D] font-medium text-[16px]">Sign in with Google</span>
-        </button>
-
+          <span className="text-[#2D2D2D] font-medium text-[16px]">
+            Sign in with Google
+          </span>
+        </button> */}
+        <div className="">
+          <GoogleLogin
+            size="large"
+            onSuccess={handleSuccess}
+            onError={onError}
+          />
+        </div>
       </div>
     </div>
   );

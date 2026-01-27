@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { Toaster } from "sonner";
 import ReduxProvider from "@/redux/Provider";
 import Loading from "@/components/Others/Loading";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -26,10 +27,14 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true} className={dmSans.variable}>
         <div className="bg-[#FFFFFF]">
-          <ReduxProvider>
-          <Toaster position="top-center" expand={true} richColors />
-          <Suspense fallback={<Loading />}>{children}</Suspense>
-        </ReduxProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}
+          >
+            <ReduxProvider>
+              <Toaster position="top-center" expand={true} richColors />
+              <Suspense fallback={<Loading />}>{children}</Suspense>
+            </ReduxProvider>
+          </GoogleOAuthProvider>
         </div>
       </body>
     </html>

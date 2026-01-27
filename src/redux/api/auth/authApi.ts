@@ -48,10 +48,18 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     resetPassword: builder.mutation({
-      query: ({ userId, password }) => ({
+      query: (payload) => ({
         url: `/auth/reset-password`,
         method: "POST",
-        body: { userId, password },
+        body: payload,
+      }),
+    }),
+
+    googleLogin: builder.mutation({
+      query: (payload) => ({
+        url: `/auth/social-login`,
+        method: "POST",
+        body: payload,
       }),
     }),
   }),
@@ -65,4 +73,5 @@ export const {
   useResendCodeMutation,
   useForgetPasswordMutation,
   useResetPasswordMutation,
+  useGoogleLoginMutation,
 } = authApi;

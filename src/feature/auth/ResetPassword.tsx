@@ -51,12 +51,15 @@ export default function ResetPasswordPage() {
   });
   console.log(userId, token);
   const onSubmit = async (data: FormValues) => {
+    const email = localStorage.getItem("email");
+
+    const payload = {
+      email,
+      newPassword: data.confirmPassword,
+    };
+    console.log("payload:", payload);
     try {
-      const response = await resetPassword({
-        userId,
-        password: data.password,
-        token,
-      }).unwrap();
+      const response = await resetPassword(payload).unwrap();
 
       if (response?.success) {
         console.log("Password reset successfully");
@@ -76,57 +79,79 @@ export default function ResetPasswordPage() {
   // };
 
   return (
-      <div className="max-w-[540px] lg:w-[540px] h-auto mx-auto bg-[#FFF] p-6 rounded-2xl border border-[#6E51E01A] shadow-[0_0_20px_0_rgba(110,81,224,0.10)]">
-        <div className="flex flex-col mt-8 mb-8">
-          <div className="flex items-center gap-4">
-            <Link href="/signIn" className="mb-4">
-              <img src="/authImage/arrowIcon.png" alt="icon" className="w-4 h-4" />
-            </Link>
-            <h3 className="font-bold text-3xl mb-6 text-[#2D2D2D]">Enter new password</h3>
-          </div>
-          <p className="text-gray-500 text-[18px]">
-            Please create a new password to continue.
-          </p>
+    <div className="max-w-[540px] lg:w-[540px] h-auto mx-auto bg-[#FFF] p-6 rounded-2xl border border-[#6E51E01A] shadow-[0_0_20px_0_rgba(110,81,224,0.10)]">
+      <div className="flex flex-col mt-8 mb-8">
+        <div className="flex items-center gap-4">
+          <Link href="/signIn" className="mb-4">
+            <img
+              src="/authImage/arrowIcon.png"
+              alt="icon"
+              className="w-4 h-4"
+            />
+          </Link>
+          <h3 className="font-bold text-3xl mb-6 text-[#2D2D2D]">
+            Enter new password
+          </h3>
         </div>
+        <p className="text-gray-500 text-[18px]">
+          Please create a new password to continue.
+        </p>
+      </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full">
-          {/* Password Input */}
-          <CustomInput
-            id="password"
-            type="password"
-            label="Password"
-            placeholder="Enter your password"
-            showPasswordToggle={true}
-            error={errors.password?.message}
-            leftIcon={<img src="/authImage/passwordIcon.png" alt="icon" className="w-5 h-5" />}
-            {...register("password")}
-          />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full">
+        {/* Password Input */}
+        <CustomInput
+          id="password"
+          type="password"
+          label="Password"
+          placeholder="Enter your password"
+          showPasswordToggle={true}
+          error={errors.password?.message}
+          leftIcon={
+            <img
+              src="/authImage/passwordIcon.png"
+              alt="icon"
+              className="w-5 h-5"
+            />
+          }
+          {...register("password")}
+        />
 
-          {/* Confirm Password Input */}
-          <CustomInput
-            id="confirmPassword"
-            type="password"
-            label="Confirm Password"
-            placeholder="Enter your password"
-            showPasswordToggle={true}
-            error={
-              typeof errors.confirmPassword?.message === "string"
-                ? errors.confirmPassword.message
-                : "Password confirmation does not match the password."
-            }
-            leftIcon={<img src="/authImage/passwordIcon.png" alt="icon" className="w-5 h-5" />}
-            {...register("confirmPassword")}
-          />
+        {/* Confirm Password Input */}
+        <CustomInput
+          id="confirmPassword"
+          type="password"
+          label="Confirm Password"
+          placeholder="Enter your password"
+          showPasswordToggle={true}
+          error={
+            typeof errors.confirmPassword?.message === "string"
+              ? errors.confirmPassword.message
+              : "Password confirmation does not match the password."
+          }
+          leftIcon={
+            <img
+              src="/authImage/passwordIcon.png"
+              alt="icon"
+              className="w-5 h-5"
+            />
+          }
+          {...register("confirmPassword")}
+        />
 
-          {/* Sign Up Button */}
-          <PrimaryButton type="submit" loading={isLoading} text="Reset Password" />
-        </form>
-        {/* <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">
+        {/* Sign Up Button */}
+        <PrimaryButton
+          type="submit"
+          loading={isLoading}
+          text="Reset Password"
+        />
+      </form>
+      {/* <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">
           Remember your password? Sign in{" "}
           <Link href="/signIn" className="text-[#00695C] text-[16px] font-semibold hover:underline">
             Sign in
           </Link>
         </div> */}
-      </div>
+    </div>
   );
 }
