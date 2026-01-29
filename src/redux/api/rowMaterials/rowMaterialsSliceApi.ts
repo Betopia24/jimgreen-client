@@ -11,14 +11,45 @@ export const rowMaterialsApi = baseApi.injectEndpoints({
       invalidatesTags: ["RowMaterials"],
     }),
 
+    updateRowMaterials: builder.mutation({
+      query: ({ payload, meterialsId }) => ({
+        url: `/raw-materials/${meterialsId}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["RowMaterials"],
+    }),
+
+    deleteRowMaterials: builder.mutation({
+      query: (id) => ({
+        url: `/raw-materials/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["RowMaterials"],
+    }),
+
     allRowMaterials: builder.query({
       query: (id) => ({
         url: `/raw-materials/company/${id}`,
         method: "GET",
       }),
+      providesTags: ["RowMaterials"],
+    }),
+
+    getSignleRowMaterials: builder.query({
+      query: (id) => ({
+        url: `/raw-materials/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["RowMaterials"],
     }),
   }),
 });
 
-export const { useCreateRowMaterialsMutation, useAllRowMaterialsQuery } =
-  rowMaterialsApi;
+export const {
+  useCreateRowMaterialsMutation,
+  useAllRowMaterialsQuery,
+  useGetSignleRowMaterialsQuery,
+  useUpdateRowMaterialsMutation,
+  useDeleteRowMaterialsMutation,
+} = rowMaterialsApi;
