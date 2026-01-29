@@ -13,7 +13,7 @@ import PageHeader from "@/components/dashboard/PageHeader";
 import {
   useGetSignleRowMaterialsQuery,
   useUpdateRowMaterialsMutation,
-} from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
+} from "@/redux/api/rowMaterials/productSliceApi";
 import { Material } from "@/components/dashboard/rowMeterials/rowMeterialsTable";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
