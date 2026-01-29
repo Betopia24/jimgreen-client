@@ -51,7 +51,7 @@ export default function AddRowMeterials() {
       chemicalType: "Biocide",
       supplierName: "ChemSupply Co.",
       dosageRate: "4",
-      // dosageUnit: "ppm",
+      dosageUnit: "ppm",
       feedFrequency: "Daily",
       safetyClassification: "Hazardous",
       instructions: "",
@@ -99,7 +99,7 @@ export default function AddRowMeterials() {
     <div className="mb-6">
       {/* header section  */}
       <PageHeader title="Chemical" description="Treatment Chemical Details" />
-      <div className="bg-white rounded-lg border border-[#E5E7EB] hover:shadow-sm">
+      <div className="bg-white rounded-md border border-[#E5E7EB] hover:shadow-sm">
         <div className="p-6">
           <h1 className="text-3xl font-semibold text-headingColor mb-2">
             Chemical
@@ -120,7 +120,7 @@ export default function AddRowMeterials() {
                   type="text"
                   placeholder="Enter ph"
                   {...register("chemicalName", { required: true })}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
               </div>
             </div>
@@ -138,7 +138,7 @@ export default function AddRowMeterials() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
@@ -166,7 +166,7 @@ export default function AddRowMeterials() {
                 type="text"
                 placeholder="Enter magnesium (mg)"
                 {...register("supplierName")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -179,17 +179,19 @@ export default function AddRowMeterials() {
                 <input
                   type="text"
                   {...register("dosageRate")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
-                {/* <Controller
+                <Controller
                   name="dosageUnit"
                   control={control}
-                  render={({ field }) => (///
+                  render={(
+                    { field }, ///
+                  ) => (
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="w-24 px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                      <SelectTrigger className="w-24 px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -199,7 +201,7 @@ export default function AddRowMeterials() {
                       </SelectContent>
                     </Select>
                   )}
-                /> */}
+                />
               </div>
             </div>
 
@@ -216,7 +218,7 @@ export default function AddRowMeterials() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select frequency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -243,7 +245,7 @@ export default function AddRowMeterials() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue placeholder="Select classification" />
                     </SelectTrigger>
                     <SelectContent>
@@ -274,7 +276,7 @@ export default function AddRowMeterials() {
             <textarea
               placeholder="Enter any special handling requirements..."
               {...register("instructions")}
-              className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+              className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
             />
           </div>
         </div>
@@ -283,7 +285,7 @@ export default function AddRowMeterials() {
         <div className="flex justify-end m-6 mt-0">
           <button
             onClick={handleFormSubmit}
-            className="px-6 py-3 flex items-center gap-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+            className="px-6 py-3 flex items-center gap-3 bg-[#004AAD] text-white font-medium rounded-md hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
           >
             {isLoading && (
               <>
