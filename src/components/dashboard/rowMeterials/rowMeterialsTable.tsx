@@ -9,6 +9,7 @@ import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import moment from "moment";
 
 // Company type
 export interface Company {
@@ -19,7 +20,7 @@ export interface Company {
 }
 
 // Chemical type
-export interface Chemical {
+export interface Material {
   id: string;
   chemicalName: string;
   chemicalType: "Biocide" | string;
@@ -29,6 +30,7 @@ export interface Chemical {
   safetyClassification: "Hazardous" | "Non-Hazardous" | string;
   instructions: string;
   isActive: boolean;
+  dosageUnit?: string;
   companyId: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
@@ -44,7 +46,7 @@ export default function RowMeterialsTable() {
     data?.data?.companyMember?.companyId || user?.companyMember?.companyId;
   const { data: allData, isLoading } = useAllRowMaterialsQuery(id);
   console.log(allData);
-  const materials = allData?.data as Chemical[];
+  const materials = allData?.data as Material[];
 
   if (profielLoading) {
     return <LoadingPage />;
@@ -96,7 +98,7 @@ export default function RowMeterialsTable() {
                 </tr>
               </thead>
               <tbody>
-                {materials?.map((material: Chemical) => (
+                {materials?.map((material: Material) => (
                   <tr
                     key={material.id}
                     className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
@@ -114,7 +116,7 @@ export default function RowMeterialsTable() {
                       {material.feedFrequency}
                     </td>
                     <td className="py-4 px-6 text-[#4A5565] text-sm">
-                      {material.updatedAt}
+                      {moment(material.updatedAt).format("ll")}
                     </td>
                     <td className="py-4 px-6">
                       <span
@@ -132,9 +134,7 @@ export default function RowMeterialsTable() {
 
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <Link
-                          href={`/dashboard/rowMeterials?id=${material.id}`}
-                        >
+                        <Link href={`/dashboard/rowMeterials/${material.id}`}>
                           <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors cursor-pointer mt-2">
                             <FiEdit className="w-4 h-4" />
                           </button>

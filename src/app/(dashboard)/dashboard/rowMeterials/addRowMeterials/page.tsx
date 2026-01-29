@@ -15,8 +15,9 @@ import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
+import { useRouter } from "next/navigation";
 
-type Error = {
+export type Error = {
   data: {
     message: string;
   };
@@ -41,6 +42,7 @@ export interface User {
 }
 
 export default function AddRowMeterials() {
+  const route = useRouter();
   const {
     register,
     handleSubmit,
@@ -83,6 +85,7 @@ export default function AddRowMeterials() {
       console.log(response);
       if (response?.success) {
         toast.success(response?.message);
+        route.push("/dashboard/rowMeterials");
       }
     } catch (error) {
       console.log(error);
