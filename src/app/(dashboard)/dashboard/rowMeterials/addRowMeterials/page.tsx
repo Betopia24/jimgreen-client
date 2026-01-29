@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import PageHeader from "@/components/dashboard/PageHeader";
-import { useCreateRowMaterialsMutation } from "@/redux/api/rowMaterials/productSliceApi";
+import { useCreateRowMaterialsMutation } from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";

@@ -7,7 +7,7 @@ import Link from "next/link";
 import {
   useAllRowMaterialsQuery,
   useDeleteRowMaterialsMutation,
-} from "@/redux/api/rowMaterials/productSliceApi";
+} from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { useSelector } from "react-redux";
