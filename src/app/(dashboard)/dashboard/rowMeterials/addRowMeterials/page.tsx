@@ -14,6 +14,7 @@ import { useCreateRowMaterialsMutation } from "@/redux/api/rowMaterials/rowMater
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
+import LoadingPage from "@/components/shared/loading/LoadingPage";
 
 type Error = {
   data: {
@@ -94,6 +95,10 @@ export default function AddRowMeterials() {
     e.preventDefault();
     handleSubmit(onSubmit)(e);
   };
+
+  if (profielLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="mb-6">
