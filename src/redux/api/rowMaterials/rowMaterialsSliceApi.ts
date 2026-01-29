@@ -11,14 +11,14 @@ export const rowMaterialsApi = baseApi.injectEndpoints({
       invalidatesTags: ["RowMaterials"],
     }),
 
-    // signIn: builder.query({
-    //   query: (body) => ({
-    //     url: "/auth/login",
-    //     method: "GET",
-    //     body,
-    //   }),
-    // }),
+    allRowMaterials: builder.query({
+      query: (id) => ({
+        url: `/raw-materials/company/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateRowMaterialsMutation } = rowMaterialsApi;
+export const { useCreateRowMaterialsMutation, useAllRowMaterialsQuery } =
+  rowMaterialsApi;

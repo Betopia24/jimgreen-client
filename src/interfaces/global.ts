@@ -3,8 +3,17 @@ export interface UserProfile {
   firstName: string;
   lastName: string;
   email: string;
-  profilePicture: string | null;
-  role: string; // Or use a union type like "INDIVIDUAL" | "ORGANIZATION" | etc. if you know all possible values
+  avatar: string | null;
+  isEmailVerified: boolean;
+  role: "USER";
+  status: "UNBLOCK";
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  companyMember: {
+    role: "owner";
+    companyId: string;
+    status: "active";
+  };
 }
 
 export type ErrorTypes = {
