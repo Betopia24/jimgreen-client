@@ -280,7 +280,6 @@ export default function EditMaterials() {
 
         {/* Save Button */}
         <div className="flex justify-end m-6 mt-0">
-          <div></div>
           <PrimaryButton
             type="button"
             onClick={handleFormSubmit}
