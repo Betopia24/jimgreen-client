@@ -23,17 +23,17 @@ function AddProduct() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      productName: "",
+      name: "",
       manufacturer: "",
       productCategory: "Biocide",
       intendedUse: "Cooling",
-      operatingPHMin: "",
-      operatingPHMax: "",
+      operatingPhRangeMin: "",
+      operatingPhRangeMax: "",
       temperatureTolerance: "",
-      maximumHardness: "Treatment Chemical",
-      compatibilityNotes: "",
+      maximumHardnessAllowed: "Treatment Chemical",
+      compatibilityNote: "",
       costPerUnit: "",
-      averageConsumption: "4",
+      averageMonthlyConsumption: "4",
       consumptionUnit: "ppm",
       replacementFrequency: "Monthly",
     },
@@ -46,6 +46,7 @@ function AddProduct() {
   console.log(userProfile?.companyMember?.companyId);
 
   const onSubmit = async (data: any) => {
+    console.log(data);
     console.log(userProfile?.companyMember?.companyId);
     if (!userProfile?.companyMember?.companyId) {
       console.error("Company ID is missing");
@@ -54,6 +55,7 @@ function AddProduct() {
 
     const payload = {
       companyId: userProfile.companyMember.companyId,
+      isActive: true,
       ...data,
     };
     console.log(" payloadForm Data: ", payload);
@@ -109,7 +111,7 @@ function AddProduct() {
               <input
                 type="text"
                 placeholder="Enter ph"
-                {...register("productName")}
+                {...register("name")}
                 className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
@@ -198,20 +200,74 @@ function AddProduct() {
               <label className="block text-sm font-medium text-[#344054] mb-2">
                 Operating pH Range
               </label>
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Min"
-                  {...register("operatingPHMin")}
+                  {...register("operatingPhRangeMin", { valueAsNumber: true })}
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <span className="text-gray-400">—</span>
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Max"
-                  {...register("operatingPHMax")}
+                  {...register("operatingPhRangeMax", { valueAsNumber: true })}
                   className="flex-1 px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
+              </div> */}
+              <div className="flex items-center gap-3">
+                <div className="w-full">
+                  <input
+                    type="number"
+                    placeholder="Min"
+                    {...register("operatingPhRangeMin", {
+                      valueAsNumber: true,
+                      min: {
+                        value: 0,
+                        message: "pH must be at least 0",
+                      },
+                      max: {
+                        value: 14,
+                        message: "pH cannot be greater than 14",
+                      },
+                    })}
+                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  />
+                  {errors.operatingPhRangeMax && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.operatingPhRangeMax.message}
+                    </p>
+                  )}
+                </div>
+
+                <span className="text-gray-400">—</span>
+
+                <div className="w-full">
+                  <input
+                    type="number"
+                    placeholder="Max"
+                    {...register("operatingPhRangeMax", {
+                      valueAsNumber: true,
+                      min: {
+                        value: 0,
+                        message: "pH must be at least 0",
+                      },
+                      max: {
+                        value: 14,
+                        message: "pH cannot be greater than 14",
+                      },
+                      validate: (value, formValues) =>
+                        value >= formValues.operatingPhRangeMin ||
+                        "Max pH must be greater than or equal to Min pH",
+                    })}
+                    className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  />
+                  {errors.operatingPhRangeMin && (
+                    <p className="text-sm text-red-500 mt-1">
+                      {errors.operatingPhRangeMin.message}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -234,7 +290,7 @@ function AddProduct() {
                 Maximum Hardness Allowed (ppm)
               </label>
               <Controller
-                name="maximumHardness"
+                name="maximumHardnessAllowed"
                 control={control}
                 render={({ field }) => (
                   <Select
@@ -268,7 +324,7 @@ function AddProduct() {
               </label>
               <textarea
                 placeholder="Enter compatibility notes and restrictions..."
-                {...register("compatibilityNotes")}
+                {...register("compatibilityNote")}
                 className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
@@ -288,9 +344,9 @@ function AddProduct() {
                 Cost per Unit ($)
               </label>
               <input
-                type="text"
+                type="number"
                 placeholder="Enter ph"
-                {...register("costPerUnit")}
+                {...register("costPerUnit", { valueAsNumber: true })}
                 className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
@@ -303,7 +359,7 @@ function AddProduct() {
               <div className="flex gap-2">
                 <input
                   type="text"
-                  {...register("averageConsumption")}
+                  {...register("averageMonthlyConsumption")}
                   className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
@@ -345,14 +401,14 @@ function AddProduct() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Daily">Daily</SelectItem>
-                      <SelectItem value="Weekly">Weekly</SelectItem>
-                      <SelectItem value="Monthly">Monthly</SelectItem>
-                      <SelectItem value="Quarterly">Quarterly</SelectItem>
-                      <SelectItem value="Semi-Annually">
+                      {/* <SelectItem value="Daily">Daily</SelectItem>
+                      <SelectItem value="Weekly">Weekly</SelectItem> */}
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="quarterly">Quarterly</SelectItem>
+                      <SelectItem value="semi-annually">
                         Semi-Annually
                       </SelectItem>
-                      <SelectItem value="Annually">Annually</SelectItem>
+                      <SelectItem value="annually">Annually</SelectItem>
                     </SelectContent>
                   </Select>
                 )}
