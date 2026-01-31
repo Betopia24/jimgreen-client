@@ -12,7 +12,35 @@ export const customer = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["customer"],
         }),
+
+        // get customer all customer
+        getCustomer: builder.query({
+            query: (companyId: string) => ({
+                url: `/customers/company/${companyId}`,
+                method: "GET", // fetch data
+            }),
+            providesTags: ["customer"],
+        }),
+
+        // get single customer 
+        getSingleCustomer: builder.query({
+            query: (customerId: string) => ({
+                url: `/customers/${customerId}`,
+                method: "GET",
+            }),
+            providesTags: ["customer"],
+        }),
+
+        // updated customer 
+        getUpdateCustomer: builder.mutation({
+            query: ({ customerId, updatedCustomer }: { customerId: any, updatedCustomer: any }) => ({
+                url: `/customers/${customerId}`,
+                method: "PUT",
+                body: updatedCustomer,
+            }),
+            invalidatesTags: ["customer"],
+        }),
     }),
 });
 
-export const { useAddCustomerMutation } = customer;
+export const { useAddCustomerMutation, useGetCustomerQuery, useGetSingleCustomerQuery, useGetUpdateCustomerMutation } = customer;

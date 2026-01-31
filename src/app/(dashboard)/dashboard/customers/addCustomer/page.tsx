@@ -15,6 +15,7 @@ import { useAddCustomerMutation } from '@/redux/api/customer/customerApi';
 import { User } from '../../rowMeterials/addRowMeterials/page';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { LuLoader } from 'react-icons/lu';
 
 interface CustomerFormData {
     customerName: string;
@@ -30,6 +31,7 @@ export default function AddCustomer() {
     const rotuer = useRouter();
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User
+    console.log(profile, "================")
 
     const [addCustomer, { isLoading, isError, data }] = useAddCustomerMutation();
 
@@ -186,10 +188,16 @@ export default function AddCustomer() {
                     {/* Submit Button */}
                     <div className="flex justify-end mt-10">
                         <button
-                            type="submit"
-                            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+                            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
                         >
-                            Save Water Analysis
+                            {isLoading && (
+                                <>
+                                    <LuLoader
+                                        className={` animate-spin text-center absolutem text-white`}
+                                    />
+                                </>
+                            )}
+                            Add Customer
                         </button>
                     </div>
                 </form>
