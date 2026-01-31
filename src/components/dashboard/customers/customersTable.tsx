@@ -39,7 +39,7 @@ export default function CustomerTable() {
                 toast.success("Customer has been deleted successfully.")
             }
         } catch (error) {
-            console.error('Failed to delete customer:', error);
+            console.error('Failed to update customer:', error);
         }
     }
 
@@ -111,7 +111,7 @@ export default function CustomerTable() {
                                                 {material.address}
                                             </td>
                                             <td className="py-4 px-6 text-[#4A5565] text-sm">
-                                                {material.assets}
+                                                {material?.assets?.length}
                                             </td>
                                             <td className="py-4 px-6">
                                                 <span
