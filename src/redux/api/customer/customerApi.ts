@@ -3,12 +3,16 @@ import baseApi from "../baseApi";
 
 export const customer = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        // need to add types
-        getMeProfile: builder.query({
-            query: () => "/users/profile",
-            providesTags: ["User"],
+        // add customer 
+        addCustomer: builder.mutation({
+            query: (body) => ({
+                url: "/customers",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["customer"],
         }),
     }),
 });
 
-export const { useGetMeProfileQuery } = customer;
+export const { useAddCustomerMutation } = customer;

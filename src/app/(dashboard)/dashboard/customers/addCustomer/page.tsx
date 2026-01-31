@@ -11,6 +11,10 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useGetMeProfileQuery } from '@/redux/api/getMe/getMeApi';
+import { useAddCustomerMutation } from '@/redux/api/customer/customerApi';
+import { User } from '../../rowMeterials/addRowMeterials/page';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface CustomerFormData {
     customerName: string;
@@ -23,35 +27,49 @@ interface CustomerFormData {
 }
 
 export default function AddCustomer() {
+    const rotuer = useRouter();
+    const { data: userData } = useGetMeProfileQuery("");
+    const profile = userData?.data as User
 
-    const { data:userData } = useGetMeProfileQuery("");
-    console.log(userData)
+    const [addCustomer, { isLoading, isError, data }] = useAddCustomerMutation();
 
     const { register, handleSubmit, control } = useForm<CustomerFormData>({
         defaultValues: {
-            customerName: '',
-            siteName: '',
+            customerName: 'Enter ph',
+            siteName: 'site1',
             location: 'Biocide',
-            address: '',
-            contactPerson: '',
+            address: 'e.g., 4500 Industrial Blvd',
+            contactPerson: 'Enter ph',
             contactEmail: 'xyz@gmail.com',
             contactPhone: '052126262',
         },
     });
 
-    const onSubmit = (data: CustomerFormData) => {
-        console.log('Customer Form Data:', data);
+    const onSubmit = async (data: CustomerFormData) => {
         const payload = {
-            "name": data.customerName,
-            "siteName": data.siteName,
-            "location": data.location,
-            "address": data.address,
-            "contactPerson": data.contactPerson,
-            "contactEmail": data.contactEmail,
-            "contactPhone": data.contactPhone,
-            "isActive": userData?.data?.isEmailVerified,
-            "companyId": userData?.data?.id,
+            name: data.customerName,
+            siteName: data.siteName,
+            location: data.location,
+            address: data.address,
+            contactPerson: data.contactPerson,
+            contactEmail: data.contactEmail,
+            contactPhone: data.contactPhone,
+            isActive: profile?.isEmailVerified,
+            companyId: profile?.companyMember?.companyId
         }
+
+        try {
+            // call the mutation with payload
+            const response = await addCustomer(payload).unwrap();
+            if (response?.success === true) {
+                toast.success("Create customer is successfully")
+                rotuer.back();
+            }
+            // maybe show a success toast or navigate
+        } catch (error) {
+            console.error("Failed to create customer:", error);
+        }
+
     };
 
     return (
@@ -89,7 +107,7 @@ export default function AddCustomer() {
                                 name="siteName"
                                 control={control}
                                 render={({ field }) => (
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value} >
                                         <SelectTrigger className="w-full px-4 py-2.5 border rounded-lg bg-[#F3F3F3]">
                                             <SelectValue placeholder="Select type" />
                                         </SelectTrigger>
