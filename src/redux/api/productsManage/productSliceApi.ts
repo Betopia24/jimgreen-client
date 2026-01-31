@@ -12,8 +12,8 @@ export const productApi = baseApi.injectEndpoints({
     }),
 
     updateProducts: builder.mutation({
-      query: ({ payload, meterialsId }) => ({
-        url: `/products/${meterialsId}`,
+      query: ({ payload, id }) => ({
+        url: `/products/${id}`,
         method: "PUT",
         body: payload,
       }),
