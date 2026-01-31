@@ -110,7 +110,7 @@ function AddProduct() {
                 type="text"
                 placeholder="Enter ph"
                 {...register("productName")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -123,7 +123,7 @@ function AddProduct() {
                 type="text"
                 placeholder="Enter ph"
                 {...register("manufacturer")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -140,7 +140,7 @@ function AddProduct() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -169,7 +169,7 @@ function AddProduct() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -203,14 +203,14 @@ function AddProduct() {
                   type="text"
                   placeholder="Min"
                   {...register("operatingPHMin")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <span className="text-gray-400">—</span>
                 <input
                   type="text"
                   placeholder="Max"
                   {...register("operatingPHMax")}
-                  className="flex-1 px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="flex-1 px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
               </div>
             </div>
@@ -224,7 +224,7 @@ function AddProduct() {
                 type="text"
                 placeholder="Enter ph"
                 {...register("temperatureTolerance")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -241,7 +241,7 @@ function AddProduct() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -269,7 +269,7 @@ function AddProduct() {
               <textarea
                 placeholder="Enter compatibility notes and restrictions..."
                 {...register("compatibilityNotes")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
           </div>
@@ -291,7 +291,7 @@ function AddProduct() {
                 type="text"
                 placeholder="Enter ph"
                 {...register("costPerUnit")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -304,7 +304,7 @@ function AddProduct() {
                 <input
                   type="text"
                   {...register("averageConsumption")}
-                  className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
                   name="consumptionUnit"
@@ -314,7 +314,7 @@ function AddProduct() {
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
-                      <SelectTrigger className="w-24 px-4 py-5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                      <SelectTrigger className="w-24 px-4 py-5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -341,7 +341,7 @@ function AddProduct() {
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
