@@ -40,7 +40,15 @@ export const customer = baseApi.injectEndpoints({
             }),
             invalidatesTags: ["customer"],
         }),
+        // customer delete 
+        getDeleteCustomer: builder.mutation({
+            query: (id: string) => ({
+                url: `/customers/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["customer"],
+        })
     }),
 });
 
-export const { useAddCustomerMutation, useGetCustomerQuery, useGetSingleCustomerQuery, useGetUpdateCustomerMutation } = customer;
+export const { useAddCustomerMutation, useGetCustomerQuery, useGetSingleCustomerQuery, useGetUpdateCustomerMutation, useGetDeleteCustomerMutation } = customer;

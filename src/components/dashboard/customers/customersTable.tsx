@@ -6,18 +6,23 @@ import { FiEdit } from "react-icons/fi";
 import Link from 'next/link';
 import { useGetMeProfileQuery } from '@/redux/api/getMe/getMeApi';
 import { User } from '@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page';
-import { useGetCustomerQuery } from '@/redux/api/customer/customerApi';
+import { useGetCustomerQuery, useGetDeleteCustomerMutation } from '@/redux/api/customer/customerApi';
 import LoadingPage from '@/components/shared/loading/LoadingPage';
+import { toast } from 'sonner';
 
 export default function CustomerTable() {
     const [searchTerm, setSearchTerm] = useState('');
+
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User
+
     const companyId = profile?.companyMember?.companyId
     const { data: customerResponse, isLoading, isError } =
         useGetCustomerQuery(companyId, {
             skip: !companyId,
         });
+
+    const [deleteCustomer] = useGetDeleteCustomerMutation()
 
     const customers = customerResponse?.data || [];
 
@@ -27,7 +32,16 @@ export default function CustomerTable() {
         customer.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // console.log(filteredCustomers, "=================")
+    const handleDelete = async (id: any) => {
+        try {
+            const response = await deleteCustomer(id).unwrap()
+            if (response?.success === true) {
+                toast.success("Customer has been deleted successfully.")
+            }
+        } catch (error) {
+            console.error('Failed to delete customer:', error);
+        }
+    }
 
     if (isLoading) {
         return <LoadingPage />;
@@ -123,7 +137,9 @@ export default function CustomerTable() {
                                                             <Eye className="w-4 h-4" />
                                                         </button>
                                                     </Link>
-                                                    <button className="text-[#E7000B] hover:text-[#c40009] transition-colors">
+                                                    <button
+                                                        onClick={() => handleDelete(material?.id)}
+                                                        className="text-[#E7000B] hover:text-[#c40009] transition-colors cursor-pointer">
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
