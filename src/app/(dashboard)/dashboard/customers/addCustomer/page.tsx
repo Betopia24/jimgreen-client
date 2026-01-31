@@ -10,6 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { useGetMeProfileQuery } from '@/redux/api/getMe/getMeApi';
 
 interface CustomerFormData {
     customerName: string;
@@ -22,6 +23,10 @@ interface CustomerFormData {
 }
 
 export default function AddCustomer() {
+
+    const { data:userData } = useGetMeProfileQuery("");
+    console.log(userData)
+
     const { register, handleSubmit, control } = useForm<CustomerFormData>({
         defaultValues: {
             customerName: '',
@@ -36,6 +41,17 @@ export default function AddCustomer() {
 
     const onSubmit = (data: CustomerFormData) => {
         console.log('Customer Form Data:', data);
+        const payload = {
+            "name": data.customerName,
+            "siteName": data.siteName,
+            "location": data.location,
+            "address": data.address,
+            "contactPerson": data.contactPerson,
+            "contactEmail": data.contactEmail,
+            "contactPhone": data.contactPhone,
+            "isActive": userData?.data?.isEmailVerified,
+            "companyId": userData?.data?.id,
+        }
     };
 
     return (
