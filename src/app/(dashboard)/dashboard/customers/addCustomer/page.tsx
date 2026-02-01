@@ -31,7 +31,7 @@ export default function AddCustomer() {
     const rotuer = useRouter();
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User
-    console.log(profile, "================")
+    // console.log(profile, "================")
 
     const [addCustomer, { isLoading, isError, data }] = useGetAddCustomerMutation();
 

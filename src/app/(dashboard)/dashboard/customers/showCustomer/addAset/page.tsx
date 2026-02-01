@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import { useGetCreateAssestMutation } from "@/redux/api/assest/assestApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { toast } from "sonner";
+import { LuLoader } from "react-icons/lu";
 
 interface AssetFormData {
   assetName: string;
@@ -35,8 +37,8 @@ interface AssetFormData {
 
 export default function AddAset() {
   const [open, setOpen] = useState(false);
-  const customerId = useSelector((state : RootState) => state.customerId)
-  console.log(customerId, "==================")
+  const customerId = useSelector((state: RootState) => state.customerId)
+  // console.log(customerId, "==================")
 
   const [createAssest, { isLoading }] = useGetCreateAssestMutation()
 
@@ -56,12 +58,13 @@ export default function AddAset() {
       flowRate: "",
       cyclesOfConcentration: "",
       materialType: "Carbon Steel",
-      currentCondition: "excellent",
+      currentCondition: "Excellent",
       knownIssues: "",
     },
   });
 
-  const onSubmit = (data: AssetFormData) => {
+  const onSubmit = async (data: AssetFormData) => {
+    console.log("Asset Configuration Data:", data);
 
     const payload = {
       name: data?.assetName,
@@ -75,9 +78,16 @@ export default function AddAset() {
       materialType: data?.materialType, // "Carbon Steel", "Stainless Steel", "Copper", "Galvanized Steel"
       currentCondition: data?.currentCondition,
       knownIssues: data?.knownIssues,
-      customerId: "697dc17a77a7c34e08d7135c"
+      customerId: customerId?.customerId,
     }
-    console.log("Asset Configuration Data:", data);
+    try {
+      const response = await createAssest(payload).unwrap();
+      if (response.success === true) {
+        toast.success("Asset added successfully");
+      }
+    } catch (error) {
+      toast.error("Asset addition failed");
+    }
   };
 
   return (
@@ -142,11 +152,11 @@ export default function AddAset() {
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="cooling-tower">Cooling Tower</SelectItem>
-                          <SelectItem value="heat-exchanger">Heat Exchanger</SelectItem>
-                          <SelectItem value="chiller">Chiller</SelectItem>
-                          <SelectItem value="pump">Pump</SelectItem>
-                          <SelectItem value="piping">Piping</SelectItem>
+                          <SelectItem value="Cooling Tower">Cooling Tower</SelectItem>
+                          <SelectItem value="Evaporative Condenser">Evaporative Condenser</SelectItem>
+                          <SelectItem value="Once-Through Cooling">Once-Through Cooling</SelectItem>
+                          <SelectItem value="Seawater Cooling Tower">Seawater Cooling Tower</SelectItem>
+                          <SelectItem value="Adiabatic Cooler">Adiabatic Cooler</SelectItem>
                         </SelectContent>
                       </Select>
                     )}
@@ -278,7 +288,6 @@ export default function AddAset() {
                         <SelectItem value="Stainless Steel">Stainless Steel</SelectItem>
                         <SelectItem value="Copper">Copper</SelectItem>
                         <SelectItem value="Galvanized Steel">Galvanized Steel</SelectItem>
-                        <SelectItem value="Plastic">Plastic</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -298,11 +307,11 @@ export default function AddAset() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="excellent">Excellent</SelectItem>
-                        <SelectItem value="good">Good</SelectItem>
-                        <SelectItem value="fair">Fair</SelectItem>
-                        <SelectItem value="poor">Poor</SelectItem>
-                        <SelectItem value="critical">Critical</SelectItem>
+                        <SelectItem value="Excellent">Excellent</SelectItem>
+                        <SelectItem value="Good">Good</SelectItem>
+                        <SelectItem value="Fair">Fair</SelectItem>
+                        <SelectItem value="Poor">Poor</SelectItem>
+                        <SelectItem value="Critical">Critical</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -326,9 +335,15 @@ export default function AddAset() {
           {/* Submit Button */}
           <div className="flex justify-end mt-10">
             <button
-              type="submit"
-              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
             >
+              {isLoading && (
+                <>
+                  <LuLoader
+                    className={` animate-spin text-center absolutem text-white`}
+                  />
+                </>
+              )}
               Save Water Analysis
             </button>
           </div>
