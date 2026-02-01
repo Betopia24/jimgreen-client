@@ -38,8 +38,9 @@ export default function CustomerTable() {
             if (response?.success === true) {
                 toast.success("Customer has been deleted successfully.")
             }
-        } catch (error) {
-            console.error('Failed to update customer:', error);
+        } catch (err: any) {
+            console.error('Failed to update customer:', err);
+            toast.error('Failed to update customer', err)
         }
     }
 

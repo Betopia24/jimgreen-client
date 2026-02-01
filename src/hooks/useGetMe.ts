@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useGetMeQuery } from "@/redux/api/getMe/getMeApi";
+import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { logout, setUser } from "@/redux/features/user/userSlice";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -96,7 +96,7 @@ const useAuthUser = () => {
   }, []);
 
   // Fetch user details using the extracted userId
-  const { data, error, isLoading } = useGetMeQuery({});
+  const { data, error, isLoading } = useGetMeProfileQuery({});
 
   console.log(data);
   useEffect(() => {
