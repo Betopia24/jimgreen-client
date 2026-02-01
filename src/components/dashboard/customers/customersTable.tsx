@@ -10,8 +10,11 @@ import { useGetCustomerQuery, useGetDeleteCustomerMutation } from '@/redux/api/c
 import LoadingPage from '@/components/shared/loading/LoadingPage';
 import { toast } from 'sonner';
 import DeleteConfirmModal from '@/components/shared/DeteleConfirm/DeleteConfirm';
+import { useDispatch } from 'react-redux';
+import { setCustomerId } from '@/redux/features/customer/customerSlice';
 
 export default function CustomerTable() {
+    const dispatch = useDispatch()
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -54,14 +57,14 @@ export default function CustomerTable() {
                 <div className="p-6">
                     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                         <h2 className="text-xl font-semibold text-[#2D2D2D]">Customers List</h2>
-                        <div className="relative w-50 lg:w-64">
+                        {/* <div className="relative w-50 lg:w-64">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                             <input
                                 type="text"
                                 placeholder="Search users..."
                                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-nonew-64"
                             />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="overflow-x-auto border border-[#E2E8F0] rounded-lg">
@@ -132,8 +135,10 @@ export default function CustomerTable() {
                                                             <FiEdit className="w-4 h-4" />
                                                         </button>
                                                     </Link>
-                                                    <Link href='/dashboard/customers/showCustomer'>
-                                                        <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer">
+                                                    <Link href={`/dashboard/customers/showCustomer`}>
+                                                        <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer"
+                                                            onClick={() => dispatch(setCustomerId(material?.id))}
+                                                        >
                                                             <Eye className="w-4 h-4" />
                                                         </button>
                                                     </Link>

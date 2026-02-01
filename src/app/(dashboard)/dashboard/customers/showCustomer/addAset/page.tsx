@@ -15,6 +15,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useGetCreateAssestMutation } from "@/redux/api/assest/assestApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface AssetFormData {
   assetName: string;
@@ -32,6 +35,10 @@ interface AssetFormData {
 
 export default function AddAset() {
   const [open, setOpen] = useState(false);
+  const customerId = useSelector((state : RootState) => state.customerId)
+  console.log(customerId, "==================")
+
+  const [createAssest, { isLoading }] = useGetCreateAssestMutation()
 
   const {
     register,
@@ -55,6 +62,21 @@ export default function AddAset() {
   });
 
   const onSubmit = (data: AssetFormData) => {
+
+    const payload = {
+      name: data?.assetName,
+      type: data?.assetType, // "Cooling Tower", "Evaporative Condenser","Once-Through Cooling","Seawater Cooling Tower", "Adiabatic Cooler",
+      location: data?.locationZone,
+      installationDate: data?.installationDate,
+      systemVolume: data?.systemVolume,
+      flowRate: data?.flowRate,
+      operatingTemperature: data?.operatingTemperature,
+      cyclesOfConcentration: data?.cyclesOfConcentration,
+      materialType: data?.materialType, // "Carbon Steel", "Stainless Steel", "Copper", "Galvanized Steel"
+      currentCondition: data?.currentCondition,
+      knownIssues: data?.knownIssues,
+      customerId: "697dc17a77a7c34e08d7135c"
+    }
     console.log("Asset Configuration Data:", data);
   };
 

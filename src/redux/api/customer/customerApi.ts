@@ -4,7 +4,7 @@ import baseApi from "../baseApi";
 export const customer = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         // add customer 
-        addCustomer: builder.mutation({
+        getAddCustomer: builder.mutation({
             query: (body) => ({
                 url: "/customers",
                 method: "POST",
@@ -51,4 +51,4 @@ export const customer = baseApi.injectEndpoints({
     }),
 });
 
-export const { useAddCustomerMutation, useGetCustomerQuery, useGetSingleCustomerQuery, useGetUpdateCustomerMutation, useGetDeleteCustomerMutation } = customer;
+export const { useGetAddCustomerMutation, useGetCustomerQuery, useGetSingleCustomerQuery, useGetUpdateCustomerMutation, useGetDeleteCustomerMutation } = customer;
