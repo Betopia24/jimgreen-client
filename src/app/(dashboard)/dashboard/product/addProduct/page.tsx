@@ -14,8 +14,10 @@ import { useCreateProductMutation } from "@/redux/api/productsManage/productSlic
 import { Error } from "../../rowMeterials/addRowMeterials/page";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
+import { useRouter } from "next/navigation";
 
 function AddProduct() {
+  const route = useRouter();
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ function AddProduct() {
       costPerUnit: "",
       averageMonthlyConsumption: "4",
       consumptionUnit: "ppm",
-      replacementFrequency: "Monthly",
+      replacementFrequency: "monthly",
     },
   });
 
@@ -65,7 +67,7 @@ function AddProduct() {
       console.log(response);
       if (response?.success) {
         toast.success(response?.message);
-        // route.push("/dashboard/rowMeterials");
+        route.push("/dashboard/product");
       }
     } catch (error) {
       console.log(error);
