@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export type Error = {
   data: {
@@ -290,7 +291,13 @@ export default function AddRowMeterials() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end m-6 mt-0">
+        <div className="flex gap-5 justify-end m-6 mt-0">
+          <Link
+            href={"/dashboard/rowMeterials"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
+          >
+            Back
+          </Link>
           <button
             onClick={handleFormSubmit}
             className="px-6 py-3 flex items-center gap-3 bg-[#004AAD] text-white font-medium rounded-md hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
