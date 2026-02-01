@@ -1,12 +1,4 @@
-// import React from 'react'
 
-// function ShowCustomer() {
-//   return (
-//     <div>ShowCustomer</div>
-//   )
-// }
-
-// export default ShowCustomer
 
 'use client';
 
@@ -15,67 +7,34 @@ import { Search, Trash2, Eye } from 'lucide-react';
 import { FiEdit } from 'react-icons/fi';
 import { GoPlus } from 'react-icons/go';
 import Link from 'next/link';
+import { useGetAssestQuery } from '@/redux/api/customerAssest/customerAssestApi';
+import { RootState } from '@/redux/store';
+import { useSelector } from 'react-redux';
+import LoadingPage from '@/components/shared/loading/LoadingPage';
 
 export default function AssetsList() {
     const [searchTerm, setSearchTerm] = useState('');
+    const customerId = useSelector((state: RootState) => state.customerId);
+    const { data: customerAssestResponse, isLoading, isError } = useGetAssestQuery(
+        customerId?.customerId, // customerId is passed here
+        {
+            skip: !customerId, // Skips the request if customerId is not available
+        }
+    );
 
-    const assets = [
-        {
-            id: '1',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Active',
-        },
-        {
-            id: '2',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Active',
-        },
-        {
-            id: '3',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Active',
-        },
-        {
-            id: '4',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Inactive',
-        },
-        {
-            id: '5',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Active',
-        },
-        {
-            id: '6',
-            assetName: 'Main Cooling Tower CT-01',
-            assetType: 'Cooling Tower',
-            location: 'Building A – North Wing',
-            lastUpdated: 'Dec 18, 2024',
-            status: 'Inactive',
-        },
-    ];
+    const customerAssest = customerAssestResponse?.data || [];
+    // console.log(customerAssest, "customerAssest==================")
 
     // Filter assets based on search term
-    const filteredAssets = assets.filter((asset) =>
-        asset.assetName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        asset.assetType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        asset.location.toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredAssets = customerAssest.filter((asset: any) =>
+        asset.assetName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        asset.assetType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        asset.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    if (isLoading) {
+        return <LoadingPage />;
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 py-6">
@@ -109,14 +68,14 @@ export default function AssetsList() {
                     <div className="p-6">
                         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                             <h2 className="text-xl font-semibold text-[#2D2D2D]">Raw Materials List</h2>
-                            <div className="relative w-50 lg:w-64">
+                            {/* <div className="relative w-50 lg:w-64">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                                 <input
                                     type="text"
                                     placeholder="Search users..."
                                     className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-nonew-64"
                                 />
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="overflow-x-auto border border-[#E5E7EB] rounded-lg">
@@ -145,31 +104,33 @@ export default function AssetsList() {
                                 </thead>
                                 <tbody>
                                     {filteredAssets.length > 0 ? (
-                                        filteredAssets.map((asset) => (
+                                        filteredAssets.map((asset: any) => (
                                             <tr
                                                 key={asset.id}
                                                 className="border-b border-[#E5E7EB] hover:bg-gray-50 transition-colors"
                                             >
                                                 <td className="py-4 px-6 text-[#1F2937] text-sm font-medium">
-                                                    {asset.assetName}
+                                                    {asset.name}
                                                 </td>
                                                 <td className="py-4 px-6 text-[#4B5563] text-sm">
-                                                    {asset.assetType}
+                                                    {asset.type}
                                                 </td>
                                                 <td className="py-4 px-6 text-[#4B5563] text-sm">
                                                     {asset.location}
                                                 </td>
                                                 <td className="py-4 px-6 text-[#4B5563] text-sm">
-                                                    {asset.lastUpdated}
+                                                    {asset.installationDate}
                                                 </td>
                                                 <td className="py-4 px-6">
                                                     <span
-                                                        className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium ${asset.status === 'Active'
-                                                            ? 'bg-[#34A85333] text-[#34A853]'
-                                                            : 'bg-[#E5E7EB] text-[#6B7280]'
-                                                            }`}
+                                                        className={`inline-flex items-center cursor-pointer px-3 py-1 rounded-full text-xs font-semibold
+                                                              ${asset?.customer?.isActive
+                                                                ? "bg-green-100 text-green-700 border border-green-300"
+                                                                : "bg-red-100 text-red-700 border border-red-300"
+                                                            }
+                                                         `}
                                                     >
-                                                        {asset.status}
+                                                        {asset?.customer?.isActive ? "Active" : "Inactive"}
                                                     </span>
                                                 </td>
                                                 <td className="py-4 px-6">

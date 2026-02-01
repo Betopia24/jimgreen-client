@@ -11,11 +11,11 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useGetMeProfileQuery } from '@/redux/api/getMe/getMeApi';
-import { useAddCustomerMutation } from '@/redux/api/customer/customerApi';
 import { User } from '../../rowMeterials/addRowMeterials/page';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { LuLoader } from 'react-icons/lu';
+import { useGetAddCustomerMutation } from '@/redux/api/customer/customerApi';
 
 interface CustomerFormData {
     customerName: string;
@@ -31,9 +31,9 @@ export default function AddCustomer() {
     const rotuer = useRouter();
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User
-    console.log(profile, "================")
+    // console.log(profile, "================")
 
-    const [addCustomer, { isLoading, isError, data }] = useAddCustomerMutation();
+    const [addCustomer, { isLoading, isError, data }] = useGetAddCustomerMutation();
 
     const { register, handleSubmit, control } = useForm<CustomerFormData>({
         defaultValues: {

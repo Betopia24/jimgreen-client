@@ -15,6 +15,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useGetCreateAssestMutation } from "@/redux/api/customerAssest/customerAssestApi";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { toast } from "sonner";
+import { LuLoader } from "react-icons/lu";
+import { useRouter } from "next/navigation";
 
 interface AssetFormData {
   assetName: string;
@@ -31,7 +37,10 @@ interface AssetFormData {
 }
 
 export default function AddAset() {
+  const router = useRouter()
   const [open, setOpen] = useState(false);
+  const customerId = useSelector((state: RootState) => state.customerId);
+  const [createAssest, { isLoading }] = useGetCreateAssestMutation();
 
   const {
     register,
@@ -49,17 +58,41 @@ export default function AddAset() {
       flowRate: "",
       cyclesOfConcentration: "",
       materialType: "Carbon Steel",
-      currentCondition: "excellent",
+      currentCondition: "Excellent",
       knownIssues: "",
     },
   });
 
-  const onSubmit = (data: AssetFormData) => {
-    console.log("Asset Configuration Data:", data);
+  const onSubmit = async (data: AssetFormData) => {
+    // console.log("Asset Configuration Data:", data);
+
+    const payload = {
+      name: data?.assetName,
+      type: data?.assetType, // "Cooling Tower", "Evaporative Condenser","Once-Through Cooling","Seawater Cooling Tower", "Adiabatic Cooler",
+      location: data?.locationZone,
+      installationDate: data?.installationDate,
+      systemVolume: data?.systemVolume,
+      flowRate: data?.flowRate,
+      operatingTemperature: data?.operatingTemperature,
+      cyclesOfConcentration: data?.cyclesOfConcentration,
+      materialType: data?.materialType, // "Carbon Steel", "Stainless Steel", "Copper", "Galvanized Steel"
+      currentCondition: data?.currentCondition,
+      knownIssues: data?.knownIssues,
+      customerId: customerId?.customerId,
+    };
+    try {
+      const response = await createAssest(payload).unwrap();
+      if (response.success === true) {
+        toast.success("Asset added successfully");
+        router.back();
+      }
+    } catch (error) {
+      toast.error("Asset addition failed");
+    }
   };
 
   return (
-    <div className=" bg-gray-50 mb-6">
+    <div className="bg-gray-50 mb-6">
       <PageHeader
         title="Cooling Water Asset Configuration"
         description="Describe the physical cooling system assets used at your facility."
@@ -75,9 +108,7 @@ export default function AddAset() {
 
           {/* Asset Details Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">
-              Asset Details
-            </h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Details</h3>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Column */}
@@ -87,10 +118,13 @@ export default function AddAset() {
                     Asset Name
                   </label>
                   <input
-                    {...register("assetName")}
+                    {...register("assetName", { required: "Asset Name is required" })}
                     className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                     placeholder="Enter asset name"
                   />
+                  {errors.assetName && (
+                    <p className="text-sm text-red-500 mt-1">{errors.assetName.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -98,10 +132,13 @@ export default function AddAset() {
                     Location / Zone
                   </label>
                   <input
-                    {...register("locationZone")}
+                    {...register("locationZone", { required: "Location Zone is required" })}
                     className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                    placeholder="Enter ph"
+                    placeholder="Enter location"
                   />
+                  {errors.locationZone && (
+                    <p className="text-sm text-red-500 mt-1">{errors.locationZone.message}</p>
+                  )}
                 </div>
               </div>
 
@@ -114,21 +151,25 @@ export default function AddAset() {
                   <Controller
                     name="assetType"
                     control={control}
+                    rules={{ required: "Asset Type is required" }}
                     render={({ field }) => (
                       <Select value={field.value} onValueChange={field.onChange}>
                         <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                           <SelectValue placeholder="Select type" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="cooling-tower">Cooling Tower</SelectItem>
-                          <SelectItem value="heat-exchanger">Heat Exchanger</SelectItem>
-                          <SelectItem value="chiller">Chiller</SelectItem>
-                          <SelectItem value="pump">Pump</SelectItem>
-                          <SelectItem value="piping">Piping</SelectItem>
+                          <SelectItem value="Cooling Tower">Cooling Tower</SelectItem>
+                          <SelectItem value="Evaporative Condenser">Evaporative Condenser</SelectItem>
+                          <SelectItem value="Once-Through Cooling">Once-Through Cooling</SelectItem>
+                          <SelectItem value="Seawater Cooling Tower">Seawater Cooling Tower</SelectItem>
+                          <SelectItem value="Adiabatic Cooler">Adiabatic Cooler</SelectItem>
                         </SelectContent>
                       </Select>
                     )}
                   />
+                  {errors.assetType && (
+                    <p className="text-sm text-red-500 mt-1">{errors.assetType.message}</p>
+                  )}
                 </div>
 
                 <div>
@@ -139,6 +180,7 @@ export default function AddAset() {
                   <Controller
                     name="installationDate"
                     control={control}
+                    rules={{ required: "Installation Date is required" }} // Adding required validation
                     render={({ field }) => (
                       <>
                         <button
@@ -149,9 +191,7 @@ export default function AddAset() {
                             !field.value && "text-gray-500"
                           )}
                         >
-                          {field.value
-                            ? format(field.value, "MM/dd/yyyy")
-                            : "MM/DD/YYYY"}
+                          {field.value ? format(field.value, "MM/dd/yyyy") : "MM/DD/YYYY"}
                           <CalendarIcon className="w-4 h-4 text-gray-400 ml-2" />
                         </button>
 
@@ -164,9 +204,7 @@ export default function AddAset() {
                                 field.onChange(date);
                                 setOpen(false);
                               }}
-                              disabled={(date) =>
-                                date > new Date() || date < new Date("1900-01-01")
-                              }
+                              disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                               initialFocus
                             />
                           </div>
@@ -174,38 +212,44 @@ export default function AddAset() {
                       </>
                     )}
                   />
+
+                  {/* Error message for installationDate */}
+                  {errors.installationDate && (
+                    <p className="text-sm text-red-500 mt-1">{errors.installationDate.message}</p>
+                  )}
                 </div>
+
               </div>
             </div>
           </div>
 
           {/* Operational Parameters Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">
-              Operational Parameters
-            </h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Operational Parameters</h3>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  System Volume (m³)
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">System Volume (m³)</label>
                 <input
-                  {...register("systemVolume")}
+                  {...register("systemVolume", { required: "System Volume is required" })}
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                  placeholder="Enter ph"
+                  placeholder="Enter volume"
                 />
+                {errors.systemVolume && (
+                  <p className="text-sm text-red-500 mt-1">{errors.systemVolume.message}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Flow Rate (m³/hr)
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Flow Rate (m³/hr)</label>
                 <input
-                  {...register("flowRate")}
+                  {...register("flowRate", { required: "Flow Rate is required" })}
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                  placeholder="Enter ph"
+                  placeholder="Enter flow rate"
                 />
+                {errors.flowRate && (
+                  <p className="text-sm text-red-500 mt-1">{errors.flowRate.message}</p>
+                )}
               </div>
 
               <div>
@@ -213,10 +257,13 @@ export default function AddAset() {
                   Operating Temperature (°C)
                 </label>
                 <input
-                  {...register("operatingTemperature")}
+                  {...register("operatingTemperature", { required: "Operating Temperature is required" })}
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                  placeholder="Enter ph"
+                  placeholder="Enter temperature"
                 />
+                {errors.operatingTemperature && (
+                  <p className="text-sm text-red-500 mt-1">{errors.operatingTemperature.message}</p>
+                )}
               </div>
 
               <div>
@@ -224,25 +271,24 @@ export default function AddAset() {
                   Cycles of Concentration
                 </label>
                 <input
-                  {...register("cyclesOfConcentration")}
+                  {...register("cyclesOfConcentration", { required: "Cycles of Concentration is required" })}
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                  placeholder="Enter ph"
+                  placeholder="Enter cycles"
                 />
+                {errors.cyclesOfConcentration && (
+                  <p className="text-sm text-red-500 mt-1">{errors.cyclesOfConcentration.message}</p>
+                )}
               </div>
             </div>
           </div>
 
           {/* Asset Condition Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">
-              Asset Condition
-            </h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Condition</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Material Type
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Material Type</label>
                 <Controller
                   name="materialType"
                   control={control}
@@ -256,7 +302,6 @@ export default function AddAset() {
                         <SelectItem value="Stainless Steel">Stainless Steel</SelectItem>
                         <SelectItem value="Copper">Copper</SelectItem>
                         <SelectItem value="Galvanized Steel">Galvanized Steel</SelectItem>
-                        <SelectItem value="Plastic">Plastic</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -264,9 +309,7 @@ export default function AddAset() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Condition
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Current Condition</label>
                 <Controller
                   name="currentCondition"
                   control={control}
@@ -276,11 +319,11 @@ export default function AddAset() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="excellent">Excellent</SelectItem>
-                        <SelectItem value="good">Good</SelectItem>
-                        <SelectItem value="fair">Fair</SelectItem>
-                        <SelectItem value="poor">Poor</SelectItem>
-                        <SelectItem value="critical">Critical</SelectItem>
+                        <SelectItem value="Excellent">Excellent</SelectItem>
+                        <SelectItem value="Good">Good</SelectItem>
+                        <SelectItem value="Fair">Fair</SelectItem>
+                        <SelectItem value="Poor">Poor</SelectItem>
+                        <SelectItem value="Critical">Critical</SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -289,9 +332,7 @@ export default function AddAset() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Known Issues
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Known Issues</label>
               <textarea
                 {...register("knownIssues")}
                 rows={4}
@@ -304,13 +345,18 @@ export default function AddAset() {
           {/* Submit Button */}
           <div className="flex justify-end mt-10">
             <button
-              type="submit"
-              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
             >
+              {isLoading && (
+                <>
+                  <LuLoader
+                    className={`animate-spin text-center text-white`}
+                  />
+                </>
+              )}
               Save Water Analysis
             </button>
           </div>
-
         </form>
       </div>
     </div>

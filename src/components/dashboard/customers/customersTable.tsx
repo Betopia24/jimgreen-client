@@ -9,8 +9,14 @@ import { User } from '@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/p
 import { useGetCustomerQuery, useGetDeleteCustomerMutation } from '@/redux/api/customer/customerApi';
 import LoadingPage from '@/components/shared/loading/LoadingPage';
 import { toast } from 'sonner';
+import DeleteConfirmModal from '@/components/shared/DeteleConfirm/DeleteConfirm';
+import { useDispatch } from 'react-redux';
+import { setCustomerId } from '@/redux/features/customer/customerSlice';
 
 export default function CustomerTable() {
+    const dispatch = useDispatch()
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
     const { data: userData } = useGetMeProfileQuery("");
@@ -22,7 +28,7 @@ export default function CustomerTable() {
             skip: !companyId,
         });
 
-    const [deleteCustomer] = useGetDeleteCustomerMutation()
+    const [deleteCustomer, { isLoading: loading }] = useGetDeleteCustomerMutation()
 
     const customers = customerResponse?.data || [];
 
@@ -32,15 +38,11 @@ export default function CustomerTable() {
         customer.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleDelete = async (id: any) => {
+    const handleDelete = async () => {
         try {
-            const response = await deleteCustomer(id).unwrap()
-            if (response?.success === true) {
-                toast.success("Customer has been deleted successfully.")
-            }
+            const response = await deleteCustomer(selectedItem).unwrap()
         } catch (err: any) {
             console.error('Failed to update customer:', err);
-            toast.error('Failed to update customer', err)
         }
     }
 
@@ -55,14 +57,14 @@ export default function CustomerTable() {
                 <div className="p-6">
                     <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
                         <h2 className="text-xl font-semibold text-[#2D2D2D]">Customers List</h2>
-                        <div className="relative w-50 lg:w-64">
+                        {/* <div className="relative w-50 lg:w-64">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                             <input
                                 type="text"
                                 placeholder="Search users..."
                                 className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm placeholder:text-[#636F85] focus:outline-nonew-64"
                             />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="overflow-x-auto border border-[#E2E8F0] rounded-lg">
@@ -121,7 +123,7 @@ export default function CustomerTable() {
                                                             ? "bg-green-100 text-green-700 border border-green-300"
                                                             : "bg-red-100 text-red-700 border border-red-300"
                                                         }
-                            `}
+                                                         `}
                                                 >
                                                     {material.isActive ? "Active" : "Inactive"}
                                                 </span>
@@ -133,14 +135,20 @@ export default function CustomerTable() {
                                                             <FiEdit className="w-4 h-4" />
                                                         </button>
                                                     </Link>
-                                                    <Link href='/dashboard/customers/showCustomer'>
-                                                        <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer">
+                                                    <Link href={`/dashboard/customers/showCustomer`}>
+                                                        <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors mt-2 cursor-pointer"
+                                                            onClick={() => dispatch(setCustomerId(material?.id))}
+                                                        >
                                                             <Eye className="w-4 h-4" />
                                                         </button>
                                                     </Link>
                                                     <button
-                                                        onClick={() => handleDelete(material?.id)}
-                                                        className="text-[#E7000B] hover:text-[#c40009] transition-colors cursor-pointer">
+                                                        onClick={() => {
+                                                            setSelectedItem(material?.id);
+                                                            setIsDeleteOpen(true);
+                                                        }}
+                                                        className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer"
+                                                    >
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
@@ -159,6 +167,16 @@ export default function CustomerTable() {
                     </div>
                 </div>
             </div>
+            <DeleteConfirmModal
+                isOpen={isDeleteOpen}
+                onClose={() => setIsDeleteOpen(false)}
+                onConfirm={handleDelete}
+                title="Raw Materials"
+                message="Are you sure you want to delete this project? This action cannot be undone."
+                confirmText="Yes, Delete"
+                cancelText="No, Cancel"
+                isLoading={loading}
+            />
         </div>
     );
 }
