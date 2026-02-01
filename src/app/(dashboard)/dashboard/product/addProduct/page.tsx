@@ -15,6 +15,7 @@ import { Error } from "../../rowMeterials/addRowMeterials/page";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function AddProduct() {
   const route = useRouter();
@@ -420,13 +421,13 @@ function AddProduct() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end">
-          {/* <button
-            onClick={handleFormSubmit}
-            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+        <div className="flex gap-5 justify-end">
+          <Link
+            href={"/dashboard/product"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
           >
-            Save Product
-          </button> */}
+            Back
+          </Link>
           <PrimaryButton
             type="button"
             onClick={handleFormSubmit}
