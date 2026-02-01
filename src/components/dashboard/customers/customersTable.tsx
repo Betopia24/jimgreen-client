@@ -9,8 +9,11 @@ import { User } from '@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/p
 import { useGetCustomerQuery, useGetDeleteCustomerMutation } from '@/redux/api/customer/customerApi';
 import LoadingPage from '@/components/shared/loading/LoadingPage';
 import { toast } from 'sonner';
+import DeleteConfirmModal from '@/components/shared/DeteleConfirm/DeleteConfirm';
 
 export default function CustomerTable() {
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
     const { data: userData } = useGetMeProfileQuery("");
@@ -22,7 +25,7 @@ export default function CustomerTable() {
             skip: !companyId,
         });
 
-    const [deleteCustomer] = useGetDeleteCustomerMutation()
+    const [deleteCustomer, { isLoading: loading }] = useGetDeleteCustomerMutation()
 
     const customers = customerResponse?.data || [];
 
@@ -32,15 +35,11 @@ export default function CustomerTable() {
         customer.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const handleDelete = async (id: any) => {
+    const handleDelete = async () => {
         try {
-            const response = await deleteCustomer(id).unwrap()
-            if (response?.success === true) {
-                toast.success("Customer has been deleted successfully.")
-            }
+            const response = await deleteCustomer(selectedItem).unwrap()
         } catch (err: any) {
             console.error('Failed to update customer:', err);
-            toast.error('Failed to update customer', err)
         }
     }
 
@@ -139,8 +138,12 @@ export default function CustomerTable() {
                                                         </button>
                                                     </Link>
                                                     <button
-                                                        onClick={() => handleDelete(material?.id)}
-                                                        className="text-[#E7000B] hover:text-[#c40009] transition-colors cursor-pointer">
+                                                        onClick={() => {
+                                                            setSelectedItem(material?.id);
+                                                            setIsDeleteOpen(true);
+                                                        }}
+                                                        className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer"
+                                                    >
                                                         <Trash2 className="w-4 h-4" />
                                                     </button>
                                                 </div>
@@ -159,6 +162,16 @@ export default function CustomerTable() {
                     </div>
                 </div>
             </div>
+            <DeleteConfirmModal
+                isOpen={isDeleteOpen}
+                onClose={() => setIsDeleteOpen(false)}
+                onConfirm={handleDelete}
+                title="Raw Materials"
+                message="Are you sure you want to delete this project? This action cannot be undone."
+                confirmText="Yes, Delete"
+                cancelText="No, Cancel"
+                isLoading={loading}
+            />
         </div>
     );
 }

@@ -42,7 +42,7 @@ export const customer = baseApi.injectEndpoints({
         }),
         // customer delete 
         getDeleteCustomer: builder.mutation({
-            query: (id: string) => ({
+            query: (id) => ({
                 url: `/customers/${id}`,
                 method: "DELETE",
             }),
