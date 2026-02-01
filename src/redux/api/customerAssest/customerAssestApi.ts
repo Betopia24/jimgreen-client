@@ -19,7 +19,16 @@ export const customerAssest = baseApi.injectEndpoints({
             }),
             providesTags: ["assest"],
         }),
+
+        // get single customer 
+        getSingleAssest: builder.query({
+            query: (showCustomerId) => ({
+                url: `/assets/${showCustomerId}`,
+                method: "GET",
+            }),
+            providesTags: ["assest"],
+        }),
     })
 })
 
-export const {useGetCreateAssestMutation, useGetAssestQuery} = customerAssest
+export const {useGetCreateAssestMutation, useGetAssestQuery, useGetSingleAssestQuery} = customerAssest
