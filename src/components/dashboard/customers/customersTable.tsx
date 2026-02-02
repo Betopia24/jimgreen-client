@@ -171,7 +171,7 @@ export default function CustomerTable() {
                 isOpen={isDeleteOpen}
                 onClose={() => setIsDeleteOpen(false)}
                 onConfirm={handleDelete}
-                title="Raw Materials"
+                title="Customer"
                 message="Are you sure you want to delete this project? This action cannot be undone."
                 confirmText="Yes, Delete"
                 cancelText="No, Cancel"
