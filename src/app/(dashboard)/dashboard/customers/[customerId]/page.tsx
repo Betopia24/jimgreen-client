@@ -10,7 +10,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useGetSingleCustomerQuery, useGetUpdateCustomerMutation } from '@/redux/api/customer/customerApi';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { LuLoader } from 'react-icons/lu';
 import { toast } from 'sonner';
@@ -26,9 +26,10 @@ interface CustomerFormData {
 }
 
 export default function EditCustomer() {
+    const router = useRouter()
     const { customerId } = useParams<{ customerId?: string }>();
     const { data: singleCustomer, error } = useGetSingleCustomerQuery(customerId || "");
-    const [updateCustomer, {isLoading}] = useGetUpdateCustomerMutation();
+    const [updateCustomer, { isLoading }] = useGetUpdateCustomerMutation();
 
     const { register, handleSubmit, setValue, control } = useForm<CustomerFormData>({
         defaultValues: {
@@ -71,8 +72,9 @@ export default function EditCustomer() {
 
         try {
             const response = await updateCustomer({ customerId, updatedCustomer }).unwrap();
-            if(response?.success === true){
+            if (response?.success === true) {
                 toast.success("Customer has been updated successfully.")
+                router.back()
             }
         } catch (err) {
             console.error('Failed to update customer:', err);
@@ -187,6 +189,10 @@ export default function EditCustomer() {
                         </div>
                     </div>
                     <div className="flex justify-end mt-10">
+                        <div
+                        onClick={() => router.back()}
+                        className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2 mr-2"
+                        >Back</div>
                         <button
                             className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
                         >

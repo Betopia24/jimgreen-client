@@ -315,6 +315,10 @@ export default function ShowCustomerEdit() {
 
           {/* Submit Button */}
           <div className="flex justify-end mt-10">
+            <div
+            onClick={() => router.back()}
+            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2 mr-2"
+            >Back</div>
             <button
               className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
             >
