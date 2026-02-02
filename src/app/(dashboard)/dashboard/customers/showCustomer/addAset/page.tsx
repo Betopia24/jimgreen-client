@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useGetCreateAssestMutation } from "@/redux/api/customerAssest/customerAssestApi";
+import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { toast } from "sonner";
