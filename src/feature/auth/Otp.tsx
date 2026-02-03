@@ -229,9 +229,10 @@
 import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   useResendCodeMutation,
+  useSignUpverifyEmailMutation,
   useVerifyEmailMutation,
 } from "@/redux/api/auth/authApi";
 import { toast } from "sonner";
@@ -254,7 +255,13 @@ export default function OtpVerification() {
   const [activeInput, setActiveInput] = useState(0);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [verifyEmail, { isLoading }] = useVerifyEmailMutation();
+  const [signUpVerifyEmail, { isLoading: verifyLoadinng }] =
+    useSignUpverifyEmailMutation();
   const [resendCode] = useResendCodeMutation();
+
+  const searchParams = useSearchParams();
+  const signup = searchParams.get("signup");
+  console.log(signup);
 
   // Resend OTP Timer - Initialize from localStorage or default to 300 seconds
   const [timeLeft, setTimeLeft] = useState(() => {
@@ -304,16 +311,29 @@ export default function OtpVerification() {
   const onSubmit = async (data: OtpFormValues) => {
     const email = localStorage.getItem("email");
     const otpValue = data.otp.join("");
+
     console.log("OTP submitted:", otpValue);
     try {
-      const response = await verifyEmail({
-        email,
-        otp: parseInt(otpValue),
-      }).unwrap();
-      if (response?.success) {
-        toast.success("Verification successful!");
-        localStorage.removeItem("otpTimer"); // Clear timer on success
-        router.push("/reset-password");
+      if (signup === "signUp") {
+        const response = await signUpVerifyEmail({
+          email,
+          otp: parseInt(otpValue),
+        }).unwrap();
+        if (response?.success) {
+          toast.success("Verification successful!");
+          localStorage.removeItem("otpTimer");
+          router.push("/dashboard");
+        }
+      } else {
+        const response = await verifyEmail({
+          email,
+          otp: parseInt(otpValue),
+        }).unwrap();
+        if (response?.success) {
+          toast.success("Verification successful!");
+          localStorage.removeItem("otpTimer");
+          router.push("/reset-password");
+        }
       }
     } catch (error: any) {
       toast.error(
@@ -454,7 +474,12 @@ export default function OtpVerification() {
           ))}
         </div>
 
-        <PrimaryButton type="submit" loading={isLoading} text="Submit" />
+        <PrimaryButton
+          type="submit"
+          loading={isLoading}
+          text="Submit"
+          className="w-full"
+        />
       </form>
 
       {/* Resend OTP Section */}

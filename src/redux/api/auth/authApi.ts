@@ -11,12 +11,20 @@ export const authApi = baseApi.injectEndpoints({
       invalidatesTags: ["User"],
     }),
     signUp: builder.mutation({
+      query: (payload) => ({
+        url: "/auth/signup",
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    signUpverifyEmail: builder.mutation({
       query: (body) => ({
-        url: "/auth/register",
+        url: "/auth/verify-signup-otp",
         method: "POST",
         body,
       }),
-      invalidatesTags: ["User"],
     }),
 
     verifyEmail: builder.mutation({
@@ -74,4 +82,5 @@ export const {
   useForgetPasswordMutation,
   useResetPasswordMutation,
   useGoogleLoginMutation,
+  useSignUpverifyEmailMutation,
 } = authApi;
