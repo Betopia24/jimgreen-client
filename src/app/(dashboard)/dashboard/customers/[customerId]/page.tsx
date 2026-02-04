@@ -113,7 +113,7 @@ export default function EditCustomer() {
               <input
                 type="text"
                 {...register("customerName")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
               />
             </div>
 
@@ -127,7 +127,7 @@ export default function EditCustomer() {
                 control={control}
                 render={({ field }) => (
                   <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]">
+                    <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]">
                       <SelectValue
                         placeholder={
                           singleCustomer?.data?.siteName || "Select Site"
@@ -152,7 +152,7 @@ export default function EditCustomer() {
               <input
                 type="text"
                 {...register("location")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]"
               />
             </div>
 
@@ -164,7 +164,7 @@ export default function EditCustomer() {
               <input
                 type="text"
                 {...register("address")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]"
               />
             </div>
 
@@ -176,7 +176,7 @@ export default function EditCustomer() {
               <input
                 type="text"
                 {...register("contactPerson")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]"
               />
             </div>
 
@@ -188,7 +188,7 @@ export default function EditCustomer() {
               <input
                 type="email"
                 {...register("contactEmail")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]"
               />
             </div>
 
@@ -200,7 +200,7 @@ export default function EditCustomer() {
               <input
                 type="tel"
                 {...register("contactPhone")}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 bg-[#F3F3F3]"
               />
             </div>
           </div>

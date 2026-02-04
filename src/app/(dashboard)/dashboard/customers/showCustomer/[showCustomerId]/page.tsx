@@ -75,10 +75,7 @@ export default function ShowCustomerEdit() {
     if (singleCustomerAssest?.data) {
       setValue("assetName", singleCustomerAssest?.data?.name || "");
       setValue("locationZone", singleCustomerAssest?.data?.location || "");
-      setValue(
-        "assetType",
-        singleCustomerAssest?.data?.type || "cooling-tower",
-      );
+      setValue("assetType", singleCustomerAssest?.data?.type || "");
       setValue(
         "installationDate",
         singleCustomerAssest?.data?.installationDate || undefined,
@@ -93,13 +90,10 @@ export default function ShowCustomerEdit() {
         "cyclesOfConcentration",
         singleCustomerAssest?.data?.cyclesOfConcentration || "",
       );
-      setValue(
-        "materialType",
-        singleCustomerAssest?.data?.materialType || "Carbon Steel",
-      );
+      setValue("materialType", singleCustomerAssest?.data?.materialType || "");
       setValue(
         "currentCondition",
-        singleCustomerAssest?.data?.currentCondition || "excellent",
+        singleCustomerAssest?.data?.currentCondition || "",
       );
       setValue("knownIssues", singleCustomerAssest?.data?.knownIssues || "");
     }
