@@ -121,7 +121,6 @@ export default function ShowCustomerEdit() {
       }).unwrap();
       if (response?.success === true) {
         toast.success("Assest has been updated successfully.");
-        router.back();
       }
     } catch (err) {
       console.error("Failed to update assest:", err);

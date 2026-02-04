@@ -83,7 +83,6 @@ export default function EditCustomer() {
       }).unwrap();
       if (response?.success === true) {
         toast.success("Customer has been updated successfully.");
-        router.back();
       }
     } catch (err) {
       console.error("Failed to update customer:", err);
