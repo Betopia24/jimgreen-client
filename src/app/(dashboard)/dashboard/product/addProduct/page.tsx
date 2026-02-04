@@ -37,7 +37,7 @@ function AddProduct() {
       compatibilityNote: "",
       costPerUnit: "",
       averageMonthlyConsumption: "4",
-      consumptionUnit: "ppm",
+      consumptionType: "ppm",
       replacementFrequency: "monthly",
     },
   });
@@ -46,7 +46,7 @@ function AddProduct() {
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
 
   const userProfile = data?.data;
-  console.log(userProfile?.companyMember?.companyId);
+  console.log(userProfile);
 
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -366,7 +366,7 @@ function AddProduct() {
                   className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="consumptionUnit"
+                  name="consumptionType"
                   control={control}
                   render={({ field }) => (
                     <Select

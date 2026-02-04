@@ -55,7 +55,7 @@ export default function AddRowMeterials() {
       chemicalType: "Biocide",
       supplierName: "ChemSupply Co.",
       dosageRate: "4",
-      dosageUnit: "ppm",
+      dosageType: "ppm",
       feedFrequency: "Daily",
       safetyClassification: "Hazardous",
       instructions: "",
@@ -191,7 +191,7 @@ export default function AddRowMeterials() {
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="dosageUnit"
+                  name="dosageType"
                   control={control}
                   render={(
                     { field }, ///

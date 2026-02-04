@@ -53,7 +53,7 @@ function UpdateProduct() {
       compatibilityNote: "",
       costPerUnit: "",
       averageMonthlyConsumption: "4",
-      consumptionUnit: "ppm",
+      consumptionType: "ppm",
       replacementFrequency: "Monthly",
     },
   });
@@ -94,7 +94,7 @@ function UpdateProduct() {
           product.averageMonthlyConsumption !== undefined
             ? String(product.averageMonthlyConsumption)
             : "",
-        consumptionUnit: product.consumptionUnit ?? "ppm",
+        consumptionType: product.consumptionUnit ?? "ppm",
         replacementFrequency: product.replacementFrequency ?? "monthly",
       });
     }
@@ -403,7 +403,7 @@ function UpdateProduct() {
                   className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="consumptionUnit"
+                  name="consumptionType"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -454,12 +454,6 @@ function UpdateProduct() {
 
         {/* Save Button */}
         <div className="flex gap-5 justify-end">
-          {/* <button
-            onClick={handleFormSubmit}
-            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
-          >
-            Save Product
-          </button> */}
           <Link
             href={"/dashboard/product"}
             className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
