@@ -144,6 +144,7 @@ export default function ResetPasswordPage() {
           type="submit"
           loading={isLoading}
           text="Reset Password"
+          className="w-full"
         />
       </form>
       {/* <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">

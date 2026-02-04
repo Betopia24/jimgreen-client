@@ -46,7 +46,7 @@ export default function EditMaterials() {
       chemicalType: "",
       supplierName: "",
       dosageRate: "",
-      dosageUnit: "",
+      dosageType: "",
       feedFrequency: "",
       safetyClassification: "",
       instructions: "",
@@ -62,7 +62,7 @@ export default function EditMaterials() {
         chemicalType: materials.chemicalType,
         supplierName: materials.supplierName,
         dosageRate: materials.dosageRate,
-        dosageUnit: "ppm",
+        dosageType: "ppm",
         feedFrequency: materials.feedFrequency,
         safetyClassification: materials.safetyClassification,
         instructions: materials.instructions,
@@ -191,7 +191,7 @@ export default function EditMaterials() {
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="dosageUnit"
+                  name="dosageType"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>

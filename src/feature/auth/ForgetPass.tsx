@@ -88,7 +88,12 @@ export default function ForgetPassPage() {
         />
 
         {/* Login Button */}
-        <PrimaryButton type="submit" loading={isLoading} text="Send Otp" />
+        <PrimaryButton
+          type="submit"
+          loading={isLoading}
+          text="Send Otp"
+          className="w-full"
+        />
       </form>
 
       {/* Register Link */}

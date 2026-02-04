@@ -34,7 +34,7 @@ export interface Material {
   safetyClassification: "Hazardous" | "Non-Hazardous" | string;
   instructions: string;
   isActive: boolean;
-  dosageUnit?: string;
+  dosageType?: string;
   companyId: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
