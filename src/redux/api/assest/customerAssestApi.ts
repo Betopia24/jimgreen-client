@@ -28,7 +28,25 @@ export const customerAssest = baseApi.injectEndpoints({
             }),
             providesTags: ["assest"],
         }),
+
+        // updated assest 
+        getUpdateAssest: builder.mutation({
+            query: ({ assetsId, updatedAssest }: { assetsId: any, updatedAssest: any }) => ({
+                url: `/assets/${assetsId}`,
+                method: "PUT",
+                body: updatedAssest,
+            }),
+            invalidatesTags: ["assest"],
+        }),
+        // customer delete 
+        getDeleteAssest: builder.mutation({
+            query: (id) => ({
+                url: `/assets/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["assest"],
+        })
     })
 })
 
-export const {useGetCreateAssestMutation, useGetAssestQuery, useGetSingleAssestQuery} = customerAssest
+export const {useGetCreateAssestMutation, useGetAssestQuery, useGetSingleAssestQuery, useGetUpdateAssestMutation, useGetDeleteAssestMutation} = customerAssest

@@ -7,12 +7,15 @@ import { Search, Trash2, Eye } from 'lucide-react';
 import { FiEdit } from 'react-icons/fi';
 import { GoPlus } from 'react-icons/go';
 import Link from 'next/link';
-import { useGetAssestQuery } from '@/redux/api/customerAssest/customerAssestApi';
+import { useGetAssestQuery, useGetDeleteAssestMutation } from '@/redux/api/assest/customerAssestApi';
 import { RootState } from '@/redux/store';
 import { useSelector } from 'react-redux';
 import LoadingPage from '@/components/shared/loading/LoadingPage';
+import DeleteConfirmModal from '@/components/shared/DeteleConfirm/DeleteConfirm';
 
 export default function AssetsList() {
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const customerId = useSelector((state: RootState) => state.customerId);
     const { data: customerAssestResponse, isLoading, isError } = useGetAssestQuery(
@@ -21,6 +24,8 @@ export default function AssetsList() {
             skip: !customerId, // Skips the request if customerId is not available
         }
     );
+
+    const [deleteAssest, { isLoading: loading }] = useGetDeleteAssestMutation()
 
     const customerAssest = customerAssestResponse?.data || [];
     // console.log(customerAssest, "customerAssest==================")
@@ -31,6 +36,14 @@ export default function AssetsList() {
         asset.assetType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         asset.location?.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const handleDelete = async () => {
+        try {
+            const response = await deleteAssest(selectedItem).unwrap()
+        } catch (err: any) {
+            console.error('Failed to update customer:', err);
+        }
+    }
 
     if (isLoading) {
         return <LoadingPage />;
@@ -67,7 +80,7 @@ export default function AssetsList() {
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 mt-8">
                     <div className="p-6">
                         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center lg:justify-between">
-                            <h2 className="text-xl font-semibold text-[#2D2D2D]">Raw Materials List</h2>
+                            <h2 className="text-xl font-semibold text-[#2D2D2D]">Assets List</h2>
                             {/* <div className="relative w-50 lg:w-64">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748B]" />
                                 <input
@@ -140,9 +153,18 @@ export default function AssetsList() {
                                                                 <FiEdit className="w-4 h-4" />
                                                             </button>
                                                         </Link>
-                                                        <button className="text-[#E7000B] hover:text-[#c40009] transition-colors cursor-pointer">
+                                                        {/* <button className="text-[#E7000B] hover:text-[#c40009] transition-colors cursor-pointer">
                                                             <Trash2 className="w-4 h-4" />
-                                                        </button>
+                                                        </button> */}
+                                                        <button
+                                                        onClick={() => {
+                                                            setSelectedItem(asset?.id);
+                                                            setIsDeleteOpen(true);
+                                                        }}
+                                                        className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -160,6 +182,16 @@ export default function AssetsList() {
                     </div>
                 </div>
             </div>
+            <DeleteConfirmModal
+                isOpen={isDeleteOpen}
+                onClose={() => setIsDeleteOpen(false)}
+                onConfirm={handleDelete}
+                title="Asset"
+                message="Are you sure you want to delete this project? This action cannot be undone."
+                confirmText="Yes, Delete"
+                cancelText="No, Cancel"
+                isLoading={loading}
+            />
         </div>
     );
 }
