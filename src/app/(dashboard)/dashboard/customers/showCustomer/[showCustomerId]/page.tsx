@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useGetSingleAssestQuery } from "@/redux/api/customerAssest/customerAssestApi";
+import { useParams } from "next/navigation";
 
 interface AssetFormData {
   assetName: string;
@@ -31,8 +33,11 @@ interface AssetFormData {
 }
 
 export default function ShowCustomerEdit() {
+  const {showCustomerId} = useParams()
+  console.log(showCustomerId)
   const [open, setOpen] = useState(false);
-
+  const { data: singleCustomerAssest, error } = useGetSingleAssestQuery(showCustomerId)
+  console.log(singleCustomerAssest, "====================")
   const {
     register,
     handleSubmit,
