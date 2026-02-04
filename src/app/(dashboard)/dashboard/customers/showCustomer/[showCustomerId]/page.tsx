@@ -15,7 +15,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { useGetSingleAssestQuery, useGetUpdateAssestMutation } from "@/redux/api/assest/customerAssestApi";
+import {
+  useGetSingleAssestQuery,
+  useGetUpdateAssestMutation,
+} from "@/redux/api/assest/customerAssestApi";
 import { useParams } from "next/navigation";
 import { LuLoader } from "react-icons/lu";
 import { toast } from "sonner";
@@ -39,9 +42,10 @@ export default function ShowCustomerEdit() {
   const router = useRouter();
   const { showCustomerId } = useParams();
   const [open, setOpen] = useState(false);
-  const { data: singleCustomerAssest, error } = useGetSingleAssestQuery(showCustomerId);
+  const { data: singleCustomerAssest, error } =
+    useGetSingleAssestQuery(showCustomerId);
   const assetsId = singleCustomerAssest?.data?.id;
-  console.log(singleCustomerAssest, "singleCustomerAssest")
+  console.log(singleCustomerAssest, "singleCustomerAssest");
   const [updatedAssest, { isLoading }] = useGetUpdateAssestMutation();
 
   const {
@@ -71,14 +75,26 @@ export default function ShowCustomerEdit() {
     if (singleCustomerAssest?.data) {
       setValue("assetName", singleCustomerAssest?.data?.name || "");
       setValue("locationZone", singleCustomerAssest?.data?.location || "");
-      setValue("assetType", singleCustomerAssest?.data?.type || "cooling-tower");
-      setValue("installationDate", singleCustomerAssest?.data?.installationDate || undefined);
+      setValue("assetType", singleCustomerAssest?.data?.type || "");
+      setValue(
+        "installationDate",
+        singleCustomerAssest?.data?.installationDate || undefined,
+      );
       setValue("systemVolume", singleCustomerAssest?.data?.systemVolume || "");
-      setValue("operatingTemperature", singleCustomerAssest?.data?.operatingTemperature || "");
+      setValue(
+        "operatingTemperature",
+        singleCustomerAssest?.data?.operatingTemperature || "",
+      );
       setValue("flowRate", singleCustomerAssest?.data?.flowRate || "");
-      setValue("cyclesOfConcentration", singleCustomerAssest?.data?.cyclesOfConcentration || "");
-      setValue("materialType", singleCustomerAssest?.data?.materialType || "Carbon Steel");
-      setValue("currentCondition", singleCustomerAssest?.data?.currentCondition || "excellent");
+      setValue(
+        "cyclesOfConcentration",
+        singleCustomerAssest?.data?.cyclesOfConcentration || "",
+      );
+      setValue("materialType", singleCustomerAssest?.data?.materialType || "");
+      setValue(
+        "currentCondition",
+        singleCustomerAssest?.data?.currentCondition || "",
+      );
       setValue("knownIssues", singleCustomerAssest?.data?.knownIssues || "");
     }
   }, [singleCustomerAssest, setValue]);
@@ -99,13 +115,15 @@ export default function ShowCustomerEdit() {
     };
 
     try {
-      const response = await updatedAssest({ assetsId, updatedAssest: updatedAssestData }).unwrap();
+      const response = await updatedAssest({
+        assetsId,
+        updatedAssest: updatedAssestData,
+      }).unwrap();
       if (response?.success === true) {
-        toast.success("Assest has been updated successfully.")
-        router.back();
+        toast.success("Assest has been updated successfully.");
       }
     } catch (err) {
-      console.error('Failed to update assest:', err);
+      console.error("Failed to update assest:", err);
     }
   };
 
@@ -117,29 +135,38 @@ export default function ShowCustomerEdit() {
       />
 
       <div className="mt-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white rounded-xl shadow-sm border border-gray-200 p-6"
+        >
           <h2 className="text-2xl font-semibold text-gray-900 mb-8">Asset</h2>
 
           {/* Asset Details Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Details</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Asset Details
+            </h3>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Left Column */}
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Asset Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Asset Name
+                  </label>
                   <input
                     {...register("assetName")}
-                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                     placeholder="Enter asset name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Location / Zone</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Location / Zone
+                  </label>
                   <input
                     {...register("locationZone")}
-                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                    className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                     placeholder="Enter location"
                   />
                 </div>
@@ -148,21 +175,40 @@ export default function ShowCustomerEdit() {
               {/* Right Column */}
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Asset Type</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Asset Type
+                  </label>
                   <Controller
                     name="assetType"
                     control={control}
                     render={({ field }) => (
-                      <Select value={field.value} onValueChange={field.onChange}>
-                        <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
-                          <SelectValue placeholder={singleCustomerAssest?.data?.type || "Select Site"} />
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                          <SelectValue
+                            placeholder={
+                              singleCustomerAssest?.data?.type || "Select Site"
+                            }
+                          />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Cooling Tower">Cooling Tower</SelectItem>
-                          <SelectItem value="Evaporative Condenser">Evaporative Condenser</SelectItem>
-                          <SelectItem value="Once-Through Cooling">Once-Through Cooling</SelectItem>
-                          <SelectItem value="Seawater Cooling Tower">Seawater Cooling Tower</SelectItem>
-                          <SelectItem value="Adiabatic Cooler">Adiabatic Cooler</SelectItem>
+                          <SelectItem value="Cooling Tower">
+                            Cooling Tower
+                          </SelectItem>
+                          <SelectItem value="Evaporative Condenser">
+                            Evaporative Condenser
+                          </SelectItem>
+                          <SelectItem value="Once-Through Cooling">
+                            Once-Through Cooling
+                          </SelectItem>
+                          <SelectItem value="Seawater Cooling Tower">
+                            Seawater Cooling Tower
+                          </SelectItem>
+                          <SelectItem value="Adiabatic Cooler">
+                            Adiabatic Cooler
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     )}
@@ -170,7 +216,9 @@ export default function ShowCustomerEdit() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-3.5">Installation Date</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-3.5">
+                    Installation Date
+                  </label>
 
                   <Controller
                     name="installationDate"
@@ -181,11 +229,13 @@ export default function ShowCustomerEdit() {
                           type="button"
                           onClick={() => setOpen((prev) => !prev)}
                           className={cn(
-                            "flex justify-between items-center w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]",
-                            !field.value && "text-gray-500"
+                            "flex justify-between items-center w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]",
+                            !field.value && "text-gray-500",
                           )}
                         >
-                          {field.value ? format(field.value, "MM/dd/yyyy") : "MM/DD/YYYY"}
+                          {field.value
+                            ? format(field.value, "MM/dd/yyyy")
+                            : "MM/DD/YYYY"}
                           <CalendarIcon className="w-4 h-4 text-gray-400 ml-2" />
                         </button>
 
@@ -193,9 +243,9 @@ export default function ShowCustomerEdit() {
                           <div className="absolute z-50 mt-2 bg-white border rounded-lg shadow-lg">
                             <Calendar
                               mode="single"
-                              selected={field.value}  // Bind to form state
+                              selected={field.value} // Bind to form state
                               onSelect={(date) => {
-                                field.onChange(date);  // Update form state
+                                field.onChange(date); // Update form state
                                 setOpen(false); // Close the calendar
                               }}
                               initialFocus
@@ -212,41 +262,51 @@ export default function ShowCustomerEdit() {
 
           {/* Operational Parameters Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Operational Parameters</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Operational Parameters
+            </h3>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">System Volume (m³)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  System Volume (m³)
+                </label>
                 <input
                   {...register("systemVolume")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter system volume"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Flow Rate (m³/hr)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Flow Rate (m³/hr)
+                </label>
                 <input
                   {...register("flowRate")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter flow rate"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Operating Temperature (°C)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Operating Temperature (°C)
+                </label>
                 <input
                   {...register("operatingTemperature")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter operating temperature"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Cycles of Concentration</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cycles of Concentration
+                </label>
                 <input
                   {...register("cyclesOfConcentration")}
-                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                  className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                   placeholder="Enter cycles of concentration"
                 />
               </div>
@@ -255,24 +315,34 @@ export default function ShowCustomerEdit() {
 
           {/* Asset Condition Section */}
           <div className="mb-10">
-            <h3 className="text-lg font-medium text-gray-900 mb-6">Asset Condition</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-6">
+              Asset Condition
+            </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Material Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Material Type
+                </label>
                 <Controller
                   name="materialType"
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Carbon Steel">Carbon Steel</SelectItem>
-                        <SelectItem value="Stainless Steel">Stainless Steel</SelectItem>
+                        <SelectItem value="Carbon Steel">
+                          Carbon Steel
+                        </SelectItem>
+                        <SelectItem value="Stainless Steel">
+                          Stainless Steel
+                        </SelectItem>
                         <SelectItem value="Copper">Copper</SelectItem>
-                        <SelectItem value="Galvanized Steel">Galvanized Steel</SelectItem>
+                        <SelectItem value="Galvanized Steel">
+                          Galvanized Steel
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   )}
@@ -280,14 +350,21 @@ export default function ShowCustomerEdit() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Current Condition</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Current Condition
+                </label>
                 <Controller
                   name="currentCondition"
                   control={control}
                   render={({ field }) => (
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
-                        <SelectValue placeholder={singleCustomerAssest?.data?.currentCondition || "Select Site"} />
+                      <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
+                        <SelectValue
+                          placeholder={
+                            singleCustomerAssest?.data?.currentCondition ||
+                            "Select Site"
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Excellent">Excellent</SelectItem>
@@ -303,25 +380,27 @@ export default function ShowCustomerEdit() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Known Issues</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Known Issues
+              </label>
               <textarea
                 {...register("knownIssues")}
                 rows={4}
-                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-950 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 placeholder="Describe any known issues, maintenance concerns, or performance problems..."
               />
             </div>
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end mt-10">
+          <div className="flex justify-end gap-5 mt-10">
             <div
-            onClick={() => router.back()}
-            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2 mr-2"
-            >Back</div>
-            <button
-              className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2"
+              onClick={() => router.back()}
+              className=" px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
             >
+              Back
+            </div>
+            <button className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2">
               {isLoading && (
                 <>
                   <LuLoader
@@ -332,7 +411,6 @@ export default function ShowCustomerEdit() {
               Save Water Analysis
             </button>
           </div>
-
         </form>
       </div>
     </div>
