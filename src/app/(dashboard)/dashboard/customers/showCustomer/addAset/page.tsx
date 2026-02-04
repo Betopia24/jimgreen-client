@@ -21,6 +21,7 @@ import { RootState } from "@/redux/store";
 import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface AssetFormData {
   assetName: string;
@@ -410,7 +411,13 @@ export default function AddAset() {
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end mt-10">
+          <div className="flex justify-end mt-10 gap-5">
+            <Link
+              href={"/dashboard/customers/showCustomer"}
+              className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
+            >
+              Back
+            </Link>
             <button className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer flex items-center gap-2">
               {isLoading && (
                 <>
