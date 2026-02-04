@@ -104,7 +104,7 @@ const useAuthUser = () => {
       dispatch(
         setUser({
           user: data.data,
-        })
+        }),
       );
     }
   }, [data, dispatch]);

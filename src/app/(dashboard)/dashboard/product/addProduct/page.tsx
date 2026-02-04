@@ -14,8 +14,11 @@ import { useCreateProductMutation } from "@/redux/api/productsManage/productSlic
 import { Error } from "../../rowMeterials/addRowMeterials/page";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function AddProduct() {
+  const route = useRouter();
   const {
     register,
     handleSubmit,
@@ -34,8 +37,8 @@ function AddProduct() {
       compatibilityNote: "",
       costPerUnit: "",
       averageMonthlyConsumption: "4",
-      consumptionUnit: "ppm",
-      replacementFrequency: "Monthly",
+      consumptionType: "ppm",
+      replacementFrequency: "monthly",
     },
   });
 
@@ -43,7 +46,7 @@ function AddProduct() {
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
 
   const userProfile = data?.data;
-  console.log(userProfile?.companyMember?.companyId);
+  console.log(userProfile);
 
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -65,7 +68,7 @@ function AddProduct() {
       console.log(response);
       if (response?.success) {
         toast.success(response?.message);
-        // route.push("/dashboard/rowMeterials");
+        route.push("/dashboard/product");
       }
     } catch (error) {
       console.log(error);
@@ -363,7 +366,7 @@ function AddProduct() {
                   className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="consumptionUnit"
+                  name="consumptionType"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -418,13 +421,13 @@ function AddProduct() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end">
-          {/* <button
-            onClick={handleFormSubmit}
-            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+        <div className="flex gap-5 justify-end">
+          <Link
+            href={"/dashboard/product"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
           >
-            Save Product
-          </button> */}
+            Back
+          </Link>
           <PrimaryButton
             type="button"
             onClick={handleFormSubmit}

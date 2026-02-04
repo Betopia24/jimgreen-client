@@ -164,7 +164,12 @@ export default function SignInPage() {
           </Link>
         </div>
         {/* Login Button */}
-        <PrimaryButton type="submit" loading={isLoading} text="Sign In" />
+        <PrimaryButton
+          type="submit"
+          loading={isLoading}
+          text="Sign In"
+          className="w-full"
+        />
       </form>
       <div className="text-center mb-3 mt-3 text-[16px] text-gray-600">
         Don’t have an account?{" "}

@@ -10,16 +10,35 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
-import { useCreateProductMutation } from "@/redux/api/productsManage/productSliceApi";
+import {
+  useCreateProductMutation,
+  useGetSignleProductQuery,
+  useUpdateProductsMutation,
+} from "@/redux/api/productsManage/productSliceApi";
 import { Error } from "../../rowMeterials/addRowMeterials/page";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
+import { useParams, useSearchParams } from "next/navigation";
+import { Product } from "@/components/dashboard/product/productRowMeterialTable";
+import { useEffect } from "react";
+import Link from "next/link";
 
-function AddProduct() {
+function UpdateProduct() {
+  const params = useParams();
+  const id = params.productId as string;
+
+  const { data: signleProduct, isLoading } = useGetSignleProductQuery(id);
+  const [updateProduct, { isLoading: updateLoading }] =
+    useUpdateProductsMutation();
+
+  const { data: profileData } = useGetMeProfileQuery("");
+  const userProfile = profileData?.data;
+
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -34,41 +53,70 @@ function AddProduct() {
       compatibilityNote: "",
       costPerUnit: "",
       averageMonthlyConsumption: "4",
-      consumptionUnit: "ppm",
+      consumptionType: "ppm",
       replacementFrequency: "Monthly",
     },
   });
 
-  const [createProductPost, { isLoading }] = useCreateProductMutation();
-  const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
+  useEffect(() => {
+    if (signleProduct?.data) {
+      const product = signleProduct.data as Product;
 
-  const userProfile = data?.data;
-  console.log(userProfile?.companyMember?.companyId);
+      reset({
+        name: product.name ?? "",
+        manufacturer: product.manufacturer ?? "",
+        productCategory: product.productCategory ?? "Biocide",
+        intendedUse: product.intendedUse ?? "Cooling",
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log(userProfile?.companyMember?.companyId);
-    if (!userProfile?.companyMember?.companyId) {
-      console.error("Company ID is missing");
-      return;
+        operatingPhRangeMin:
+          product.operatingPhRangeMin !== undefined
+            ? String(product.operatingPhRangeMin)
+            : "",
+
+        operatingPhRangeMax:
+          product.operatingPhRangeMax !== undefined
+            ? String(product.operatingPhRangeMax)
+            : "",
+
+        temperatureTolerance:
+          product.temperatureTolerance !== undefined
+            ? String(product.temperatureTolerance)
+            : "",
+        maximumHardnessAllowed:
+          product.maximumHardnessAllowed !== undefined
+            ? String(product.maximumHardnessAllowed)
+            : "",
+        compatibilityNote: product.compatibilityNote ?? "",
+        costPerUnit:
+          product.costPerUnit !== undefined ? String(product.costPerUnit) : "",
+
+        averageMonthlyConsumption:
+          product.averageMonthlyConsumption !== undefined
+            ? String(product.averageMonthlyConsumption)
+            : "",
+        consumptionType: product.consumptionUnit ?? "ppm",
+        replacementFrequency: product.replacementFrequency ?? "monthly",
+      });
     }
+  }, [signleProduct, reset]);
+
+  /**  UPDATE ONLY */
+  const onSubmit = async (formData: any) => {
+    if (!userProfile?.companyMember?.companyId) return;
 
     const payload = {
       companyId: userProfile.companyMember.companyId,
-      isActive: true,
-      ...data,
+      ...formData,
     };
-    console.log(" payloadForm Data: ", payload);
 
     try {
-      const response = await createProductPost(payload).unwrap();
-      console.log(response);
-      if (response?.success) {
-        toast.success(response?.message);
-        // route.push("/dashboard/rowMeterials");
-      }
+      const response = await updateProduct({
+        payload,
+        id,
+      }).unwrap();
+
+      toast.success(response?.message);
     } catch (error) {
-      console.log(error);
       const err = error as Error;
       toast.error(err?.data?.message);
     }
@@ -79,9 +127,7 @@ function AddProduct() {
     handleSubmit(onSubmit)(e);
   };
 
-  if (profielLoading) {
-    return <LoadingPage />;
-  }
+  if (isLoading) return <LoadingPage />;
 
   return (
     <div>
@@ -167,10 +213,7 @@ function AddProduct() {
                 name="intendedUse"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
@@ -293,10 +336,7 @@ function AddProduct() {
                 name="maximumHardnessAllowed"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
@@ -363,7 +403,7 @@ function AddProduct() {
                   className="flex-1 w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="consumptionUnit"
+                  name="consumptionType"
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -393,16 +433,11 @@ function AddProduct() {
                 name="replacementFrequency"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* <SelectItem value="Daily">Daily</SelectItem>
-                      <SelectItem value="Weekly">Weekly</SelectItem> */}
                       <SelectItem value="monthly">Monthly</SelectItem>
                       <SelectItem value="quarterly">Quarterly</SelectItem>
                       <SelectItem value="semi-annually">
@@ -418,17 +453,17 @@ function AddProduct() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end">
-          {/* <button
-            onClick={handleFormSubmit}
-            className="px-6 py-3 bg-[#004AAD] text-white font-medium rounded-lg hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"
+        <div className="flex gap-5 justify-end">
+          <Link
+            href={"/dashboard/product"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
           >
-            Save Product
-          </button> */}
+            Back
+          </Link>
           <PrimaryButton
             type="button"
             onClick={handleFormSubmit}
-            loading={isLoading}
+            loading={updateLoading}
             text=" Update Product"
             className="px-8"
           />
@@ -438,4 +473,4 @@ function AddProduct() {
   );
 }
 
-export default AddProduct;
+export default UpdateProduct;

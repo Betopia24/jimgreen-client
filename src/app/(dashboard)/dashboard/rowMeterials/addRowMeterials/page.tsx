@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export type Error = {
   data: {
@@ -54,7 +55,7 @@ export default function AddRowMeterials() {
       chemicalType: "Biocide",
       supplierName: "ChemSupply Co.",
       dosageRate: "4",
-      dosageUnit: "ppm",
+      dosageType: "ppm",
       feedFrequency: "Daily",
       safetyClassification: "Hazardous",
       instructions: "",
@@ -190,7 +191,7 @@ export default function AddRowMeterials() {
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="dosageUnit"
+                  name="dosageType"
                   control={control}
                   render={(
                     { field }, ///
@@ -290,7 +291,13 @@ export default function AddRowMeterials() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end m-6 mt-0">
+        <div className="flex gap-5 justify-end m-6 mt-0">
+          <Link
+            href={"/dashboard/rowMeterials"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
+          >
+            Back
+          </Link>
           <button
             onClick={handleFormSubmit}
             className="px-6 py-3 flex items-center gap-3 bg-[#004AAD] text-white font-medium rounded-md hover:bg-[#004AAD] transition-colors text-sm cursor-pointer"

@@ -1,73 +1,93 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Search, Trash2 } from "lucide-react";
 import { FiEdit } from "react-icons/fi";
 import Link from "next/link";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+import {
+  useAllProductsQuery,
+  useDeleteProductMutation,
+  useUpdateProductsMutation,
+} from "@/redux/api/productsManage/productSliceApi";
+import LoadingPage from "@/components/shared/loading/LoadingPage";
+import DeleteConfirmModal from "@/components/shared/DeteleConfirm/DeleteConfirm";
+
+export interface Company {
+  id: string;
+  name: string;
+  email: string;
+  location: string;
+}
+
+export type ProductCategory =
+  | "Corrosion Inhibitor"
+  | "Biocide"
+  | "Scale Inhibitor"
+  | "Dispersant"
+  | "Other";
+
+export type IntendedUse = "Cooling" | "Boiler" | "Process Water";
+
+export type ReplacementFrequency =
+  | "daily"
+  | "weekly"
+  | "monthly"
+  | "quarterly"
+  | "semi-annually"
+  | "annually";
+
+export interface Product {
+  id: string;
+  name: string;
+  manufacturer: string;
+  productCategory: ProductCategory;
+  intendedUse: IntendedUse;
+  operatingPhRangeMin: number | undefined;
+  operatingPhRangeMax: number | undefined;
+  temperatureTolerance: number | string;
+  maximumHardnessAllowed: number | string;
+  compatibilityNote: string;
+  costPerUnit: number;
+  averageMonthlyConsumption: number | string;
+  consumptionUnit?: string;
+  replacementFrequency: ReplacementFrequency;
+  isActive: boolean;
+  companyId: string;
+  createdAt: string;
+  updatedAt: string;
+  company: Company;
+}
 
 export default function ProductRowMeterialTable() {
-  const materials = [
-    {
-      id: "1",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Active",
-      statusColor: "bg-[#34A85333] text-[#34A853]",
-    },
-    {
-      id: "2",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Active",
-      statusColor: "bg-[#34A85333] text-[#34A853]",
-    },
-    {
-      id: "3",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Active",
-      statusColor: "bg-[#34A85333] text-[#34A853]",
-    },
-    {
-      id: "4",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Inactive",
-      statusColor: "bg-[#E5E7EB] text-[#2D2D2D]",
-    },
-    {
-      id: "5",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Active",
-      statusColor: "bg-[#34A85333] text-[#34A853]",
-    },
-    {
-      id: "6",
-      name: "ScaleGuard 500",
-      manufacturer: "ChemPure Water Solutions",
-      productCategory: "Biocide",
-      productprice: "$45.50",
-      replacementFrequency: "Monthly",
-      status: "Inactive",
-      statusColor: "bg-[#E5E7EB] text-[#2D2D2D]",
-    },
-  ];
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const user = useSelector((state: RootState) => state.user.user);
+
+  const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
+  const [deleteProduct, { isLoading: loading }] = useDeleteProductMutation();
+
+  const id =
+    data?.data?.companyMember?.companyId || user?.companyMember?.companyId;
+  const { data: allData, isLoading } = useAllProductsQuery(id);
+  console.log(allData);
+  const products = allData?.data as Product[];
+
+  const handleDelete = async () => {
+    console.log(selectedItem);
+    try {
+      const response = await deleteProduct(selectedItem).unwrap();
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (profielLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="bg-gray-50 py-6">
@@ -115,41 +135,54 @@ export default function ProductRowMeterialTable() {
                 </tr>
               </thead>
               <tbody>
-                {materials.map((material, index) => (
+                {products?.map((product, index) => (
                   <tr
                     key={index}
                     className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                   >
                     <td className="py-4 px-6 text-[#2D2D2D] text-sm font-medium">
-                      {material.name}
+                      {product.name}
                     </td>
                     <td className="py-4 px-6 text-[#636F85] text-sm">
-                      {material.manufacturer}
+                      {product.manufacturer}
                     </td>
                     <td className="py-4 px-6 text-[#191919] text-sm">
-                      {material.productCategory}
+                      {product.productCategory}
                     </td>
                     <td className="py-4 px-6 text-[#636F85] text-sm">
-                      {material.productprice}
+                      {product.costPerUnit}$
                     </td>
                     <td className="py-4 px-6 text-[#4A5565] text-sm">
-                      {material.replacementFrequency}
+                      {product.replacementFrequency}
                     </td>
+
                     <td className="py-4 px-6">
                       <span
-                        className={`inline-flex items-center px-3 py-1 rounded text-xs font-medium ${material.statusColor}`}
+                        className={`inline-flex items-center cursor-pointer px-3 py-1 rounded-full text-xs font-semibold
+                            ${
+                              product.isActive
+                                ? "bg-green-100 text-green-700 border border-green-300"
+                                : "bg-red-100 text-red-700 border border-red-300"
+                            }
+                            `}
                       >
-                        {material.status}
+                        {product.isActive ? "Active" : "Inactive"}
                       </span>
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <Link href={`/dashboard/product/${material.id}`}>
+                        <Link href={`/dashboard/product/${product.id}`}>
                           <button className="text-[#0058DD] hover:text-[#0058DD] transition-colors cursor-pointer mt-2">
                             <FiEdit className="w-4 h-4" />
                           </button>
                         </Link>
-                        <button className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer">
+                        <button
+                          onClick={() => {
+                            setSelectedItem(product.id);
+                            setIsDeleteOpen(true);
+                          }}
+                          className="text-[#E7000B] hover:text-[#E7000B] transition-colors cursor-pointer"
+                        >
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
@@ -161,6 +194,16 @@ export default function ProductRowMeterialTable() {
           </div>
         </div>
       </div>
+      <DeleteConfirmModal
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={handleDelete}
+        title="Raw Materials"
+        message="Are you sure you want to delete this project? This action cannot be undone."
+        confirmText="Yes, Delete"
+        cancelText="No, Cancel"
+        isLoading={loading}
+      />
     </div>
   );
 }

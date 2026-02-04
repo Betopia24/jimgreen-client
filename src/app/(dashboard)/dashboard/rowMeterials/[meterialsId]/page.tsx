@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { Error } from "../addRowMeterials/page";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
+import Link from "next/link";
 
 export default function EditMaterials() {
   const params = useParams<{ meterialsId: string }>();
@@ -45,7 +46,7 @@ export default function EditMaterials() {
       chemicalType: "",
       supplierName: "",
       dosageRate: "",
-      dosageUnit: "",
+      dosageType: "",
       feedFrequency: "",
       safetyClassification: "",
       instructions: "",
@@ -61,7 +62,7 @@ export default function EditMaterials() {
         chemicalType: materials.chemicalType,
         supplierName: materials.supplierName,
         dosageRate: materials.dosageRate,
-        dosageUnit: "ppm",
+        dosageType: "ppm",
         feedFrequency: materials.feedFrequency,
         safetyClassification: materials.safetyClassification,
         instructions: materials.instructions,
@@ -190,7 +191,7 @@ export default function EditMaterials() {
                   className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
                 />
                 <Controller
-                  name="dosageUnit"
+                  name="dosageType"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -279,7 +280,13 @@ export default function EditMaterials() {
         </div>
 
         {/* Save Button */}
-        <div className="flex justify-end m-6 mt-0">
+        <div className="flex justify-end gap-5 m-6 mt-0">
+          <Link
+            href={"/dashboard/rowMeterials"}
+            className="px-6 py-3 bg-gray-200 text-black font-medium rounded-lg hover:bg-gray-300 transition-colors text-sm cursor-pointer"
+          >
+            Back
+          </Link>
           <PrimaryButton
             type="button"
             onClick={handleFormSubmit}
