@@ -66,7 +66,19 @@ export default function SignInPage() {
           }),
         );
         toast.success("Login successful");
-        router.push("/dashboard");
+        if (response?.data?.user?.role === "ADMIN") {
+          router.push("http://localhost:3011/super-admin");
+        } else if (
+          response?.data?.user?.role === "USER" &&
+          response?.data?.user?.companyMember?.role === "owner"
+        ) {
+          router.push("http://localhost:3011/admin");
+        } else if (
+          response?.data?.user?.role === "USER" &&
+          response?.data?.user?.companyMember?.role === "member"
+        ) {
+          router.push("http://localhost:3008/dashboard");
+        }
       }
     } catch (error: any) {
       console.log("Error during sign-in:", error);
