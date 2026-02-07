@@ -75,6 +75,7 @@ export default function ProductRowMeterialTable() {
   console.log(allData);
   const products = allData?.data as Product[];
 
+  // delete function
   const handleDelete = async () => {
     console.log(selectedItem);
     try {
