@@ -17,7 +17,20 @@ export const getMe = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+
+    profileUpdateAvatar: builder.mutation({
+      query: (payload) => ({
+        url: "/users/profile/avatar",
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetMeProfileQuery, useProfileUpdateMutation } = getMe;
+export const {
+  useGetMeProfileQuery,
+  useProfileUpdateMutation,
+  useProfileUpdateAvatarMutation,
+} = getMe;

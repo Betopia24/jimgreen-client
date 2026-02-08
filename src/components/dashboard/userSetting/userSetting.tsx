@@ -428,6 +428,7 @@ import Image from "next/image";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import {
   useGetMeProfileQuery,
+  useProfileUpdateAvatarMutation,
   useProfileUpdateMutation,
 } from "@/redux/api/getMe/getMeApi";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
@@ -467,7 +468,9 @@ export default function SettingsPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
-  const [updateProfilePost, isLoading] = useProfileUpdateMutation();
+  const [updateProfilePost, { isLoading }] = useProfileUpdateMutation();
+  const [avatarUpdateProfilePost, { isLoading: avatarLoading }] =
+    useProfileUpdateAvatarMutation();
 
   const {
     register: registerProfile,
@@ -493,6 +496,8 @@ export default function SettingsPage() {
 
   const newPassword = watch("newPassword");
 
+  console.log(data?.data.avatar);
+
   // Handle image upload
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
@@ -507,10 +512,10 @@ export default function SettingsPage() {
 
       const payload = new FormData();
 
-      payload.append("flie", file);
+      payload.append("file", file);
 
       try {
-        const response = await updateProfilePost(payload).unwrap();
+        const response = await avatarUpdateProfilePost(payload).unwrap();
         if (response?.success) {
           toast.success(response?.message);
         }
@@ -601,7 +606,7 @@ export default function SettingsPage() {
                 <div className="relative inline-block">
                   <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-gray-200 ring-4 ring-white shadow-lg">
                     <img
-                      src={profileImage}
+                      src={profileImage || data?.data?.avatar}
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
