@@ -8,7 +8,16 @@ export const getMe = baseApi.injectEndpoints({
       query: () => "/users/profile",
       providesTags: ["User"],
     }),
+
+    profileUpdate: builder.mutation({
+      query: (payload) => ({
+        url: "/users/profile",
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useGetMeProfileQuery } = getMe;
+export const { useGetMeProfileQuery, useProfileUpdateMutation } = getMe;
