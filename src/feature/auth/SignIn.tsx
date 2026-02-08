@@ -67,14 +67,14 @@ export default function SignInPage() {
         );
         toast.success("Login successful");
         if (response?.data?.user?.role === "ADMIN") {
-          router.push("http://localhost:3011/super-admin");
+          router.push("http://localhost:3017/super-admin");
           // router.push("http://206.162.244.131:3017/super-admin");
         } else if (
           response?.data?.user?.role === "USER" &&
           response?.data?.user?.companyMember?.role === "owner"
         ) {
           // router.push("http://206.162.244.131:3017/admin");
-          router.push("http://localhost:3011/admin");
+          router.push("http://localhost:3017/admin");
         } else if (
           response?.data?.user?.role === "USER" &&
           response?.data?.user?.companyMember?.role === "member"
