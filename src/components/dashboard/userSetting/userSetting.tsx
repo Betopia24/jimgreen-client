@@ -426,8 +426,13 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
-import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+import {
+  useGetMeProfileQuery,
+  useProfileUpdateMutation,
+} from "@/redux/api/getMe/getMeApi";
 import LoadingPage from "@/components/shared/loading/LoadingPage";
+import { toast } from "sonner";
+import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 
 // Type definitions
 interface ProfileFormData {
@@ -462,6 +467,7 @@ export default function SettingsPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
+  const [updateProfilePost, isLoading] = useProfileUpdateMutation();
 
   const {
     register: registerProfile,
@@ -488,7 +494,7 @@ export default function SettingsPage() {
   const newPassword = watch("newPassword");
 
   // Handle image upload
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>): void => {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
@@ -497,6 +503,21 @@ export default function SettingsPage() {
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
+      console.log(file);
+
+      const payload = new FormData();
+
+      payload.append("flie", file);
+
+      try {
+        const response = await updateProfilePost(payload).unwrap();
+        if (response?.success) {
+          toast.success(response?.message);
+        }
+      } catch (error) {
+        const err = error as Error;
+        toast.error(err.data.message);
+      }
     }
   };
 
@@ -522,10 +543,19 @@ export default function SettingsPage() {
     payload.append("lastName", formData.lastName);
     payload.append("email", formData.email);
 
-    if (imageFile) {
-      payload.append("avatar", imageFile);
-    }
+    // if (imageFile) {
+    //   payload.append("avatar", imageFile);
+    // }
 
+    try {
+      const response = await updateProfilePost({ payload: formData }).unwrap();
+      if (response?.success) {
+        toast.success(response?.message);
+      }
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     // await updateProfile(payload); // RTK mutation or fetch
   };
 
