@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import {
+  useChangePasswordMutation,
   useGetMeProfileQuery,
   useProfileUpdateAvatarMutation,
   useProfileUpdateMutation,
@@ -12,6 +13,7 @@ import {
 import LoadingPage from "@/components/shared/loading/LoadingPage";
 import { toast } from "sonner";
 import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import { LuLoader } from "react-icons/lu";
 
 // Type definitions
 interface ProfileFormData {
@@ -35,9 +37,6 @@ interface ProfileApiResponse {
 }
 
 export default function SettingsPage() {
-  const [profileImage, setProfileImage] = useState<string>(
-    "/default-avatar.jpg",
-  );
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   // Password visibility states
@@ -49,6 +48,12 @@ export default function SettingsPage() {
   const [updateProfilePost, { isLoading }] = useProfileUpdateMutation();
   const [avatarUpdateProfilePost, { isLoading: avatarLoading }] =
     useProfileUpdateAvatarMutation();
+  const [changePasswordPost, { isLoading: passowrChangeLoading }] =
+    useChangePasswordMutation();
+
+  const [profileImage, setProfileImage] = useState<string | null>(
+    "https://cdn-icons-png.flaticon.com/512/6858/6858504.png",
+  );
 
   const {
     register: registerProfile,
@@ -148,9 +153,8 @@ export default function SettingsPage() {
     resetSecurity();
   };
 
-  const avatarSrc =
-    profileImage?.trim() ||
-    "https://cdn-icons-png.flaticon.com/512/6858/6858504.png";
+  const avatarSrc = profileImage?.trim();
+  console.log(avatarSrc);
 
   if (profielLoading) {
     return <LoadingPage />;
@@ -175,37 +179,51 @@ export default function SettingsPage() {
               <div className="mb-8">
                 <div className="relative inline-block">
                   <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden bg-gray-200 ring-4 ring-white shadow-lg">
-                    <Image
+                    {/* <Image
                       width={111}
                       height={111}
                       src={avatarSrc}
                       alt="Profile"
                       className="w-full h-full object-cover"
+                    /> */}
+
+                    <img
+                      src={avatarSrc}
+                      alt="Profile"
+                      className="w-28 h-28 rounded-full object-cover"
                     />
                   </div>
                   <label
                     htmlFor="profile-image"
                     className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full cursor-pointer shadow-lg transition-colors duration-200"
                   >
-                    <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+                    {avatarLoading ? (
+                      <>
+                        <LuLoader className="animate-spin" />
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          className="w-4 h-4 sm:w-5 sm:h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                          />
+                        </svg>
+                      </>
+                    )}
                   </label>
                   <input
                     id="profile-image"
@@ -308,6 +326,7 @@ export default function SettingsPage() {
                 type="submit"
                 text="Save Changes"
                 className="px-10 py-3"
+                loading={isLoading}
               ></PrimaryButton>
             </form>
           </div>
