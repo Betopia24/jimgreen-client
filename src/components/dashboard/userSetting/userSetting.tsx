@@ -136,20 +136,21 @@ export default function SettingsPage() {
   };
 
   // Handle security form submission
-  const onSecuritySubmit: SubmitHandler<SecurityFormData> = (data) => {
+  const onSecuritySubmit: SubmitHandler<SecurityFormData> = async (data) => {
     console.log("Security Data:", data);
-    // Add your API call here
-    // Example:
-    // await fetch('/api/change-password', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     currentPassword: data.currentPassword,
-    //     newPassword: data.newPassword,
-    //   }),
-    // });
-
-    alert("Password changed successfully!");
+    const payload = {
+      currentPassword: data.currentPassword,
+      newPassword: data.newPassword,
+    };
+    try {
+      const response = await changePasswordPost(payload).unwrap();
+      if (response?.success) {
+        toast.success(response?.message);
+      }
+    } catch (error) {
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     resetSecurity();
   };
 
@@ -562,8 +563,9 @@ export default function SettingsPage() {
 
               <PrimaryButton
                 type="submit"
-                text="Save Preferences"
+                text="Save Password Change"
                 className="px-10 py-3"
+                loading={passowrChangeLoading}
               ></PrimaryButton>
             </form>
           </div>
