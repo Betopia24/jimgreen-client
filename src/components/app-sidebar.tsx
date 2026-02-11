@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Sidebar,
   SidebarContent,
@@ -54,12 +53,12 @@ export default function AppSidebar() {
       size: 18,
     },
     { href: "/dashboard/history", icon: MdHistory, label: "History", size: 20 },
-    {
-      href: "/dashboard/subscription",
-      icon: FiCreditCard,
-      label: "Subscription",
-      size: 16,
-    },
+    // {
+    //   href: "/dashboard/subscription",
+    //   icon: FiCreditCard,
+    //   label: "Subscription",
+    //   size: 16,
+    // },
     {
       href: "/dashboard/setting",
       icon: IoSettingsOutline,
