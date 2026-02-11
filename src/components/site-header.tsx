@@ -1,12 +1,15 @@
-
-"use client"
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import Image from "next/image"
+"use client";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  console.log(pathname)
+
+  const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
+  const user = data?.data;
+  console.log(user);
 
   return (
     <header className="flex h-auto shrink-0 items-center border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
@@ -28,7 +31,7 @@ export function SiteHeader() {
 //         } */}
           <div className="flex-1">
             <h1 className="text-base sm:text-lg lg:text-xl font-bold text-primaryColor">
-              Welcome back, Md Shakil
+              Welcome back, {user?.firstName} {user?.lastName}
             </h1>
             <p className="text-xs sm:text-sm lg:text-base text-[#636F85] mt-0.5">
               Here's your Chemistry Analysis Platform
@@ -41,7 +44,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2 bg-[#F3F4F6] rounded-full px-3 py-1.5 sm:px-4 sm:py-2">
             <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden bg-[#d2caf0] flex-shrink-0">
               <Image
-                src="/dashboardImage/profileImage.svg"
+                src={user?.avatar || "/dashboardImage/profileImage.svg"}
                 width={28}
                 height={28}
                 alt="User"
@@ -49,11 +52,11 @@ export function SiteHeader() {
               />
             </div>
             <span className="text-xs sm:text-sm font-medium text-[#2D2D2D] whitespace-nowrap">
-              Md Shakil
+              {user?.firstName} {user?.lastName}
             </span>
           </div>
         </div>
       </div>
     </header>
-  )
+  );
 }
