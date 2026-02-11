@@ -9,7 +9,6 @@ export function SiteHeader() {
 
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
   const user = data?.data;
-  console.log(user);
 
   return (
     <header className="flex h-auto shrink-0 items-center border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
