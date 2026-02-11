@@ -53,6 +53,7 @@ export default function SignInPage() {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const domain = window.location.origin;
   const onSubmit = async (data: FormValues) => {
     console.log("Form Data:", data);
     try {
@@ -67,20 +68,31 @@ export default function SignInPage() {
         );
         toast.success("Login successful");
         if (response?.data?.user?.role === "ADMIN") {
-          // router.push("http://localhost:3017/super-admin");
-          router.push("http://206.162.244.131:3017/super-admin");
+          if (domain === "http://localhost:3008") {
+            router.push("http://localhost:3017/super-admin");
+          } else {
+            router.push(
+              `${process.env.NEXT_PUBLIC_DOMAIN_URL_TWO}/super-admin`,
+            );
+          }
         } else if (
           response?.data?.user?.role === "USER" &&
           response?.data?.user?.companyMember?.role === "owner"
         ) {
-          router.push("http://206.162.244.131:3017/admin");
-          // router.push("http://localhost:3017/admin");
+          if (domain === "http://localhost:3008") {
+            router.push("http://localhost:3017/admin");
+          } else {
+            router.push(`${process.env.NEXT_PUBLIC_DOMAIN_URL_TWO}/admin`);
+          }
         } else if (
           response?.data?.user?.role === "USER" &&
           response?.data?.user?.companyMember?.role === "member"
         ) {
-          // router.push("http://localhost:3008/dashboard");
-          router.push("http://206.162.244.131:3008/dashboard");
+          if (domain === "http://localhost:3008") {
+            router.push("http://localhost:3008/dashboard");
+          } else {
+            router.push(`${process.env.NEXT_PUBLIC_DOMAIN_URL_ONE}/dashboard`);
+          }
         }
       }
     } catch (error: any) {
