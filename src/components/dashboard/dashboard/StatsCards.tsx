@@ -1,5 +1,6 @@
 "use client";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+import { useGetHomeOverviewQuery } from "@/redux/api/home/homeSlicsApi";
 import { setUser } from "@/redux/features/user/userSlice";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -7,6 +8,10 @@ import { useDispatch } from "react-redux";
 export default function StatsCards() {
   const dispatch = useDispatch();
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
+  const { data: statsData } = useGetHomeOverviewQuery("");
+
+  const allStats = statsData?.data?.reportStats;
+  console.log(allStats);
 
   dispatch(setUser(data?.data));
 
@@ -14,32 +19,36 @@ export default function StatsCards() {
     {
       id: 2,
       title: "Total Analyses",
-      value: "1,247",
-      subtitle: "+24 calculations",
+      value: `${allStats?.totalReports?.value}`,
+      subtitle: `${allStats?.totalReports?.changePercent} calculations`,
       subtitleColor: "text-[#009D34]",
       image: "/dashboardImage/dashboard/cardImage1.svg",
     },
     {
       id: 2,
       title: "Last 30 Days",
-      value: "89",
-      subtitle: "+24 calculations",
+      value: `${allStats?.monthlyReports?.value}`,
+      subtitle: `${allStats?.monthlyReports?.changePercent} calculations`,
       subtitleColor: "text-[#009D34]",
       image: "/dashboardImage/dashboard/cardImage2.svg",
     },
     {
       id: 3,
       title: "Active Clients",
-      value: "123",
-      subtitle: "+23 this month",
+      // value: "123",
+      // subtitle: "+23 this month",
+      value: `${allStats?.monthlyReports?.value}`,
+      subtitle: `${allStats?.monthlyReports?.changePercent} this month`,
       subtitleColor: "text-[#009D34]",
       image: "/dashboardImage/dashboard/cardImage3.svg",
     },
     {
       id: 4,
       title: "Pending Reports",
-      value: "1,247",
-      subtitle: "-2 from yesterday",
+      // value: "1,247",
+      // subtitle: "-2 from yesterday",
+      value: `${allStats?.monthlyCustomers?.value}`,
+      subtitle: `${allStats?.monthlyCustomers?.todayIncrease} from yesterday`,
       subtitleColor: "text-[#F40004]",
       image: "/dashboardImage/dashboard/cardImage4.svg",
     },
