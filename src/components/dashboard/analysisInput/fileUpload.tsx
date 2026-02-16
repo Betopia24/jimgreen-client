@@ -4,12 +4,15 @@ import React, { useState, useRef } from "react";
 import { Upload, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
+import { useDispatch } from "react-redux";
+import { setAnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 
 export default function FileUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [uploadFilePost, { isLoading }] = useUploadAnalysisFileMutation();
 
@@ -67,6 +70,28 @@ export default function FileUpload() {
     fileInputRef.current?.click();
   };
 
+  const handleUploadAndNext = async () => {
+    if (!selectedFile) return;
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await uploadFilePost(formData).unwrap();
+
+      console.log("API Response:", response);
+
+      // Save response to redux
+      dispatch(setAnalysisData(response));
+
+      //  Go next page
+      router.push("/dashboard/analysisInput/analysisChemistyInput");
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Upload failed. Please try again.");
+    }
+  };
+
   return (
     <div>
       <div className="bg-white rounded-xl hover:shadow-sm p-6 border border-[#EBEBEB]">
@@ -111,9 +136,7 @@ export default function FileUpload() {
 
             {selectedFile ? (
               <button
-                onClick={() =>
-                  router.push("/dashboard/analysisInput/analysisChemistyInput")
-                }
+                onClick={handleUploadAndNext}
                 className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#004AAD] hover:bg-[#004AAD] text-white text-[16px] font-medium rounded-lg cursor-pointer"
               >
                 Next
