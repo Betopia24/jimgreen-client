@@ -3,7 +3,7 @@ import { AnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisTyp
 
 interface AnalysisState {
   analysisData: AnalysisData | null;
-  analysisAllData: null;
+  analysisAllData: {} | null;
 }
 
 const initialState: AnalysisState = {
