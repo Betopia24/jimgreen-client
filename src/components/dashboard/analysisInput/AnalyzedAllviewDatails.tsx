@@ -4,6 +4,9 @@ import Image from "next/image";
 import React from "react";
 import ScoreCard from "./detailsComonents/ScoreCard";
 import { useSelector } from "react-redux";
+import PageHeader from "../PageHeader";
+import Link from "next/link";
+import { GoArrowRight } from "react-icons/go";
 
 interface Props {
   data: any;
@@ -118,6 +121,22 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
 
   return (
     <div className="space-y-6">
+      {/* heading part  */}
+      <div className="flex items-center justify-between">
+        <PageHeader
+          title="Chemical Analysis Graphs"
+          description="Interactive visualization of water quality parameters"
+        />
+        <Link href="/dashboard/analysisInput/analysisChemistyInput">
+          <button
+            type="submit"
+            className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>Recalculation </span>
+            <GoArrowRight size={20} className="text-white" />
+          </button>
+        </Link>
+      </div>
       {/* GRAPH */}
       {/* <Section title="Parameter Comparison Graph">
         <div className="relative w-full h-[400px] lg:h-">

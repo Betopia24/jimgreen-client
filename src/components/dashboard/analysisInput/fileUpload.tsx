@@ -6,7 +6,9 @@ import { useRouter } from "next/navigation";
 import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { useDispatch } from "react-redux";
 import { setAnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
-import LoadingPage from "@/components/shared/loading/LoadingPage2";
+import LoadingPage2 from "@/components/shared/loading/LoadingPage2";
+import PageLoader from "@/components/shared/loading/LoadingPage";
+import FullScreenLoader from "@/components/shared/loading/Loader";
 
 export default function FileUpload() {
   const [isDragging, setIsDragging] = useState(false);
@@ -94,7 +96,7 @@ export default function FileUpload() {
   };
 
   if (isLoading) {
-    return <LoadingPage />;
+    return <FullScreenLoader />;
   }
 
   return (

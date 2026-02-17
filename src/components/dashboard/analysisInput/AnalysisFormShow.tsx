@@ -539,6 +539,7 @@ import { UserProfile } from "@/interfaces/global";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { setAnalysisAllDetailsData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
+import FullScreenLoader from "@/components/shared/loading/Loader";
 
 /* ===========================
    TYPES
@@ -750,9 +751,13 @@ export default function WaterChemistryForm() {
      UI
   =========================== */
 
+  if (isLoading) {
+    return <FullScreenLoader />;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow p-10">
+    <div className="">
+      <div className=" bg-white rounded-2xl shadow p-10">
         <h1 className="text-2xl font-semibold mb-8">
           Water Chemistry Parameters
         </h1>

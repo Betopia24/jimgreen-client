@@ -3,7 +3,7 @@
 import Image from "next/image";
 import loadingCircle from "@/assets/loading/loadingCerle.svg";
 
-const LoadingPage = () => {
+const LoadingPage2 = () => {
   return (
     <div className="flex items-center justify-center min-h-64 lg:min-h-9/12">
       <div className="relative">
@@ -21,4 +21,4 @@ const LoadingPage = () => {
   );
 };
 
-export default LoadingPage;
+export default LoadingPage2;
