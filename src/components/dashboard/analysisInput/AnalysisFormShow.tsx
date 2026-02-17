@@ -534,12 +534,14 @@ import { RootState } from "@/redux/store";
 import {
   useAnalyzeReportMutation,
   useGetCoustomerListQuery,
+  useRecalculateReportAnalysisMutation,
 } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { UserProfile } from "@/interfaces/global";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { setAnalysisAllDetailsData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 import FullScreenLoader from "@/components/shared/loading/Loader";
+import { Loader2 } from "lucide-react";
 
 /* ===========================
    TYPES
@@ -580,6 +582,9 @@ interface Customer {
 export default function WaterChemistryForm() {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const {
     register,
     handleSubmit,
@@ -616,6 +621,8 @@ export default function WaterChemistryForm() {
   const customers: Customer[] = data?.data ?? [];
 
   const [analyzePost, { isLoading }] = useAnalyzeReportMutation();
+  const [ReCulanalyzePost, { isLoading: ReCulLoading }] =
+    useRecalculateReportAnalysisMutation();
 
   /* ===========================
      PARAMETER CONFIG
@@ -727,18 +734,32 @@ export default function WaterChemistryForm() {
           };
         });
 
-      const payload = {
-        customerId: data.customerId,
-        parameters,
-      };
-
-      const response = await analyzePost(payload).unwrap();
-      console.log(response);
-      if (response?.success) {
-        toast.success(response.message);
-        dispatch(setAnalysisAllDetailsData(response?.data));
-        router.push("/dashboard/analysisInput/analysis-all-details");
-        reset();
+      if (id) {
+        const payload = {
+          reportId: id,
+          adjustedParameters: parameters,
+        };
+        const response = await ReCulanalyzePost(payload).unwrap();
+        console.log(response);
+        if (response?.success) {
+          toast.success(response.message);
+          dispatch(setAnalysisAllDetailsData(response?.data));
+          router.push("/dashboard/analysisInput/analysis-all-details");
+          reset();
+        }
+      } else {
+        const payload = {
+          customerId: data.customerId,
+          parameters,
+        };
+        const response = await analyzePost(payload).unwrap();
+        console.log(response);
+        if (response?.success) {
+          toast.success(response.message);
+          dispatch(setAnalysisAllDetailsData(response?.data));
+          router.push("/dashboard/analysisInput/analysis-all-details");
+          reset();
+        }
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
@@ -751,12 +772,17 @@ export default function WaterChemistryForm() {
      UI
   =========================== */
 
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
+  // if (isLoading || ReCulLoading) {
+  //   return <FullScreenLoader />;
+  // }
 
   return (
-    <div className="">
+    <div className=" mt-10 relative">
+      {(isLoading || ReCulLoading) && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/02 backdrop-blur-xs z-50">
+          <Loader2 className="animate-spin w-10 h-10 text-[#0058DD]" />
+        </div>
+      )}
       <div className=" bg-white rounded-2xl shadow p-10">
         <h1 className="text-2xl font-semibold mb-8">
           Water Chemistry Parameters

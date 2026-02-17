@@ -1,11 +1,5 @@
-import MainReportsDetails from '@/components/dashboard/history/repotsDetails/MainReportsDetails'
-
 function DashboardDetails() {
-    return (
-        <div className='my-6'>
-            <MainReportsDetails />
-        </div>
-    )
+  return <div className="my-6">page</div>;
 }
 
-export default DashboardDetails
+export default DashboardDetails;

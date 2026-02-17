@@ -218,6 +218,7 @@ const GraphSection: React.FC<Props> = ({ report, id }) => {
               priority
               onLoadingComplete={() => setImageLoading(false)}
               onLoadStart={() => setImageLoading(true)}
+              unoptimized
             />
           )}
         </div>

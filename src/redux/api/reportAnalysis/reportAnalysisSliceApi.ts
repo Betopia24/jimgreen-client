@@ -29,6 +29,15 @@ export const analysisApi = baseApi.injectEndpoints({
       invalidatesTags: ["reportAnalysis"],
     }),
 
+    recalculateReportAnalysis: builder.mutation({
+      query: (payload) => ({
+        url: `/report-analysis/recalculate-report`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["reportAnalysis"],
+    }),
+
     getCoustomerList: builder.query({
       query: (id) => ({
         url: `/customers/company/${id}/list/`,
@@ -61,6 +70,7 @@ export const {
   useGetCoustomerListQuery,
   useAnalyzeReportMutation,
   useModifyRepordGraphMutation,
+  useRecalculateReportAnalysisMutation,
   useGetReportHistoryQuery,
   useGetReportHistorySignleQuery,
 } = analysisApi;

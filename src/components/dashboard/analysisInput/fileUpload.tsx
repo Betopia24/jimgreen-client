@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Upload, FileText } from "lucide-react";
+import { Upload, FileText, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { useDispatch } from "react-redux";
@@ -36,6 +36,13 @@ export default function FileUpload() {
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFile(files[0]);
+    }
+  };
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -95,9 +102,9 @@ export default function FileUpload() {
     }
   };
 
-  if (isLoading) {
-    return <FullScreenLoader />;
-  }
+  // if (isLoading) {
+  //   return <FullScreenLoader />;
+  // }
 
   return (
     <div>
@@ -119,6 +126,12 @@ export default function FileUpload() {
               }
             `}
         >
+          {isLoading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/05 backdrop-blur-xs z-10">
+              <Loader2 className="animate-spin w-10 h-10 text-[#0058DD]" />
+            </div>
+          )}
+
           <input
             ref={fileInputRef}
             type="file"
@@ -179,6 +192,27 @@ export default function FileUpload() {
           </div>
         </div>
       </div>
+      {selectedFile && (
+        <div className="w-full  mt-4">
+          <div className="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+            <div>
+              <p className="text-sm font-medium text-green-700">
+                {selectedFile.name}
+              </p>
+              <p className="text-xs text-green-600">
+                {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+              </p>
+            </div>
+
+            <button
+              onClick={handleRemoveFile}
+              className="text-red-500 hover:text-red-700 text-sm font-medium"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
