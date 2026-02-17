@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import Cookies from "js-cookie";
 import { LuLoader } from "react-icons/lu";
 import { useState } from "react";
+import { PiMagicWandLight } from "react-icons/pi";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -37,6 +38,12 @@ export default function AppSidebar() {
       href: "/dashboard/analysisInput",
       icon: CiDroplet,
       label: "Analysis Input",
+      size: 24,
+    },
+    {
+      href: "/dashboard/analysisLab",
+      icon: PiMagicWandLight,
+      label: "Analysis Lab",
       size: 24,
     },
     {
