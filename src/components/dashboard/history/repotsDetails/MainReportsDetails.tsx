@@ -1,12 +1,27 @@
 "use client";
-import ReportsDetailsOne from "./ReportsDetailsOne";
-import TrendAnalysisDashboard from "./ReportsDetailsTow";
+import { useGetReportHistorySignleQuery } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
+// import ReportsDetailsOne from "./ReportsDetailsOne";
+// import TrendAnalysisDashboard from "./ReportsDetailsTow";
+import Loading from "@/components/Others/Loading";
+import ShowAllReportDetailsData from "./ShowAllReportDetailsData";
 
-const MainReportsDetails = () => {
+const MainReportsDetails = ({ historyId }: { historyId: string }) => {
+  // console.log("historyid==============", historyId);
+  const { data: reportDetailsData, isLoading } = useGetReportHistorySignleQuery(historyId);
+
+  if (isLoading) {
+    return (
+      <div>
+        <Loading />
+      </div>
+    )
+  }
+
   return (
     <div>
-      <ReportsDetailsOne />
-      <TrendAnalysisDashboard />
+      {/* <ReportsDetailsOne />
+      <TrendAnalysisDashboard /> */}
+      <ShowAllReportDetailsData reportDetailsData={reportDetailsData}/>
     </div>
   );
 };

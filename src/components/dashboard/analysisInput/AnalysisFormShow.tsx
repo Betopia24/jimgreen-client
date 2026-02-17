@@ -737,7 +737,7 @@ export default function WaterChemistryForm() {
       if (id) {
         const payload = {
           reportId: id,
-          parameters,
+          adjustedParameters: parameters,
         };
         const response = await ReCulanalyzePost(payload).unwrap();
         console.log(response);

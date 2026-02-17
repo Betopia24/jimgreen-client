@@ -19,9 +19,10 @@ export default function HistoryTable() {
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User;
     const companyId = profile?.companyMember?.companyId;
+    // console.log("companyId==============", companyId);
 
     const { data: reportHistoryData, isLoading } = useGetReportHistoryQuery(companyId);
-    console.log("reportHistoryData==============", reportHistoryData);
+    // console.log("reportHistoryData==============", reportHistoryData);
 
     // Extended data to ensure pagination is visible (18 items → 2 pages)
     // const reportsData = [
@@ -248,11 +249,9 @@ export default function HistoryTable() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center h-64">
-                <p>
+                <div>
                     <Loading />
-                </p>
-            </div>
+                </div>
         )
     }
 
