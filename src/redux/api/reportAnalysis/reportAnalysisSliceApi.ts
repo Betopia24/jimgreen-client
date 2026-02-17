@@ -27,6 +27,12 @@ export const analysisApi = baseApi.injectEndpoints({
       }),
       providesTags: ["Products"],
     }),
+    getReportHistory: builder.query({
+      query: (id) => ({
+        url: `/report-analysis/report/6992dbd64b5086645b06dad6`,
+        method: "GET",
+      })
+    })
   }),
 });
 
@@ -34,4 +40,5 @@ export const {
   useUploadAnalysisFileMutation,
   useGetCoustomerListQuery,
   useAnalyzeReportMutation,
+  useGetReportHistoryQuery,
 } = analysisApi;
