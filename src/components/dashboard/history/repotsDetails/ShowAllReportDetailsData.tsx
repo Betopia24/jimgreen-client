@@ -15,6 +15,8 @@ import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
 import ScoreCard from "../../analysisInput/detailsComonents/ScoreCard";
+import { format } from "date-fns";
+
 
 const badge = (status: string) => {
     const s = status?.toLowerCase();
@@ -163,10 +165,14 @@ const ShowAllReportDetailsData = ({ reportDetailsData }: { reportDetailsData: an
             <Section title="Report Information">
                 <div className="grid md:grid-cols-2 gap-6 text-sm">
                     <InfoItem label="Report ID" value={report?.report_id} />
-                    <InfoItem label="Test Date" value={report?.test_date} />
-                    <InfoItem label="Location" value={report?.location} />
-                    <InfoItem label="Lab Name" value={report?.lab_name} />
-                    <InfoItem label="Water Source" value={report?.water_source} />
+                    <InfoItem
+                        label="Test Date"
+                        value={
+                            report?.created_at
+                                ? format(new Date(report.created_at), "dd MMM yyyy, hh:mm a")
+                                : "N/A"
+                        }
+                    />
                 </div>
             </Section>
 
