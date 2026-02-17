@@ -17,7 +17,16 @@ export const analysisApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: ["reportAnalysis"],
+    }),
+
+    modifyRepordGraph: builder.mutation({
+      query: (payload) => ({
+        url: `/report-analysis/modify-report-graph`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["reportAnalysis"],
     }),
 
     getCoustomerList: builder.query({
@@ -25,7 +34,7 @@ export const analysisApi = baseApi.injectEndpoints({
         url: `/customers/company/${id}/list/`,
         method: "GET",
       }),
-      providesTags: ["Products"],
+      providesTags: ["reportAnalysis"],
     }),
 
     // get report history all data 
@@ -51,6 +60,7 @@ export const {
   useUploadAnalysisFileMutation,
   useGetCoustomerListQuery,
   useAnalyzeReportMutation,
+  useModifyRepordGraphMutation,
   useGetReportHistoryQuery,
   useGetReportHistorySignleQuery,
 } = analysisApi;

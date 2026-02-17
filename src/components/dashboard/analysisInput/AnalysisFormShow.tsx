@@ -733,8 +733,8 @@ export default function WaterChemistryForm() {
       };
 
       const response = await analyzePost(payload).unwrap();
-
-      if (response.success) {
+      console.log(response);
+      if (response?.success) {
         toast.success(response.message);
         dispatch(setAnalysisAllDetailsData(response?.data));
         router.push("/dashboard/analysisInput/analysis-all-details");
