@@ -100,7 +100,6 @@ const CoolingTowerAnalysis: React.FC = () => {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
     console.log("Payload:", JSON.stringify(data, null, 2));
-    alert(`Analysis triggered!\n\nPayload:\n${JSON.stringify(data, null, 2)}`);
   };
 
   const handleCancel = () => {
