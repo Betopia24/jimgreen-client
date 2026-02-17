@@ -534,10 +534,11 @@ import { RootState } from "@/redux/store";
 import {
   useAnalyzeReportMutation,
   useGetCoustomerListQuery,
+  useRecalculateReportAnalysisMutation,
 } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { UserProfile } from "@/interfaces/global";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { setAnalysisAllDetailsData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 import FullScreenLoader from "@/components/shared/loading/Loader";
 
@@ -580,6 +581,9 @@ interface Customer {
 export default function WaterChemistryForm() {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const {
     register,
     handleSubmit,
@@ -616,6 +620,8 @@ export default function WaterChemistryForm() {
   const customers: Customer[] = data?.data ?? [];
 
   const [analyzePost, { isLoading }] = useAnalyzeReportMutation();
+  const [ReCulanalyzePost, { isLoading: ReCulLoading }] =
+    useRecalculateReportAnalysisMutation();
 
   /* ===========================
      PARAMETER CONFIG
@@ -727,18 +733,32 @@ export default function WaterChemistryForm() {
           };
         });
 
-      const payload = {
-        customerId: data.customerId,
-        parameters,
-      };
-
-      const response = await analyzePost(payload).unwrap();
-      console.log(response);
-      if (response?.success) {
-        toast.success(response.message);
-        dispatch(setAnalysisAllDetailsData(response?.data));
-        router.push("/dashboard/analysisInput/analysis-all-details");
-        reset();
+      if (id) {
+        const payload = {
+          reportId: id,
+          parameters,
+        };
+        const response = await ReCulanalyzePost(payload).unwrap();
+        console.log(response);
+        if (response?.success) {
+          toast.success(response.message);
+          dispatch(setAnalysisAllDetailsData(response?.data));
+          router.push("/dashboard/analysisInput/analysis-all-details");
+          reset();
+        }
+      } else {
+        const payload = {
+          customerId: data.customerId,
+          parameters,
+        };
+        const response = await analyzePost(payload).unwrap();
+        console.log(response);
+        if (response?.success) {
+          toast.success(response.message);
+          dispatch(setAnalysisAllDetailsData(response?.data));
+          router.push("/dashboard/analysisInput/analysis-all-details");
+          reset();
+        }
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
@@ -751,7 +771,7 @@ export default function WaterChemistryForm() {
      UI
   =========================== */
 
-  if (isLoading) {
+  if (isLoading || ReCulLoading) {
     return <FullScreenLoader />;
   }
 
