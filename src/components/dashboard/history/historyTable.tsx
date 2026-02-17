@@ -233,18 +233,18 @@ export default function HistoryTable() {
     //     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
     // };
 
-    // const getRiskBadgeColor = (risk: string) => {
-    //     switch (risk) {
-    //         case 'low':
-    //             return 'bg-green-100 text-green-800';
-    //         case 'medium':
-    //             return 'bg-yellow-100 text-yellow-800';
-    //         case 'high':
-    //             return 'bg-red-100 text-red-800';
-    //         default:
-    //             return 'bg-gray-100 text-gray-800';
-    //     }
-    // };
+    const getRiskBadgeColor = (rating: string) => {
+        switch (rating) {
+            case 'low':
+                return 'bg-green-100 text-green-800';
+            case 'medium':
+                return 'bg-yellow-100 text-yellow-800';
+            case 'high':
+                return 'bg-red-100 text-red-800';
+            default:
+                return 'bg-gray-100 text-gray-800';
+        }
+    };
 
     if (isLoading) {
         return (
@@ -292,19 +292,19 @@ export default function HistoryTable() {
                 <div className="flex flex-col md:flex-row lg:items-center lg:justify-between gap-4">
 
                     {/* Search Input */}
-                    {/* <div className="relative w-full lg:w-0 lg:flex-1">
+                    <div className="relative w-full lg:w-0 lg:flex-1">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#B4B4B4] w-5 h-5" />
                         <input
                             type="text"
                             placeholder="Search by ID, customer, or sample..."
-                            value={searchTerm}
-                            onChange={(e) => {
-                                setSearchTerm(e.target.value);
-                                setCurrentPage(1);
-                            }}
+                            // value={searchTerm}
+                            // onChange={(e) => {
+                            //     setSearchTerm(e.target.value);
+                            //     setCurrentPage(1);
+                            // }}
                             className="w-full pl-11 pr-4 py-3 border border-[#F3F3F3] rounded-lg text-sm text-[#191919] placeholder-[#B4B4B4] bg-[#F3F3F3] focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
-                    </div> */}
+                    </div>
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
@@ -329,10 +329,10 @@ export default function HistoryTable() {
                         <thead>
                             <tr className="bg-[#F3F3F3] border-b border-gray-200">
                                 <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Report ID</th>
-                                <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Customer</th>
+                                <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Customer Name</th>
                                 <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Date</th>
-                                <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Analyst</th>
                                 <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Score</th>
+                                <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Rating</th>
                                 <th className="text-left py-4 px-6 font-medium text-sm text-gray-700">Action</th>
                             </tr>
                         </thead>
@@ -353,19 +353,16 @@ export default function HistoryTable() {
                                             {report?.report_id}
                                         </td>
                                         <td className="py-4 px-6 text-sm text-gray-900 font-medium">
+                                            {report?.customerName}
+                                        </td>
+                                        <td className="py-4 px-6 text-sm text-gray-600">
                                             {report?.createdAt &&
                                                 format(new Date(report.createdAt), "dd MMM yyyy, hh:mm a")}
-                                        </td>
-                                        <td className="py-4 px-6 text-sm text-gray-600">
-                                            {report?.createdAt}
-                                        </td>
-                                        <td className="py-4 px-6 text-sm text-gray-600">
-                                            {report?.analyst}
                                         </td>
                                         <td className="py-4 px-6">
                                             <div className="flex items-center gap-3">
                                                 <span className="text-sm font-semibold text-gray-900">
-                                                    {report.score}
+                                                    {report?.total_score?.overall_score}
                                                 </span>
                                                 {/* <span
                                                     className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getRiskBadgeColor(
@@ -375,6 +372,9 @@ export default function HistoryTable() {
                                                     {report.risk}
                                                 </span> */}
                                             </div>
+                                        </td>
+                                        <td className="py-4 px-6 text-sm text-gray-600">
+                                            {report?.total_score?.rating}
                                         </td>
                                         <td className="py-4 px-6">
                                             <Link href={`/dashboard/history/${report?.id}`}>
