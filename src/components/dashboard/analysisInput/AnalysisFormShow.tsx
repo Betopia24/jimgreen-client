@@ -541,6 +541,7 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { setAnalysisAllDetailsData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 import FullScreenLoader from "@/components/shared/loading/Loader";
+import { Loader2 } from "lucide-react";
 
 /* ===========================
    TYPES
@@ -771,12 +772,17 @@ export default function WaterChemistryForm() {
      UI
   =========================== */
 
-  if (isLoading || ReCulLoading) {
-    return <FullScreenLoader />;
-  }
+  // if (isLoading || ReCulLoading) {
+  //   return <FullScreenLoader />;
+  // }
 
   return (
-    <div className="">
+    <div className=" mt-10 relative">
+      {(isLoading || ReCulLoading) && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/02 backdrop-blur-xs z-50">
+          <Loader2 className="animate-spin w-10 h-10 text-[#0058DD]" />
+        </div>
+      )}
       <div className=" bg-white rounded-2xl shadow p-10">
         <h1 className="text-2xl font-semibold mb-8">
           Water Chemistry Parameters
