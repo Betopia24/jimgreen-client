@@ -116,8 +116,12 @@ const RiskCard = ({ label, value, highlight }: any) => (
 );
 
 const WaterFullReport: React.FC<Props> = ({ data }) => {
-  const analysisViewData = useSelector((state: any) => state.analysis);
-  const report = data?.data.waterReport;
+  const analysisViewData = useSelector(
+    (state: any) => state.analysis.analysisAllData,
+  );
+  // const report = data?.data.waterReport;
+  const report = analysisViewData.waterReport;
+
   console.log("analysisViewData", analysisViewData);
 
   return (
@@ -139,16 +143,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
         </Link>
       </div>
       {/* GRAPH */}
-      {/* <Section title="Parameter Comparison Graph">
-        <div className="relative w-full h-[400px] lg:h-">
-          <Image
-            src={report?.parameter_graph?.graph_url}
-            alt="Graph"
-            fill
-            className="object-contain rounded-lg"
-          />
-        </div>
-      </Section> */}
+
       <GraphSection report={report} />
 
       {/* CUSTOMER INFO */}
@@ -307,12 +302,6 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
         </div>
       </Section>
 
-      {/* QUALITY REPORT */}
-      {/* <Section title="Quality Report">
-        <pre className="bg-gray-50 p-4 rounded text-xs overflow-auto">
-          {JSON.stringify(report?.quality_report, null, 2)}
-        </pre>
-      </Section> */}
       {/* QUALITY REPORT */}
       <Section title="Quality Assessment Summary">
         <div className="grid md:grid-cols-3 gap-6">
