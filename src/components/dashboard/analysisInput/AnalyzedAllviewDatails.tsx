@@ -115,6 +115,8 @@ const RiskCard = ({ label, value, highlight }: any) => (
   </div>
 );
 
+// ============================ Main Component =============================
+
 const WaterFullReport: React.FC<Props> = ({ data }) => {
   const analysisViewData = useSelector(
     (state: any) => state.analysis.analysisAllData,
@@ -132,7 +134,9 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
           title="Chemical Analysis Graphs"
           description="Interactive visualization of water quality parameters"
         />
-        <Link href="/dashboard/analysisInput/analysisChemistyInput">
+        <Link
+          href={`/dashboard/analysisInput/analysisChemistyInput?id=${analysisViewData.id} `}
+        >
           <button
             type="submit"
             className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
@@ -144,7 +148,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       </div>
       {/* GRAPH */}
 
-      <GraphSection report={report} />
+      <GraphSection report={report} id={analysisViewData.id} />
 
       {/* CUSTOMER INFO */}
       <Section title="Customer Information">
