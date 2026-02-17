@@ -29,7 +29,7 @@ export const analysisApi = baseApi.injectEndpoints({
     }),
     getReportHistory: builder.query({
       query: (id) => ({
-        url: `/report-analysis/report/6992dbd64b5086645b06dad6`,
+        url: `/report-analysis/history/${id}`,
         method: "GET",
       })
     })
