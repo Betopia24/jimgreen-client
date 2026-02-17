@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import PageHeader from "../PageHeader";
 import Link from "next/link";
 import { GoArrowRight } from "react-icons/go";
+import GraphSection from "./detailsComonents/ReportGrap";
 
 interface Props {
   data: any;
@@ -26,7 +27,7 @@ const badge = (status: string) => {
   return "bg-gray-100 text-gray-600";
 };
 
-const Section = ({ title, children }: any) => (
+export const Section = ({ title, children }: any) => (
   <div className="bg-white rounded-xl shadow border p-6 space-y-4">
     <h2 className="text-xl font-semibold border-b pb-2">{title}</h2>
     {children}
@@ -148,22 +149,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
           />
         </div>
       </Section> */}
-      <Section title="Parameter Comparison Graph">
-        <div className="w-full">
-          <div className="relative w-full aspect-[16/9]">
-            <Image
-              src={report?.parameter_graph?.graph_url}
-              alt="Parameter Comparison Graph"
-              fill
-              className="object-contain rounded-lg"
-              sizes="(max-width: 768px) 100vw,
-               (max-width: 1200px) 80vw,
-               1200px"
-              priority
-            />
-          </div>
-        </div>
-      </Section>
+      <GraphSection report={report} />
 
       {/* CUSTOMER INFO */}
       <Section title="Customer Information">
