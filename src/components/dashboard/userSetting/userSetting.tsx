@@ -10,7 +10,7 @@ import {
   useProfileUpdateAvatarMutation,
   useProfileUpdateMutation,
 } from "@/redux/api/getMe/getMeApi";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { toast } from "sonner";
 import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 import { LuLoader } from "react-icons/lu";

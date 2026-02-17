@@ -9,7 +9,7 @@ import {
   useDeleteRowMaterialsMutation,
 } from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import moment from "moment";

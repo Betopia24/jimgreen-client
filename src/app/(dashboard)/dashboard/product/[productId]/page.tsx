@@ -16,7 +16,7 @@ import {
   useUpdateProductsMutation,
 } from "@/redux/api/productsManage/productSliceApi";
 import { Error } from "../../rowMeterials/addRowMeterials/page";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import { useParams, useSearchParams } from "next/navigation";
 import { Product } from "@/components/dashboard/product/productRowMeterialTable";

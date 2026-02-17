@@ -12,7 +12,7 @@ import { toast } from "sonner";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { useCreateProductMutation } from "@/redux/api/productsManage/productSliceApi";
 import { Error } from "../../rowMeterials/addRowMeterials/page";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";

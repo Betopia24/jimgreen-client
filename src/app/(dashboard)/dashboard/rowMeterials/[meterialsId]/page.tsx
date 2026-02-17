@@ -17,7 +17,7 @@ import {
 import { Material } from "@/components/dashboard/rowMeterials/rowMeterialsTable";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { Error } from "../addRowMeterials/page";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import Link from "next/link";
