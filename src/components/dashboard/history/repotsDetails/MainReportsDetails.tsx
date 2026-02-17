@@ -1,13 +1,13 @@
 "use client";
 import { useGetReportHistorySignleQuery } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
-import ReportsDetailsOne from "./ReportsDetailsOne";
-import TrendAnalysisDashboard from "./ReportsDetailsTow";
+// import ReportsDetailsOne from "./ReportsDetailsOne";
+// import TrendAnalysisDashboard from "./ReportsDetailsTow";
 import Loading from "@/components/Others/Loading";
+import ShowAllReportDetailsData from "./ShowAllReportDetailsData";
 
 const MainReportsDetails = ({ historyId }: { historyId: string }) => {
   // console.log("historyid==============", historyId);
   const { data: reportDetailsData, isLoading } = useGetReportHistorySignleQuery(historyId);
-  console.log("reportDetailsData==============", reportDetailsData);
 
   if (isLoading) {
     return (
@@ -19,8 +19,9 @@ const MainReportsDetails = ({ historyId }: { historyId: string }) => {
 
   return (
     <div>
-      <ReportsDetailsOne />
-      <TrendAnalysisDashboard />
+      {/* <ReportsDetailsOne />
+      <TrendAnalysisDashboard /> */}
+      <ShowAllReportDetailsData reportDetailsData={reportDetailsData}/>
     </div>
   );
 };
