@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import PageHeader from "../PageHeader";
 import Link from "next/link";
 import { GoArrowRight } from "react-icons/go";
+import GraphSection from "./detailsComonents/ReportGrap";
 
 interface Props {
   data: any;
@@ -26,7 +27,7 @@ const badge = (status: string) => {
   return "bg-gray-100 text-gray-600";
 };
 
-const Section = ({ title, children }: any) => (
+export const Section = ({ title, children }: any) => (
   <div className="bg-white rounded-xl shadow border p-6 space-y-4">
     <h2 className="text-xl font-semibold border-b pb-2">{title}</h2>
     {children}
@@ -114,9 +115,15 @@ const RiskCard = ({ label, value, highlight }: any) => (
   </div>
 );
 
+// ============================ Main Component =============================
+
 const WaterFullReport: React.FC<Props> = ({ data }) => {
-  const analysisViewData = useSelector((state: any) => state.analysis);
-  const report = data?.data.waterReport;
+  const analysisViewData = useSelector(
+    (state: any) => state.analysis.analysisAllData,
+  );
+  // const report = data?.data.waterReport;
+  const report = analysisViewData.waterReport;
+
   console.log("analysisViewData", analysisViewData);
 
   return (
@@ -127,7 +134,9 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
           title="Chemical Analysis Graphs"
           description="Interactive visualization of water quality parameters"
         />
-        <Link href="/dashboard/analysisInput/analysisChemistyInput">
+        <Link
+          href={`/dashboard/analysisInput/analysisChemistyInput?id=${analysisViewData.id} `}
+        >
           <button
             type="submit"
             className="px-4 py-3 bg-primaryColor text-[#FFFFFF] font-medium rounded-lg hover:bg-primaryColor transition-colors cursor-pointer flex items-center justify-center gap-2"
@@ -138,32 +147,8 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
         </Link>
       </div>
       {/* GRAPH */}
-      {/* <Section title="Parameter Comparison Graph">
-        <div className="relative w-full h-[400px] lg:h-">
-          <Image
-            src={report?.parameter_graph?.graph_url}
-            alt="Graph"
-            fill
-            className="object-contain rounded-lg"
-          />
-        </div>
-      </Section> */}
-      <Section title="Parameter Comparison Graph">
-        <div className="w-full">
-          <div className="relative w-full aspect-[16/9]">
-            <Image
-              src={report?.parameter_graph?.graph_url}
-              alt="Parameter Comparison Graph"
-              fill
-              className="object-contain rounded-lg"
-              sizes="(max-width: 768px) 100vw,
-               (max-width: 1200px) 80vw,
-               1200px"
-              priority
-            />
-          </div>
-        </div>
-      </Section>
+
+      <GraphSection report={report} id={analysisViewData.id} />
 
       {/* CUSTOMER INFO */}
       <Section title="Customer Information">
@@ -321,12 +306,6 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
         </div>
       </Section>
 
-      {/* QUALITY REPORT */}
-      {/* <Section title="Quality Report">
-        <pre className="bg-gray-50 p-4 rounded text-xs overflow-auto">
-          {JSON.stringify(report?.quality_report, null, 2)}
-        </pre>
-      </Section> */}
       {/* QUALITY REPORT */}
       <Section title="Quality Assessment Summary">
         <div className="grid md:grid-cols-3 gap-6">
