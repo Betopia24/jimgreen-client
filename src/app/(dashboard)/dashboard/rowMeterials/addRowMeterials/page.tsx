@@ -14,7 +14,7 @@ import { useCreateRowMaterialsMutation } from "@/redux/api/rowMaterials/rowMater
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { toast } from "sonner";
 import { LuLoader } from "react-icons/lu";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 

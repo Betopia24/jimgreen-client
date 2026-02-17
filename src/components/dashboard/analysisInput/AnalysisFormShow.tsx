@@ -529,7 +529,7 @@
 
 import { useForm } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import {
   useAnalyzeReportMutation,
@@ -537,6 +537,8 @@ import {
 } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { UserProfile } from "@/interfaces/global";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { setAnalysisAllDetailsData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 
 /* ===========================
    TYPES
@@ -575,6 +577,8 @@ interface Customer {
 =========================== */
 
 export default function WaterChemistryForm() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -731,6 +735,8 @@ export default function WaterChemistryForm() {
 
       if (response.success) {
         toast.success(response.message);
+        dispatch(setAnalysisAllDetailsData(response?.data));
+        router.push("/dashboard/analysisInput/analysis-all-details");
         reset();
       }
     } catch (error: any) {

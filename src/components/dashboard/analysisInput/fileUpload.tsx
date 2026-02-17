@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { useDispatch } from "react-redux";
 import { setAnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 
 export default function FileUpload() {
   const [isDragging, setIsDragging] = useState(false);
@@ -91,6 +92,10 @@ export default function FileUpload() {
       alert("Upload failed. Please try again.");
     }
   };
+
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div>

@@ -12,7 +12,7 @@ import {
   useDeleteProductMutation,
   useUpdateProductsMutation,
 } from "@/redux/api/productsManage/productSliceApi";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import DeleteConfirmModal from "@/components/shared/DeteleConfirm/DeleteConfirm";
 
 export interface Company {

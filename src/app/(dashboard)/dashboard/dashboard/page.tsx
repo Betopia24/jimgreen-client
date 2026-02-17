@@ -2,7 +2,7 @@
 import AnalysisTrends from "@/components/dashboard/dashboard/AnalysisTrends";
 import LatestRepostTable from "@/components/dashboard/dashboard/latestRepostTable";
 import StatsCards from "@/components/dashboard/dashboard/StatsCards";
-import LoadingPage from "@/components/shared/loading/LoadingPage";
+import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { useGetHomeOverviewQuery } from "@/redux/api/home/homeSlicsApi";
 
 function Dashboard() {

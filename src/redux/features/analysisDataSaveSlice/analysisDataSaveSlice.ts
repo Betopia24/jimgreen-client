@@ -3,10 +3,12 @@ import { AnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisTyp
 
 interface AnalysisState {
   analysisData: AnalysisData | null;
+  analysisAllData: null;
 }
 
 const initialState: AnalysisState = {
   analysisData: null,
+  analysisAllData: null,
 };
 
 const analysisSlice = createSlice({
@@ -19,9 +21,21 @@ const analysisSlice = createSlice({
     clearAnalysisData: (state) => {
       state.analysisData = null;
     },
+
+    setAnalysisAllDetailsData: (state, action) => {
+      state.analysisAllData = action.payload;
+    },
+    clearAnalysisAllDetailsData: (state) => {
+      state.analysisAllData = null;
+    },
   },
 });
 
-export const { setAnalysisData, clearAnalysisData } = analysisSlice.actions;
+export const {
+  setAnalysisData,
+  clearAnalysisData,
+  setAnalysisAllDetailsData,
+  clearAnalysisAllDetailsData,
+} = analysisSlice.actions;
 
 export default analysisSlice.reducer;
