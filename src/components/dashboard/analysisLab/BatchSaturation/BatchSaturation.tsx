@@ -249,6 +249,7 @@ const BatchSaturationModeling: React.FC = () => {
   );
 
   const handleManualSubmit = manualForm.handleSubmit(async (data) => {
+    console.log(data);
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(buildManualPayload(data));
@@ -256,6 +257,7 @@ const BatchSaturationModeling: React.FC = () => {
   });
 
   const handleSavedSubmit = savedForm.handleSubmit(async (data) => {
+    console.log(data);
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(buildSavedPayload(data));
@@ -536,18 +538,6 @@ const BatchSaturationModeling: React.FC = () => {
             )}
             {RenderGridResolution(manualForm.control)}
 
-            {/* Payload Preview */}
-            {submitted && (
-              <div className="bg-slate-900 rounded-2xl p-4 overflow-auto">
-                <p className="text-xs text-slate-400 mb-2 font-mono uppercase tracking-wider">
-                  → Payload Preview
-                </p>
-                <pre className="text-xs text-green-400 font-mono leading-relaxed whitespace-pre-wrap">
-                  {JSON.stringify(submitted, null, 2)}
-                </pre>
-              </div>
-            )}
-
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-2">
               <button
@@ -641,18 +631,6 @@ const BatchSaturationModeling: React.FC = () => {
 
             {RenderRangeSection(savedForm.control, savedForm.formState.errors)}
             {RenderGridResolution(savedForm.control)}
-
-            {/* Payload Preview */}
-            {submitted && (
-              <div className="bg-slate-900 rounded-2xl p-4 overflow-auto">
-                <p className="text-xs text-slate-400 mb-2 font-mono uppercase tracking-wider">
-                  → Payload Preview
-                </p>
-                <pre className="text-xs text-green-400 font-mono leading-relaxed whitespace-pre-wrap">
-                  {JSON.stringify(submitted, null, 2)}
-                </pre>
-              </div>
-            )}
 
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-2">
