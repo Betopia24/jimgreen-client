@@ -47,10 +47,18 @@ export const analysisApi = baseApi.injectEndpoints({
     }),
 
     // get report history all data 
+    // getReportHistory: builder.query({
+    //   query: (id) => ({
+    //     url: `/report-analysis/history/${id}`,
+    //     method: "GET",
+    //   }),
+    // }),
+
     getReportHistory: builder.query({
-      query: (id) => ({
-        url: `/report-analysis/history/${id}`,
+      query: ({ companyId, searchTerm }: { companyId: string; searchTerm?: string }) => ({
+        url: `/report-analysis/history/${companyId}`,
         method: "GET",
+        params: searchTerm ? { searchTerm } : undefined,
       }),
     }),
 

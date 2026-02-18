@@ -29,11 +29,11 @@ const renderObject = (obj: any) => {
 };
 
 function WaterChemistryResult() {
-  const analysislabData = useSelector(
+  const analysislabData : any = useSelector(
     (state: RootState) => state.analysisLab.analysisLabData
   );
 
-  const results = Array.isArray(analysislabData?.data?.data)
+  const results = Array.isArray(analysislabData?.data?.data) 
     ? analysislabData?.data?.data
     : analysislabData?.data?.data
       ? [analysislabData?.data?.data]
@@ -82,7 +82,7 @@ function WaterChemistryResult() {
       )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {results.map((item, index) =>
+        {results.map((item : any, index : number) =>
           Object.entries(item).map(([key, value]: any) => {
             if (!value) return null;
 
