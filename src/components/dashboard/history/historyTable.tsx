@@ -14,13 +14,13 @@ import Pagination from '@/components/shared/pagination/Pagination';
 
 export default function HistoryTable() {
     const [searchTerm, setSearchTerm] = useState('');
-    const trimmedSearchTerm = searchTerm.trim().toLowerCase(); 
+    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     const [currentPage, setCurrentPage] = useState(1);
 
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User;
     const companyId = profile?.companyMember?.companyId;
-    console.log("companyId==============", companyId);
+    // console.log("companyId==============", companyId);
 
     const { data: reportHistoryData, isLoading } = useGetReportHistoryQuery({
         companyId: companyId,
@@ -160,14 +160,6 @@ export default function HistoryTable() {
                     </table>
                 </div>
                 {/* Pagination - Always show if there are multiple pages */}
-                {/* <Pagination
-                    currentPage={reportHistoryData?.current_page || 1}
-                    totalPages={reportHistoryData?.total_pages || 1}
-                    onPageChange={(page) => {
-                        // Handle page change logic if needed
-                        console.log("Changing to page:", page);
-                    }}
-                /> */}
                 <div className="px-6 border-t flex justify-between items-center py-3">
                     <div className="text-sm text-gray-600">
                         Showing {reportHistoryData?.data.length} of {reportHistoryData?.total_items} reports
