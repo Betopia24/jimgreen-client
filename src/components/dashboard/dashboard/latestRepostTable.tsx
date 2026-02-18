@@ -213,11 +213,9 @@ const LatestReportTable = () => {
                 </td>
 
                 <td className="px-6 py-4">
-                  <Link
-                    href={`/dashboard/analysisInput/analysisChemistyInput?id=${report.id}`}
-                  >
+                  <Link href={`/dashboard/history`}>
                     <button className="text-blue-600 hover:underline text-sm">
-                      View
+                      All History
                     </button>
                   </Link>
                 </td>
