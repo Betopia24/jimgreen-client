@@ -2,7 +2,6 @@ import baseApi from "../baseApi";
 
 export const analysisLabApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-
     calculateWaterIndices: builder.mutation({
       query: (payload) => ({
         url: `/report-analysis/water/calculate-indices`,
@@ -34,7 +33,6 @@ export const analysisLabApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-
   }),
 });
 

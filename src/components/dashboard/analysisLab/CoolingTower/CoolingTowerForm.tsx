@@ -1,7 +1,13 @@
 "use client";
 
+import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import { useCalculateCoolingTowerIndicesMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
+import { setCoolingTowerData } from "@/redux/features/analysisLabSlice/analysisLabSlice";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 interface CoolingTowerFormData {
   recirculation_rate_gpm: number;
@@ -86,6 +92,10 @@ const inputClass = (hasError: boolean) =>
   }`;
 
 const CoolingTowerAnalysis: React.FC = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [coolingPost, { isLoading }] =
+    useCalculateCoolingTowerIndicesMutation();
   const {
     register,
     handleSubmit,
@@ -99,6 +109,19 @@ const CoolingTowerAnalysis: React.FC = () => {
   const onSubmit = async (data: CoolingTowerFormData) => {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 800));
+    try {
+      const payload = data;
+      const response = await coolingPost(payload).unwrap();
+      if (response?.success) {
+        toast.success(response.message);
+        dispatch(setCoolingTowerData(response.data));
+        router.push("/dashboard/analysisLab/cooling-tower/cooling-details");
+      }
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     console.log("Payload:", JSON.stringify(data, null, 2));
   };
 
@@ -300,7 +323,7 @@ const CoolingTowerAnalysis: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 active:bg-blue-900 text-white text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-xl bg-primaryColor hover:bg-blue-800 active:bg-blue-900 text-white text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <>
