@@ -13,6 +13,7 @@
 "use client";
 
 import { useCalculateWaterIndicesMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -21,6 +22,7 @@ type FormData = {
 };
 
 export default function UseSavedReportForm() {
+    const router = useRouter();
     const [calculatingWater, { isLoading }] = useCalculateWaterIndicesMutation();
 
     const {
@@ -38,6 +40,7 @@ export default function UseSavedReportForm() {
             const res = await calculatingWater(payload);
             toast.success("Water indices calculated successfully!");
             console.log("Response from backend:", res);
+            router.push("/dashboard/analysisLab/water-chemistry/water-chemistry-result");
         } catch (error) {
             toast.error("Failed to calculate water indices.");
         }
