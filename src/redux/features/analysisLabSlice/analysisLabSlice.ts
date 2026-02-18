@@ -1,15 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+interface CorrosionPrediction {
+  metal_type: string;
+  cr_mpy: number;
+  cr_base_mpy: number;
+  total_inhibition_percent?: number;
+  rating: string;
+}
 
 interface AnalysisLabState {
   analysisLabData: {} | null;
   coolingTower: any | null;
   batchSimulation: any | null;
+  corrsion: any | null;
 }
 
 const inisialState: AnalysisLabState = {
   analysisLabData: null,
   coolingTower: null,
   batchSimulation: null,
+  corrsion: [],
 };
 
 const analysisLabSlice = createSlice({
@@ -32,6 +41,12 @@ const analysisLabSlice = createSlice({
     clearBatchSaturationData: (state) => {
       state.batchSimulation = null;
     },
+    SetCorrosionPrediction: (state, action) => {
+      state.corrsion = action.payload;
+    },
+    clearCorrosionPrediction: (state) => {
+      state.corrsion = [];
+    },
   },
 });
 
@@ -41,5 +56,7 @@ export const {
   clearCoolingTowerData,
   setBatchSaturationData,
   clearBatchSaturationData,
+  clearCorrosionPrediction,
+  SetCorrosionPrediction,
 } = analysisLabSlice.actions;
 export default analysisLabSlice.reducer;

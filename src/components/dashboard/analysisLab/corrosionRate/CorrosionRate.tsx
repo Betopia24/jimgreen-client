@@ -1,7 +1,13 @@
 "use client";
 
+import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import { useCalculateCorrosionRateMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
+import { SetCorrosionPrediction } from "@/redux/features/analysisLabSlice/analysisLabSlice";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { toast } from "sonner";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -88,6 +94,9 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 // ─── Manual Entry Tab ─────────────────────────────────────────────────────────
 
 function ManualEntry({ onCancel }: { onCancel: () => void }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [corrosionPost, { isLoading }] = useCalculateCorrosionRateMutation();
   const {
     register,
     handleSubmit,
@@ -96,7 +105,7 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
     defaultValues: { metal_type: "mild_steel" },
   });
 
-  const onSubmit = (data: ManualFormData) => {
+  const onSubmit = async (data: ManualFormData) => {
     const payload = {
       metal_type: data.metal_type,
       parameters: {
@@ -120,6 +129,19 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
     };
     // console.log("Manual payload:", JSON.stringify(payload, null, 2));
     console.log(payload);
+    try {
+      const response = await corrosionPost(payload).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response.message);
+        router.push("/dashboard/analysisLab/corrosion-rate/corrosion-details");
+        dispatch(SetCorrosionPrediction(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     // alert("Simulation started! Check console for payload.");
   };
 
@@ -288,6 +310,9 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
 // ─── Saved Report Tab ─────────────────────────────────────────────────────────
 
 function SavedReport({ onCancel }: { onCancel: () => void }) {
+  const [corrosionPost, { isLoading }] = useCalculateCorrosionRateMutation();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -296,14 +321,34 @@ function SavedReport({ onCancel }: { onCancel: () => void }) {
     defaultValues: { metal_type: "mild_steel" },
   });
 
-  const onSubmit = (data: ReportFormData) => {
+  const onSubmit = async (data: ReportFormData) => {
     const payload = {
       report_id: data.report_id,
       metal_type: data.metal_type,
     };
     // console.log("Report payload:", JSON.stringify(payload, null, 2));
-    console.log(payload);
-    // alert("Indices calculated! Check console for payload.");
+    try {
+      const response = await corrosionPost(payload).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response.message);
+        dispatch(
+          SetCorrosionPrediction({
+            metal_type: response.data.metal_type,
+            cr_mpy: response.data.corrosion_prediction.cr_mpy,
+            cr_base_mpy: response.data.corrosion_prediction.cr_base_mpy,
+            total_inhibition_percent:
+              response.data.corrosion_prediction.total_inhibition_percent,
+            rating: response.data.corrosion_prediction.rating,
+          }),
+        );
+        router.push("/dashboard/analysisLab/corrosion-rate/corrosion-details");
+      }
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
   };
 
   return (
