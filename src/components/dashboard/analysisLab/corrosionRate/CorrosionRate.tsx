@@ -82,9 +82,7 @@ const Field = React.forwardRef<HTMLInputElement, FieldProps>(
 Field.displayName = "Field";
 
 const SectionHeading = ({ children }: { children: React.ReactNode }) => (
-  <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3 mt-1">
-    {children}
-  </h3>
+  <h3 className="text-xl font-semibold   mb-3 mt-1">{children}</h3>
 );
 
 // ─── Manual Entry Tab ─────────────────────────────────────────────────────────
@@ -127,6 +125,7 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <SectionHeading>Manual Water Parameters</SectionHeading>
       {/* Metal Type */}
       <div className="flex flex-col gap-1">
         <label className="flex items-center text-sm font-medium text-slate-700">
@@ -150,7 +149,6 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
 
       {/* Water Parameters */}
       <div>
-        <SectionHeading>Water Parameters</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field
             label="pH"
@@ -224,7 +222,7 @@ function ManualEntry({ onCancel }: { onCancel: () => void }) {
 
       {/* Saturation Indices */}
       <div>
-        <SectionHeading>Saturation Indices (SI)</SectionHeading>
+        <SectionHeading>Saturation Indices</SectionHeading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Field
             label="Calcite SI"
