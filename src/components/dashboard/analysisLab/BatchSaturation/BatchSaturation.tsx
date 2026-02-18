@@ -250,9 +250,30 @@ const BatchSaturationModeling: React.FC = () => {
 
   const handleManualSubmit = manualForm.handleSubmit(async (data) => {
     console.log(data);
+    // const payload = {
+    //   base_water_parameters: {
+    //     pH: { value: parseFloat(data.pH), unit: "" },
+    //     Calcium: { value: parseFloat(data.Calcium), unit: "mg/L" },
+    //     Magnesium: { value: parseFloat(data.Magnesium), unit: "mg/L" },
+    //     Sodium: { value: parseFloat(data.Sodium), unit: "mg/L" },
+    //     Potassium: { value: parseFloat(data.Potassium), unit: "mg/L" },
+    //     Chloride: { value: parseFloat(data.Chloride), unit: "mg/L" },
+    //     Sulfate: { value: parseFloat(data.Sulfate), unit: "mg/L" },
+    //     Alkalinity: { value: parseFloat(data.Alkalinity), unit: "mg/L" },
+    //     Temperature: { value: parseFloat(data.Temperature), unit: "°C" },
+    //   },
+    //   ph_range_min: parseFloat(data.ph_range_min),
+    //   ph_range_max: parseFloat(data.ph_range_max),
+    //   coc_range_min: parseFloat(data.coc_range_min),
+    //   coc_range_max: parseFloat(data.coc_range_max),
+    //   temp_range_min: parseFloat(data.temp_range_min),
+    //   temp_range_max: parseFloat(data.temp_range_max),
+    //   grid_resolution: data.grid_resolution,
+    // }
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(buildManualPayload(data));
+    console.log(submitted);
     setIsSubmitting(false);
   });
 
@@ -261,6 +282,7 @@ const BatchSaturationModeling: React.FC = () => {
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(buildSavedPayload(data));
+    console.log(submitted);
     setIsSubmitting(false);
   });
 
