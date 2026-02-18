@@ -825,7 +825,7 @@ export default function WaterChemistryForm() {
                 </label>
                 <input
                   type="number"
-                  step="0.01"
+                  step="0.001"
                   {...register(param.name, {
                     valueAsNumber: true,
                   })}
