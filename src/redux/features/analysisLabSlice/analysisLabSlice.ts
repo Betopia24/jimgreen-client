@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnalysisLabResponse } from "./analysisLabTypes";
 
 interface AnalysisLabState {
-    analysisLabData: {} | null;
+    analysisLabData: AnalysisLabResponse | null;
 }
 
-const inisialState: AnalysisLabState = {
+const initialState: AnalysisLabState = {
     analysisLabData: null,
-}
-
+};
 
 const analysisLabSlice = createSlice({
     name: "analysisLab",
-    initialState: inisialState,
+    initialState,
     reducers: {
-        setAnalysisLabData: (state, action: PayloadAction<AnalysisLabData>) => { 
+        setAnalysisLabData: (state, action: PayloadAction<AnalysisLabResponse>) => {
             state.analysisLabData = action.payload;
         }
     }
