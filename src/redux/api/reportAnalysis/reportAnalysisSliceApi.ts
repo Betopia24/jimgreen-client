@@ -48,17 +48,21 @@ export const analysisApi = baseApi.injectEndpoints({
 
     // get report history all data 
     // getReportHistory: builder.query({
-    //   query: (id) => ({
-    //     url: `/report-analysis/history/${id}`,
+    //   query: ({ companyId, searchTerm }: { companyId: string; searchTerm?: string }) => ({
+    //     url: `/report-analysis/history/${companyId}`,
     //     method: "GET",
+    //     params: searchTerm ? { searchTerm } : undefined,
     //   }),
     // }),
-
-    getReportHistory: builder.query({
-      query: ({ companyId, searchTerm }: { companyId: string; searchTerm?: string }) => ({
+    getReportHistory: builder.query<any, { companyId: string; searchTerm?: string, page?: number, limit?: number }>({
+      query: ({ companyId, searchTerm, page = 1, limit = 10 }: { companyId: string; searchTerm?: string; page?: number; limit?: number }) => ({
         url: `/report-analysis/history/${companyId}`,
         method: "GET",
-        params: searchTerm ? { searchTerm } : undefined,
+        params: {
+          searchTerm,
+          page,
+          limit
+        },
       }),
     }),
 
