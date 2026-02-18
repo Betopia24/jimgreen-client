@@ -301,8 +301,9 @@ function SavedReport({ onCancel }: { onCancel: () => void }) {
       report_id: data.report_id,
       metal_type: data.metal_type,
     };
-    console.log("Report payload:", JSON.stringify(payload, null, 2));
-    alert("Indices calculated! Check console for payload.");
+    // console.log("Report payload:", JSON.stringify(payload, null, 2));
+    console.log(payload);
+    // alert("Indices calculated! Check console for payload.");
   };
 
   return (
