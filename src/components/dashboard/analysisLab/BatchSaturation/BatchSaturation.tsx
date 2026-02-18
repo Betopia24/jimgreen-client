@@ -7,6 +7,12 @@ import FormField from "./FormField";
 import StyledInput from "./StyledInput";
 import RenderRangeSection from "./RenderRangeSection";
 import RenderGridResolution from "./RenderGridResolution";
+import { useCalculateBatchSaturationIndicesMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
+import { toast } from "sonner";
+import { Error } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import { setBatchSaturationData } from "@/redux/features/analysisLabSlice/analysisLabSlice";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -172,7 +178,11 @@ const BatchSaturationModeling: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>("manual");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<object | null>(null);
+  const [batchSaturatonPost, { isLoading }] =
+    useCalculateBatchSaturationIndicesMutation();
 
+  const router = useRouter();
+  const dispatch = useDispatch();
   // ── Manual form
   const manualForm = useForm<ManualFormValues>({
     defaultValues: {
@@ -249,30 +259,24 @@ const BatchSaturationModeling: React.FC = () => {
   );
 
   const handleManualSubmit = manualForm.handleSubmit(async (data) => {
-    console.log(data);
-    // const payload = {
-    //   base_water_parameters: {
-    //     pH: { value: parseFloat(data.pH), unit: "" },
-    //     Calcium: { value: parseFloat(data.Calcium), unit: "mg/L" },
-    //     Magnesium: { value: parseFloat(data.Magnesium), unit: "mg/L" },
-    //     Sodium: { value: parseFloat(data.Sodium), unit: "mg/L" },
-    //     Potassium: { value: parseFloat(data.Potassium), unit: "mg/L" },
-    //     Chloride: { value: parseFloat(data.Chloride), unit: "mg/L" },
-    //     Sulfate: { value: parseFloat(data.Sulfate), unit: "mg/L" },
-    //     Alkalinity: { value: parseFloat(data.Alkalinity), unit: "mg/L" },
-    //     Temperature: { value: parseFloat(data.Temperature), unit: "°C" },
-    //   },
-    //   ph_range_min: parseFloat(data.ph_range_min),
-    //   ph_range_max: parseFloat(data.ph_range_max),
-    //   coc_range_min: parseFloat(data.coc_range_min),
-    //   coc_range_max: parseFloat(data.coc_range_max),
-    //   temp_range_min: parseFloat(data.temp_range_min),
-    //   temp_range_max: parseFloat(data.temp_range_max),
-    //   grid_resolution: data.grid_resolution,
-    // }
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
+
     setSubmitted(buildManualPayload(data));
+    const payload = buildManualPayload(data);
+    try {
+      const response = await batchSaturatonPost(payload).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response.message);
+        dispatch(setBatchSaturationData(response.data));
+        router.push("/dashboard/analysisLab/batch-simulation/batch-details");
+      }
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     console.log(submitted);
     setIsSubmitting(false);
   });
@@ -282,6 +286,20 @@ const BatchSaturationModeling: React.FC = () => {
     setIsSubmitting(true);
     await new Promise((r) => setTimeout(r, 800));
     setSubmitted(buildSavedPayload(data));
+    const payload = buildSavedPayload(data);
+    try {
+      const response = await batchSaturatonPost(payload).unwrap();
+      console.log(response);
+      if (response?.success) {
+        toast.success(response.message);
+        dispatch(setBatchSaturationData(response.data));
+        router.push("/dashboard/analysisLab/batch-simulation/batch-details");
+      }
+    } catch (error) {
+      console.log(error);
+      const err = error as Error;
+      toast.error(err.data.message);
+    }
     console.log(submitted);
     setIsSubmitting(false);
   });
