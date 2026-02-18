@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AnalysisLabResponse } from "./analysisLabTypes";
 interface CorrosionPrediction {
   metal_type: string;
   cr_mpy: number;
@@ -12,6 +13,7 @@ interface AnalysisLabState {
   coolingTower: any | null;
   batchSimulation: any | null;
   corrsion: any | null;
+    analysisLabData: AnalysisLabResponse | null;
 }
 
 const inisialState: AnalysisLabState = {
@@ -22,6 +24,16 @@ const inisialState: AnalysisLabState = {
 };
 
 const analysisLabSlice = createSlice({
+    name: "analysisLab",
+    initialState,
+    reducers: {
+        setAnalysisLabData: (state, action: PayloadAction<AnalysisLabResponse>) => {
+            state.analysisLabData = action.payload;
+        }
+    }
+})
+
+export const { setAnalysisLabData } = analysisLabSlice.actions;
   name: "analysisLab",
   initialState: inisialState,
   reducers: {

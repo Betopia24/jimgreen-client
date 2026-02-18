@@ -13,8 +13,10 @@
 "use client";
 
 import { useCalculateWaterIndicesMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
+import { setAnalysisLabData } from "@/redux/features/analysisLabSlice/analysisLabSlice";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
 type FormData = {
@@ -23,6 +25,7 @@ type FormData = {
 
 export default function UseSavedReportForm() {
     const router = useRouter();
+    const dispatch = useDispatch();
     const [calculatingWater, { isLoading }] = useCalculateWaterIndicesMutation();
 
     const {
@@ -34,12 +37,13 @@ export default function UseSavedReportForm() {
 
     const onSubmit = async (data: FormData) => {
         const payload = { report_id: data.report_id };
-        console.log("Submitting payload:", payload);
+        // console.log("Submitting payload:", payload);
 
         try {
             const res = await calculatingWater(payload);
             toast.success("Water indices calculated successfully!");
-            console.log("Response from backend:", res);
+            dispatch(setAnalysisLabData(res as any));
+            // console.log("Response from backend:", res);
             router.push("/dashboard/analysisLab/water-chemistry/water-chemistry-result");
         } catch (error) {
             toast.error("Failed to calculate water indices.");
