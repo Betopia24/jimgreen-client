@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useCalculateWaterIndicesMutation } from "@/redux/api/reportAnalysisLab/reportAnalysisLab";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // ─── Zod Schema ───────────────────────────────────────────────────────────────
 
@@ -97,6 +98,7 @@ const Field = ({ label, unit, placeholder, name, register, error }: { label: str
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function ManualEntryForm() {
+  const router = useRouter();
   const [tempUnit, setTempUnit] = useState("°C");
 
   const [calculatingWater, { isLoading }] = useCalculateWaterIndicesMutation();
@@ -136,6 +138,7 @@ export default function ManualEntryForm() {
       const res = await calculatingWater(data);
       toast.success("Water indices calculated successfully!");
       console.log("Response from backend:", res);
+      router.push("/dashboard/analysisLab/water-chemistry/water-chemistry-result");
     } catch (error) {
       toast.error("Failed to calculate water indices.");
     }

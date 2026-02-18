@@ -74,6 +74,7 @@ import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import userReducer from "./features/user/userSlice";
 import customerIdReducer from "./features/customer/customerSlice";
 import analysisReducer from "./features/analysisDataSaveSlice/analysisDataSaveSlice";
+import analysisLabReducer from "./features/analysisLabSlice/analysisLabSlice";
 import baseApi from "./api/baseApi";
 
 // Noop storage for SSR
@@ -105,6 +106,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   customerId: customerIdReducer,
   analysis: analysisReducer,
+  analysisLab: analysisLabReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
