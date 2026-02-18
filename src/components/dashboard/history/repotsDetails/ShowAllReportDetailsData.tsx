@@ -1,17 +1,9 @@
-// function ShowAllReportDetailsData({ reportDetailsData }: any) {
-//     console.log("reportDetailsData==============", reportDetailsData, "=============");
-//     return (
-//         <div>ShowAllReportDetailsData</div>
-//     )
-// }
 
-// export default ShowAllReportDetailsData
 
 "use client";
 
 import Image from "next/image";
 import React from "react";
-import { useSelector } from "react-redux";
 import ScoreCard from "../../analysisInput/detailsComonents/ScoreCard";
 import { format } from "date-fns";
 

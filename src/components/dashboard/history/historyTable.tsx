@@ -12,16 +12,21 @@ import { User } from '@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/p
 import { format } from 'date-fns';
 
 export default function HistoryTable() {
-    // const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    console.log("searchTerm==============", searchTerm);
     // const [currentPage, setCurrentPage] = useState(1);
     // const itemsPerPage = 10;
 
     const { data: userData } = useGetMeProfileQuery("");
     const profile = userData?.data as User;
     const companyId = profile?.companyMember?.companyId;
-    // console.log("companyId==============", companyId);
+    console.log("companyId==============", companyId);
 
-    const { data: reportHistoryData, isLoading } = useGetReportHistoryQuery(companyId);
+    const { data: reportHistoryData, isLoading } = useGetReportHistoryQuery({
+        companyId: companyId,
+        searchTerm: searchTerm,
+    });
+
     // console.log("reportHistoryData==============", reportHistoryData);
 
     // Extended data to ensure pagination is visible (18 items → 2 pages)
@@ -249,43 +254,14 @@ export default function HistoryTable() {
 
     if (isLoading) {
         return (
-                <div>
-                    <Loading />
-                </div>
+            <div>
+                <Loading />
+            </div>
         )
     }
 
     return (
         <div className="bg-gray-50 py-6">
-            {/* Header Controls */}
-            {/* <div className="bg-white rounded-xl hover:shadow-sm p-6 mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="relative flex-1">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#B4B4B4] w-5 h-5" />
-                        <input
-                            type="text"
-                            placeholder="Search by ID, customer, or sample..."
-                            value={searchTerm}
-                            onChange={(e) => {
-                                setSearchTerm(e.target.value);
-                                setCurrentPage(1);
-                            }}
-                            className="w-full pl-11 pr-4 py-3 border border-[#F3F3F3] rounded-lg text-sm text-[#B4B4B4] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[#F3F3F3]"
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                        <button className="flex items-center gap-2 px-5 py-3 border border-[#F3F3F3] rounded-lg text-sm font-medium text-[#191919] bg-[#F3F3F3]">
-                            <Filter className="w-4 h-4" />
-                            Filter
-                        </button>
-                        <button className="flex items-center gap-2 px-5 py-3 border border-[#F3F3F3] rounded-lg text-sm font-medium text-[#191919] bg-[#F3F3F3] transition">
-                            <IoIosGitCompare size={22} />
-                            Compare Reports
-                        </button>
-                    </div>
-                </div>
-            </div> */}
 
             <div className="bg-white rounded-xl hover:shadow-sm p-4 sm:p-6 mb-6">
                 <div className="flex flex-col md:flex-row lg:items-center lg:justify-between gap-4">
@@ -296,17 +272,17 @@ export default function HistoryTable() {
                         <input
                             type="text"
                             placeholder="Search by ID, customer, or sample..."
-                            // value={searchTerm}
-                            // onChange={(e) => {
-                            //     setSearchTerm(e.target.value);
-                            //     setCurrentPage(1);
-                            // }}
+                            value={searchTerm}
+                            onChange={(e) => {
+                                setSearchTerm(e.target.value);
+                                // setCurrentPage(1);
+                            }}
                             className="w-full pl-11 pr-4 py-3 border border-[#F3F3F3] rounded-lg text-sm text-[#191919] placeholder-[#B4B4B4] bg-[#F3F3F3] focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                    {/* <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                         <button className="flex items-center justify-center gap-2 px-4 py-3 border border-[#F3F3F3] rounded-lg text-sm font-medium text-[#191919] bg-[#F3F3F3] w-full sm:w-auto">
                             <Filter className="w-4 h-4" />
                             Filter
@@ -316,7 +292,7 @@ export default function HistoryTable() {
                             <IoIosGitCompare size={22} />
                             Compare Reports
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
