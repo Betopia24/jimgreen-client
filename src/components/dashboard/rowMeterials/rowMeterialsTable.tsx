@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Trash2 } from "lucide-react";
+import { Loader2, Search, Trash2 } from "lucide-react";
 import { FiEdit } from "react-icons/fi";
 import Link from "next/link";
 import {
@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import moment from "moment";
 import DeleteConfirmModal from "@/components/shared/DeteleConfirm/DeleteConfirm";
+import LoadingPage2 from "@/components/shared/loading/LoadingPage2";
 
 // Company type
 export interface Company {
@@ -117,6 +118,16 @@ export default function RowMeterialsTable() {
                   </tr>
                 </thead>
                 <tbody>
+                  {isLoading && (
+                    <tr>
+                      <td colSpan={6} className="py-8">
+                        <div className="flex justify-center items-center">
+                          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+
                   {materials?.map((material: Material) => (
                     <tr
                       key={material.id}
