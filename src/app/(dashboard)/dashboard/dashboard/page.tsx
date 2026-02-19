@@ -12,7 +12,7 @@ function Dashboard() {
     return <LoadingPage />;
   }
   return (
-    <div>
+    <div className="mb-8">
       {/* card  */}
       <StatsCards />
       {/* chart part  */}
