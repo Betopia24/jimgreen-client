@@ -21,6 +21,14 @@ import Cookies from "js-cookie";
 import { LuLoader } from "react-icons/lu";
 import { useState } from "react";
 import { PiMagicWandLight } from "react-icons/pi";
+import {
+  Building,
+  FileInput,
+  GlassWater,
+  History,
+  Package,
+  WandSparkles,
+} from "lucide-react";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -36,30 +44,30 @@ export default function AppSidebar() {
     },
     {
       href: "/dashboard/analysisInput",
-      icon: CiDroplet,
+      icon: FileInput,
       label: "Analysis Input",
-      size: 24,
+      size: 16,
     },
     {
       href: "/dashboard/analysisLab",
-      icon: PiMagicWandLight,
+      icon: WandSparkles,
       label: "Analysis Lab",
-      size: 24,
+      size: 17,
     },
     {
       href: "/dashboard/rowMeterials",
-      icon: CiGlass,
+      icon: GlassWater,
       label: "Raw Materials",
-      size: 24,
-    },
-    { href: "/dashboard/product", icon: BsBoxSeam, label: "Product", size: 16 },
-    {
-      href: "/dashboard/customers",
-      icon: LuBuilding,
-      label: "Customers",
       size: 18,
     },
-    { href: "/dashboard/history", icon: MdHistory, label: "History", size: 20 },
+    { href: "/dashboard/product", icon: Package, label: "Product", size: 18 },
+    {
+      href: "/dashboard/customers",
+      icon: Building,
+      label: "Customers",
+      size: 16,
+    },
+    { href: "/dashboard/history", icon: History, label: "History", size: 16 },
     // {
     //   href: "/dashboard/subscription",
     //   icon: FiCreditCard,
@@ -70,7 +78,7 @@ export default function AppSidebar() {
       href: "/dashboard/setting",
       icon: IoSettingsOutline,
       label: "Settings",
-      size: 16,
+      size: 14,
     },
   ];
 
@@ -175,12 +183,12 @@ export default function AppSidebar() {
         </div>
 
         {/* Bottom Section - Logout */}
-        <div className="px-4 mb-24">
+        <div className="px-4 mb-8">
           <SidebarMenu>
-            <div className="bg-[#D00E111A] px-4 py-4 rounded-lg hover:bg-[#D00E111A] transition-colors duration-200">
+            <div className="bg-[#D00E111A] px-4 py-4 rounded-lg hover:bg-[#770c0c2d] cursor-pointer transition-colors duration-200">
               <button
                 onClick={handleLogOut}
-                className="flex items-center gap-3 w-full cursor-pointer group"
+                className="flex items-center gap-3 w-full cursor-pointer  hover: group"
               >
                 {loading ? (
                   <>
