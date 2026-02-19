@@ -126,6 +126,30 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
 
   console.log("analysisViewData", analysisViewData);
 
+  const statusBadge = (status: string) => {
+    switch (status) {
+      case "Safe":
+        return "bg-green-100 text-green-700";
+      case "Unsafe":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-600";
+    }
+  };
+
+  const riskBadge = (risk: string) => {
+    switch (risk) {
+      case "Low":
+        return "bg-blue-100 text-blue-700";
+      case "Medium":
+        return "bg-yellow-100 text-yellow-700";
+      case "High":
+        return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-600";
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* heading part  */}
@@ -151,7 +175,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       <GraphSection report={report} id={analysisViewData.id} />
 
       {/* CUSTOMER INFO */}
-      <Section title="Customer Information">
+      {/* <Section title="Customer Information">
         <div className="grid md:grid-cols-2 gap-4 text-sm">
           {Object.entries(data?.data?.customer || {}).map(([key, value]) => (
             <div key={key}>
@@ -160,14 +184,16 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
             </div>
           ))}
         </div>
-      </Section>
+      </Section> */}
 
       {/* REPORT META */}
       <Section title="Report Information">
         <div className="grid md:grid-cols-2 gap-6 text-sm">
           <InfoItem label="Report ID" value={report?.report_id} />
-          <InfoItem label="Test Date" value={report?.test_date} />
-          <InfoItem label="Location" value={report?.location} />
+          <InfoItem
+            label="original filename"
+            value={report?.original_filename}
+          />
           <InfoItem label="Lab Name" value={report?.lab_name} />
           <InfoItem label="Water Source" value={report?.water_source} />
         </div>
@@ -200,7 +226,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
                   <th className="p-2 border text-left">Parameter</th>
                   <th className="p-2 border text-center">Value</th>
                   <th className="p-2 border text-center">Unit</th>
-                  <th className="p-2 border text-center">Detection Limit</th>
+                  {/* <th className="p-2 border text-center">Detection Limit</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -215,9 +241,9 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
                     <td className="border p-2 text-center">
                       {param.unit || "-"}
                     </td>
-                    <td className="border p-2 text-center">
+                    {/* <td className="border p-2 text-center">
                       {param.detection_limit ?? "-"}
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>
@@ -296,10 +322,11 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
           <div className="grid md:grid-cols-4 gap-4">
             {report?.total_score?.components?.map((comp: any, i: number) => (
               <div key={i} className="bg-gray-50 p-4 rounded text-center">
-                <p>{comp.name}</p>
+                <p className="font-semibold">{comp.name}</p>
                 <p className="font-bold">
                   {comp.score}/{comp.max_score}
                 </p>
+                <p className="text-xs mt-1 te">weight: {comp.weight}</p>
               </div>
             ))}
           </div>
@@ -370,7 +397,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       </Section>
 
       {/* BIOLOGICAL */}
-      <Section title="Biological Indicators">
+      {/* <Section title="Biological Indicators">
         {report?.biological_indicators?.indicators?.map(
           (bio: any, i: number) => (
             <div key={i} className="flex justify-between border-b pb-2">
@@ -383,6 +410,58 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
             </div>
           ),
         )}
+      </Section> */}
+
+      {/* BIOLOGICAL */}
+      <Section title="Biological Indicators">
+        <div className="space-y-4">
+          {report?.biological_indicators?.indicators?.map(
+            (bio: any, i: number) => (
+              <div
+                key={i}
+                className="rounded-xl border bg-white p-4 shadow-sm transition hover:shadow-md"
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  {/* Left Side */}
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-900 sm:text-base">
+                      {bio.indicator_name}
+                    </h4>
+                    <p className="text-xs text-gray-500 sm:text-sm">
+                      {bio.value} {bio.unit}
+                    </p>
+                  </div>
+
+                  {/* Right Side */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${statusBadge(
+                        bio.status,
+                      )}`}
+                    >
+                      {bio.status}
+                    </span>
+
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${riskBadge(
+                        bio.risk_level,
+                      )}`}
+                    >
+                      {bio.risk_level} Risk
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ),
+          )}
+
+          {/* Empty State */}
+          {!report?.biological_indicators?.indicators?.length && (
+            <div className="text-center py-6 text-gray-500 text-sm">
+              No biological indicators found
+            </div>
+          )}
+        </div>
       </Section>
 
       {/* COMPLIANCE TABLE */}
@@ -396,6 +475,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
                 <th className="border p-2">Status</th>
                 <th className="border p-2">Actual</th>
                 <th className="border p-2">Required</th>
+                <th className="border p-2">remarks</th>
               </tr>
             </thead>
             <tbody>
@@ -415,6 +495,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
                     </td>
                     <td className="border p-2">{item.actual_value}</td>
                     <td className="border p-2">{item.required_value}</td>
+                    <td className="border p-2">{item.remarks}</td>
                   </tr>
                 ),
               )}
@@ -427,7 +508,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       {/* CONTAMINATION RISK */}
       <Section title="Contamination Risk Assessment">
         {/* 🔴 Overall Risk Summary */}
-        <div className="mb-8 grid md:grid-cols-4 gap-4">
+        <div className="mb-8 grid md:grid-cols-3 gap-4">
           <RiskCard
             label="Overall Severity"
             value={report?.contamination_risk?.overall_severity}
@@ -441,7 +522,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
             label="Risk Score"
             value={report?.contamination_risk?.risk_score}
           />
-          <RiskCard label="Score Scale" value="0 = Safe | 10 = Critical" />
+          {/* <RiskCard label="Score Scale" value="0 = Safe | 10 = Critical" /> */}
         </div>
 
         {/* 🧪 Heavy Metals */}
