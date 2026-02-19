@@ -313,7 +313,7 @@ const BatchSaturationModeling: React.FC = () => {
   // ── Shared range section renderer
 
   return (
-    <div className="mt-10">
+    <div className="my-10">
       {/* Decorative background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-blue-100/40 blur-3xl" />
@@ -335,7 +335,7 @@ const BatchSaturationModeling: React.FC = () => {
         </div>
 
         {/* ── Tab Switcher */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-1.5 mb-5 flex gap-1">
+        <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-1.5 mb-5 flex gap-1">
           {/* {(["manual", "saved"] as TabType[]).map((tab) => (
             
             <button
@@ -371,12 +371,12 @@ const BatchSaturationModeling: React.FC = () => {
                   setSubmitted(null);
                 }}
                 className={`
-        flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200
+        flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200
         ${
           isDisabled
             ? "bg-slate-100 text-slate-400 cursor-not-allowed"
             : activeTab === tab
-              ? "bg-blue-600 text-white shadow-md shadow-blue-200 scale-[1.01]"
+              ? "bg-primaryColor text-white cursor-pointer shadow-md shadow-blue-200 scale-[1.01]"
               : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
         }
       `}
@@ -611,14 +611,14 @@ const BatchSaturationModeling: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="flex-1 sm:flex-none sm:px-8 py-3 rounded-xl border-2 border-slate-200 text-slate-600 text-sm font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-150"
+                className="flex-1 sm:flex-none sm:px-8 py-3 rounded-md border-2 border-slate-200 text-slate-600 text-sm font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-150"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className=" py-3 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-sm font-bold shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all duration-150 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className=" py-3 px-6 rounded-md bg-primaryColor hover:bg-blue-900 active:scale-[0.98] text-white text-sm font-bold shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all duration-150 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
@@ -705,14 +705,14 @@ const BatchSaturationModeling: React.FC = () => {
               <button
                 type="button"
                 onClick={handleCancel}
-                className="flex-1 sm:flex-none sm:px-8 py-3 rounded-xl border-2 border-slate-200 text-slate-600 text-sm font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-150"
+                className="flex-1 sm:flex-none sm:px-8 py-3 rounded-md border-2 border-slate-200 text-slate-600 text-sm font-semibold hover:border-slate-300 hover:bg-slate-50 transition-all duration-150"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="py-3 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-sm font-bold shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all duration-150 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                className="py-3 px-6 rounded-md bg-primaryColor hover:bg-blue-900  active:scale-[0.98] text-white text-sm font-bold shadow-lg shadow-blue-200 hover:shadow-blue-300 transition-all duration-150 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
