@@ -183,12 +183,12 @@ export default function AppSidebar() {
         </div>
 
         {/* Bottom Section - Logout */}
-        <div className="px-4 mb-24">
+        <div className="px-4 mb-8">
           <SidebarMenu>
-            <div className="bg-[#D00E111A] px-4 py-4 rounded-lg hover:bg-[#D00E111A] transition-colors duration-200">
+            <div className="bg-[#D00E111A] px-4 py-4 rounded-lg hover:bg-[#770c0c2d] cursor-pointer transition-colors duration-200">
               <button
                 onClick={handleLogOut}
-                className="flex items-center gap-3 w-full cursor-pointer group"
+                className="flex items-center gap-3 w-full cursor-pointer  hover: group"
               >
                 {loading ? (
                   <>
