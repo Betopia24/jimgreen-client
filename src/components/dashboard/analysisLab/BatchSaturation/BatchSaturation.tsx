@@ -175,7 +175,7 @@ type TabType = "manual" | "saved";
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 const BatchSaturationModeling: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>("manual");
+  const [activeTab, setActiveTab] = useState<TabType>("saved");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState<object | null>(null);
   const [batchSaturatonPost, { isLoading }] =
@@ -336,7 +336,8 @@ const BatchSaturationModeling: React.FC = () => {
 
         {/* ── Tab Switcher */}
         <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-1.5 mb-5 flex gap-1">
-          {(["manual", "saved"] as TabType[]).map((tab) => (
+          {/* {(["manual", "saved"] as TabType[]).map((tab) => (
+            
             <button
               key={tab}
               type="button"
@@ -355,7 +356,35 @@ const BatchSaturationModeling: React.FC = () => {
             >
               {tab === "manual" ? "✦ Manual Entry" : "⬡ Use Saved Report"}
             </button>
-          ))}
+          ))} */}
+          {(["manual", "saved"] as TabType[]).map((tab) => {
+            const isDisabled = tab === "manual";
+
+            return (
+              <button
+                key={tab}
+                type="button"
+                disabled={isDisabled}
+                onClick={() => {
+                  if (isDisabled) return; // extra safety
+                  setActiveTab(tab);
+                  setSubmitted(null);
+                }}
+                className={`
+        flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all duration-200
+        ${
+          isDisabled
+            ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+            : activeTab === tab
+              ? "bg-blue-600 text-white shadow-md shadow-blue-200 scale-[1.01]"
+              : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
+        }
+      `}
+              >
+                {tab === "manual" ? "✦ Manual Entry" : "⬡ Use Saved Report"}
+              </button>
+            );
+          })}
         </div>
 
         {/* ══════════════════════════════════════
@@ -363,7 +392,6 @@ const BatchSaturationModeling: React.FC = () => {
         ══════════════════════════════════════ */}
         {activeTab === "manual" && (
           <form onSubmit={handleManualSubmit} className="space-y-5">
-            {/* Water Parameters */}
             <SectionCard title="Manual Water Parameters">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
