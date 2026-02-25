@@ -15,45 +15,36 @@ import {
 import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import DeleteConfirmModal from "@/components/shared/DeteleConfirm/DeleteConfirm";
 
+export type CommunityVisibility = "Technical Users" | "Public" | "Private";
+
+export interface RawMaterialSnapshot {
+  rawId: string;
+  percentage: number;
+  nameSnapshot: string;
+  costSnapshot: number;
+}
+
 export interface Company {
   id: string;
   name: string;
   email: string;
   location: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
-
-export type ProductCategory =
-  | "Corrosion Inhibitor"
-  | "Biocide"
-  | "Scale Inhibitor"
-  | "Dispersant"
-  | "Other";
-
-export type IntendedUse = "Cooling" | "Boiler" | "Process Water";
-
-export type ReplacementFrequency =
-  | "daily"
-  | "weekly"
-  | "monthly"
-  | "quarterly"
-  | "semi-annually"
-  | "annually";
 
 export interface Product {
   id: string;
-  name: string;
-  manufacturer: string;
-  productCategory: ProductCategory;
-  intendedUse: IntendedUse;
-  operatingPhRangeMin: number | undefined;
-  operatingPhRangeMax: number | undefined;
-  temperatureTolerance: number | string;
-  maximumHardnessAllowed: number | string;
-  compatibilityNote: string;
-  costPerUnit: number;
-  averageMonthlyConsumption: number | string;
-  consumptionUnit?: string;
-  replacementFrequency: ReplacementFrequency;
+  productName: string;
+  manufacturerName: string;
+  rawMaterials: RawMaterialSnapshot[];
+  waterPercentage: number;
+  calculatedProductCost: number;
+  manualCostOverride: number;
+  finalProductCost: number;
+  productPrice: number;
+  communityVisibility: string; // You can make this union type if fixed values
   isActive: boolean;
   companyId: string;
   createdAt: string;
@@ -119,13 +110,13 @@ export default function ProductRowMeterialTable() {
                     manufacturer
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                    Product Category
+                    Community Visibility
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
                     Product Price
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                    Replacement Frequency
+                    Water Percentage
                   </th>
                   <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
                     Status
@@ -142,19 +133,19 @@ export default function ProductRowMeterialTable() {
                     className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                   >
                     <td className="py-4 px-6 text-[#2D2D2D] text-sm font-medium">
-                      {product.name}
+                      {product.productName}
                     </td>
                     <td className="py-4 px-6 text-[#636F85] text-sm">
-                      {product.manufacturer}
+                      {product.manufacturerName}
                     </td>
                     <td className="py-4 px-6 text-[#191919] text-sm">
-                      {product.productCategory}
+                      {product.communityVisibility}
                     </td>
                     <td className="py-4 px-6 text-[#636F85] text-sm">
-                      {product.costPerUnit}$
+                      {product.productPrice}$
                     </td>
                     <td className="py-4 px-6 text-[#4A5565] text-sm">
-                      {product.replacementFrequency}
+                      {product.waterPercentage} %
                     </td>
 
                     <td className="py-4 px-6">

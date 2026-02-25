@@ -22,23 +22,39 @@ export interface Company {
   name: string;
   email: string;
   location: string;
-}
-
-// Chemical type
-export interface Material {
-  id: string;
-  chemicalName: string;
-  chemicalType: "Biocide" | string;
-  supplierName: string;
-  dosageRate: string;
-  feedFrequency: "Daily" | "Weekly" | "Monthly" | string;
-  safetyClassification: "Hazardous" | "Non-Hazardous" | string;
-  instructions: string;
   isActive: boolean;
-  dosageType?: string;
-  companyId: string;
   createdAt: string; // ISO date string
   updatedAt: string; // ISO date string
+}
+
+export interface Material {
+  id: string;
+
+  commonName: string;
+  manufacturer: string;
+  manufacturerProductName: string;
+
+  activeComponentName: string;
+  activePercentage: number; // number (not string)
+  activePercentageChemicalFormula: string;
+
+  estimatedCost: number; // number
+
+  saltToInhibit: string;
+  formulaForInhibitionPerformance: string;
+
+  bandUpperCushion: string; // change to number if backend sends number
+  bandLowerCushion: string; // change to number if backend sends number
+
+  communityVisibility: string; // example: "Technical Users"
+
+  isActive: boolean;
+
+  companyId: string;
+
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+
   company: Company;
 }
 
@@ -98,13 +114,13 @@ export default function RowMeterialsTable() {
                       Name
                     </th>
                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                      Supplier
+                      manufacturer
                     </th>
                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                      Dosage Rate
+                      Estimated Cost
                     </th>
                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
-                      Feed Frequency
+                      Community Visibility
                     </th>
                     <th className="text-left py-4 px-6 font-semibold text-sm text-[#4A5565]">
                       Last Modified
@@ -134,16 +150,16 @@ export default function RowMeterialsTable() {
                       className="border-b border-gray-200 hover:bg-gray-50 transition-colors"
                     >
                       <td className="py-4 px-6 text-[#2D2D2D] text-sm font-medium">
-                        {material.chemicalName}
+                        {material.commonName}
                       </td>
                       <td className="py-4 px-6 text-[#636F85] text-sm">
-                        {material.supplierName}
+                        {material.manufacturer}
                       </td>
                       <td className="py-4 px-6 text-[#191919] text-sm">
-                        {material.dosageRate}
+                        {material.estimatedCost}
                       </td>
                       <td className="py-4 px-6 text-[#636F85] text-sm">
-                        {material.feedFrequency}
+                        {material.communityVisibility}
                       </td>
                       <td className="py-4 px-6 text-[#4A5565] text-sm">
                         {moment(material.updatedAt).format("ll")}
