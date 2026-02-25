@@ -741,7 +741,7 @@ function UpdateProduct() {
                     </button>
                   )}
 
-                  {index === fields.length - 1 && (
+                  {/* {index === fields.length - 1 && (
                     <button
                       type="button"
                       onClick={() => append({ rawId: "", percentage: "" })}
@@ -749,14 +749,14 @@ function UpdateProduct() {
                     >
                       Add Raw Materials
                     </button>
-                  )}
+                  )} */}
                 </div>
               </div>
             ))}
           </div>
 
           {/* Total Percentage */}
-          <div className="mt-4 flex items-center justify-end gap-3">
+          {/* <div className="mt-4 flex items-center justify-end gap-3">
             <span className="text-sm font-medium text-[#344054]">
               Total Percentage:
             </span>
@@ -777,6 +777,39 @@ function UpdateProduct() {
             {totalPercentage === 100 && (
               <span className="text-xs text-green-500">Perfect!</span>
             )}
+          </div> */}
+          <div className="mt-4 flex items-center justify-end gap-3">
+            <div>
+              <span className="text-sm font-medium text-[#344054]">
+                Total Percentage:
+              </span>
+              <span
+                className={`px-4 py-1.5 rounded-lg text-sm font-semibold ${
+                  isOver100
+                    ? "bg-red-100 text-red-600"
+                    : totalPercentage === 100
+                      ? "bg-green-100 text-green-600"
+                      : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                {totalPercentage.toFixed(2)}%
+              </span>
+              {isOver100 && (
+                <span className="text-xs text-red-500">Exceeds 100%</span>
+              )}
+              {totalPercentage === 100 && (
+                <span className="text-xs text-green-500">Perfect!</span>
+              )}
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => append({ rawId: "", percentage: "" })}
+                className="whitespace-nowrap px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Add Raw Materials
+              </button>
+            </div>
           </div>
         </div>
 
