@@ -308,7 +308,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
 import {
   Select,
   SelectContent,
@@ -327,6 +327,13 @@ import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import { Error } from "../addRowMeterials/page";
 import PrimaryButton from "@/components/shared/primaryButton/PrimaryButton";
 import Link from "next/link";
+import { LuPlus, LuTrash2 } from "react-icons/lu";
+
+interface FormulaRow {
+  salToInhibit: string;
+  applicableIonicStrength: string;
+  formulaForInhibitionPerformance: string;
+}
 
 export interface Material {
   id?: string;
@@ -338,11 +345,12 @@ export interface Material {
   activePercentage: number | string;
   activePercentageChemicalFormula: string;
   estimatedCost: number | string;
-  saltToInhibit: string;
-  formulaForInhibitionPerformance: string;
+  formulas: FormulaRow[];
   bandUpperCushion: string;
   bandLowerCushion: string;
   communityVisibility: string;
+  additionalInformation: string;
+  additionalInfomation?: string; // API returns this spelling (typo)
   isActive?: boolean;
 }
 
@@ -365,14 +373,25 @@ export default function EditMaterials() {
       activePercentage: "",
       activePercentageChemicalFormula: "",
       estimatedCost: "",
-      saltToInhibit: "",
-      formulaForInhibitionPerformance: "",
+      formulas: [
+        {
+          salToInhibit: "",
+          applicableIonicStrength: "",
+          formulaForInhibitionPerformance: "",
+        },
+      ],
       bandUpperCushion: "",
       bandLowerCushion: "",
       communityVisibility: "",
+      additionalInformation: "",
       isActive: true,
       companyId: "",
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "formulas",
   });
 
   useEffect(() => {
@@ -386,23 +405,50 @@ export default function EditMaterials() {
         activePercentageChemicalFormula:
           materials.activePercentageChemicalFormula,
         estimatedCost: materials.estimatedCost,
-        saltToInhibit: materials.saltToInhibit,
-        formulaForInhibitionPerformance:
-          materials.formulaForInhibitionPerformance,
+        formulas:
+          materials.formulas?.length > 0
+            ? materials.formulas
+            : [
+                {
+                  salToInhibit: "",
+                  applicableIonicStrength: "",
+                  formulaForInhibitionPerformance: "",
+                },
+              ],
         bandUpperCushion: materials.bandUpperCushion,
         bandLowerCushion: materials.bandLowerCushion,
         communityVisibility: materials.communityVisibility,
+        // API returns 'additionalInfomation' (typo) — handle both spellings
+        additionalInformation:
+          (materials as any).additionalInfomation ??
+          materials.additionalInformation ??
+          "",
         companyId: materials.companyId,
       });
     }
   }, [materials, reset]);
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: Material) => {
     if (!materials?.companyId) {
       console.error("Company ID is missing");
       return;
     }
-    const payload = { companyId: materials.companyId, ...data };
+    const payload = {
+      companyId: materials.companyId,
+      commonName: data.commonName,
+      manufacturer: data.manufacturer,
+      manufacturerProductName: data.manufacturerProductName,
+      activeComponentName: data.activeComponentName,
+      activePercentage: data.activePercentage,
+      activePercentageChemicalFormula: data.activePercentageChemicalFormula,
+      estimatedCost: data.estimatedCost,
+      formulas: data.formulas,
+      bandUpperCushion: data.bandUpperCushion,
+      bandLowerCushion: data.bandLowerCushion,
+      communityVisibility: data.communityVisibility,
+      additionalInformation: data.additionalInformation,
+      isActive: data.isActive,
+    };
     try {
       const response = await updateMaterials({ payload, meterialsId }).unwrap();
       if (response?.success) {
@@ -447,7 +493,7 @@ export default function EditMaterials() {
               </label>
               <input
                 type="text"
-                placeholder="Enter ph"
+                placeholder="Enter common name"
                 {...register("commonName", { required: true })}
                 className={inputClass}
               />
@@ -473,7 +519,7 @@ export default function EditMaterials() {
               </label>
               <input
                 type="text"
-                placeholder="Enter magnesium (mg)"
+                placeholder="Enter manufacturer product name"
                 {...register("manufacturerProductName")}
                 className={inputClass}
               />
@@ -517,7 +563,124 @@ export default function EditMaterials() {
                 className={inputClass}
               />
             </div>
+          </div>
 
+          {/* ── Formula Rows ── */}
+          <div className="mt-6 space-y-4">
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                className="grid lg:grid-cols-3 gap-4 p-4 border border-[#E5E7EB] rounded-md bg-gray-50 relative"
+              >
+                {/* salToInhibit */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Salt to Inhibit
+                  </label>
+                  <Controller
+                    name={`formulas.${index}.salToInhibit`}
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className={inputClass}>
+                          <SelectValue placeholder="Select salt" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Biocide">Biocide</SelectItem>
+                          <SelectItem value="Calcium Sulfate">
+                            Calcium Sulfate
+                          </SelectItem>
+                          <SelectItem value="Calcium Carbonate">
+                            Calcium Carbonate
+                          </SelectItem>
+                          <SelectItem value="Barium Sulfate">
+                            Barium Sulfate
+                          </SelectItem>
+                          <SelectItem value="Strontium Sulfate">
+                            Strontium Sulfate
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* applicableIonicStrength */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Applicable Ionic Strength
+                  </label>
+                  <Controller
+                    name={`formulas.${index}.applicableIonicStrength`}
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className={inputClass}>
+                          <SelectValue placeholder="Select ionic strength" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="<0.1">&lt;0.1</SelectItem>
+                          <SelectItem value="0.1-0.5">0.1–0.5</SelectItem>
+                          <SelectItem value=">0.5">&gt;0.5</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                </div>
+
+                {/* formulaForInhibitionPerformance */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Formula for Inhibition Performance
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter formula"
+                    {...register(
+                      `formulas.${index}.formulaForInhibitionPerformance`,
+                    )}
+                    className={inputClass}
+                  />
+                </div>
+
+                {/* Remove button */}
+                {fields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors"
+                  >
+                    <LuTrash2 size={16} />
+                  </button>
+                )}
+              </div>
+            ))}
+
+            {/* Add Formula Button */}
+            <button
+              type="button"
+              onClick={() =>
+                append({
+                  salToInhibit: "",
+                  applicableIonicStrength: "",
+                  formulaForInhibitionPerformance: "",
+                })
+              }
+              className="flex items-center gap-2 px-4 py-2 bg-primaryColor text-white text-sm font-medium rounded-md hover:bg-[#004AAD] transition-colors"
+            >
+              <LuPlus size={16} />
+              Add Formula
+            </button>
+          </div>
+
+          {/* ── Remaining Fields ── */}
+          <div className="grid lg:grid-cols-2 gap-6 mt-6">
             {/* estimatedCost */}
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
@@ -525,34 +688,8 @@ export default function EditMaterials() {
               </label>
               <input
                 type="number"
-                placeholder="Enter ph"
+                placeholder="Enter estimated cost"
                 {...register("estimatedCost", { valueAsNumber: true })}
-                className={inputClass}
-              />
-            </div>
-
-            {/* saltToInhibit */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Salt to Inhibit
-              </label>
-              <input
-                type="text"
-                placeholder="Enter salt to inhibit"
-                {...register("saltToInhibit")}
-                className={inputClass}
-              />
-            </div>
-
-            {/* formulaForInhibitionPerformance */}
-            <div>
-              <label className="block text-sm font-medium text-gray-900 mb-2">
-                Formula for inhibition performance
-              </label>
-              <input
-                type="text"
-                placeholder="Enter magnesium (mg)"
-                {...register("formulaForInhibitionPerformance")}
                 className={inputClass}
               />
             </div>
@@ -583,7 +720,7 @@ export default function EditMaterials() {
               />
             </div>
 
-            {/* communityVisibility — only dropdown */}
+            {/* communityVisibility */}
             <div>
               <label className="block text-sm font-medium text-gray-900 mb-2">
                 Select Community Visibility
@@ -610,6 +747,24 @@ export default function EditMaterials() {
                     </SelectContent>
                   </Select>
                 )}
+              />
+            </div>
+          </div>
+
+          {/* ── Additional Information ── */}
+          <div className="mt-8">
+            <h3 className="text-xl font-semibold text-headingColor mb-4">
+              Additional Information
+            </h3>
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Special Handling Instructions
+              </label>
+              <textarea
+                rows={4}
+                placeholder="Enter any special handling requirements..."
+                {...register("additionalInformation")}
+                className="w-full px-4 py-2.5 border border-[#F3F3F3] rounded-md text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#F3F3F3] resize-none"
               />
             </div>
           </div>
