@@ -478,13 +478,6 @@ export default function EditMaterials() {
 
       <div className="bg-white rounded-lg border border-[#E5E7EB] hover:shadow-sm">
         <div className="p-6">
-          <h1 className="text-3xl font-semibold text-headingColor mb-2">
-            Chemical
-          </h1>
-          <h2 className="text-xl font-medium text-headingColor mb-4">
-            Treatment Chemical Details
-          </h2>
-
           <div className="grid lg:grid-cols-2 gap-6">
             {/* commonName */}
             <div>
