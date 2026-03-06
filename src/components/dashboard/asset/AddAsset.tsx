@@ -385,12 +385,12 @@ export default function CoolingWaterAssetConfig() {
   const watchedNsf60 = watch("nsfStandard60");
   const watchedNsfG5G7 = watch("nsfG5G7");
   const watchedGras = watch("gras");
-  const watchedReturnTemp = watch("returnTemperature");
-  const watchedSupplyTemp = watch("supplyTemperature");
+  // Delta T — useState for guaranteed re-render
+  const [supplyTempVal, setSupplyTempVal] = useState("85");
+  const [returnTempVal, setReturnTempVal] = useState("95");
 
-  // Delta T — reactive: Return − Supply
-  const returnNum = parseFloat(watchedReturnTemp);
-  const supplyNum = parseFloat(watchedSupplyTemp);
+  const returnNum = parseFloat(returnTempVal);
+  const supplyNum = parseFloat(supplyTempVal);
   const deltaT =
     !isNaN(returnNum) && !isNaN(supplyNum)
       ? (returnNum - supplyNum).toFixed(1)
@@ -437,49 +437,14 @@ export default function CoolingWaterAssetConfig() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
-      {/* Top Header Bar */}
-      <div className="bg-white border-b border-gray-100 px-8 py-4 flex items-center justify-between sticky top-0 z-40 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
-            <svg
-              className="w-4 h-4 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"
-              />
-            </svg>
-          </div>
-          <span className="text-sm font-semibold text-gray-700">
-            AquaConfig
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-xs font-bold">
-            J
-          </div>
-          <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">
-            T
-          </div>
-        </div>
-      </div>
-
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="max-w-4xl mx-auto px-6 py-8 space-y-6"
-      >
+    <div className="min-h-screen bg-gray-50 font-sans mt-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="">
         {/* ── Page Title ── */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
+        <div className="my-6">
+          <h1 className="lg:text-3xl text-2xl font-bold text-gray-900 tracking-tight">
             Cooling Water Asset Configuration
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-gray-500 mt-2">
             Describe the physical cooling system assets used at your facility.
           </p>
         </div>
@@ -808,10 +773,15 @@ export default function CoolingWaterAssetConfig() {
             <div>
               <Label>Supply Temperature</Label>
               <div className="flex gap-2">
-                <Input
-                  className="flex-1 min-w-0"
+                <input
+                  type="number"
+                  className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition"
                   placeholder="e.g. 85"
-                  {...register("supplyTemperature")}
+                  value={supplyTempVal}
+                  onChange={(e) => {
+                    setSupplyTempVal(e.target.value);
+                    setValue("supplyTemperature", e.target.value);
+                  }}
                 />
                 <Controller
                   name="supplyTempUnit"
@@ -838,10 +808,15 @@ export default function CoolingWaterAssetConfig() {
             <div>
               <Label>Return Temperature</Label>
               <div className="flex gap-2">
-                <Input
-                  className="flex-1 min-w-0"
+                <input
+                  type="number"
+                  className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:border-transparent transition"
                   placeholder="e.g. 95"
-                  {...register("returnTemperature")}
+                  value={returnTempVal}
+                  onChange={(e) => {
+                    setReturnTempVal(e.target.value);
+                    setValue("returnTemperature", e.target.value);
+                  }}
                 />
                 <Controller
                   name="returnTempUnit"
@@ -869,13 +844,13 @@ export default function CoolingWaterAssetConfig() {
               <Label>Delta T (Calculated)</Label>
               <div className="flex gap-2">
                 <div
-                  className={`flex-1 min-w-0 px-3 py-2 text-sm rounded-lg font-semibold border-2 transition-colors ${
+                  className={`flex-1 min-w-0 px-3 py-2 text-sm rounded-lg font-semibold border-2 transition-all duration-200 ${
                     deltaT !== "—"
                       ? "border-teal-400 bg-teal-50 text-teal-700"
                       : "border-gray-200 bg-gray-50 text-gray-400"
                   }`}
                 >
-                  {deltaT}
+                  {deltaT !== "—" ? `${deltaT}` : "—"}
                 </div>
                 <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
                   {watch("supplyTempUnit") || "°F"}
