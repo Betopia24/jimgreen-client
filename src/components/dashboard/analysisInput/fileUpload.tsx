@@ -7,6 +7,10 @@ import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/report
 import { useDispatch } from "react-redux";
 import { setAnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 
+// antonio794@hotmail.com
+
+// 12345!!
+
 export default function FileUpload() {
   const [isDragging, setIsDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
