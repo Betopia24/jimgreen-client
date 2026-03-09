@@ -12,9 +12,13 @@ import { RootState } from "@/redux/store";
 import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi";
 import { useGetCustomerQuery } from "@/redux/api/customer/customerApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
-import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import {
+  Error,
+  User,
+} from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
 import { Product } from "../product/productRowMeterialTable";
+import { toast } from "sonner";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -635,11 +639,15 @@ export default function CoolingWaterAssetConfig() {
     }
 
     try {
-      await createAssest(payload).unwrap();
-      alert("Asset created successfully!");
+      const response = await createAssest(payload).unwrap();
+
+      if (response.success) {
+        toast.success(response.message);
+      }
     } catch (err) {
       console.error("Create asset failed:", err);
-      alert("Failed to create asset. Please try again.");
+      const error = err as Error;
+      toast.error(error.data.message);
     }
   };
 
