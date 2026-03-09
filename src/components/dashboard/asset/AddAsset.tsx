@@ -1636,7 +1636,7 @@ export default function CoolingWaterAssetConfig() {
           <button
             type="submit"
             disabled={isLoading}
-            className="px-8 py-3 bg-blue-600 text-white text-sm font-semibold rounded-xl hover:bg-blue-700 active:scale-95 transition shadow-md shadow-blue-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-8 py-3 bg-primaryColor text-white text-sm font-semibold rounded-md hover:bg-blue-700 active:scale-95 transition shadow-md shadow-blue-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2"
           >
             {isLoading && (
               <svg
