@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   useForm,
   useFieldArray,
@@ -412,6 +412,7 @@ const SkeletonCard = () => (
 
 // ─── Main Edit Component ──────────────────────────────────────────────────────
 export default function EditCoolingWaterAsset() {
+  const router = useRouter();
   // ── Params & API ──────────────────────────────────────────────────────────
   const { showCustomerId } = useParams();
   const { data: singleCustomerAssest, error } =
@@ -804,6 +805,7 @@ export default function EditCoolingWaterAsset() {
               />
             </svg>
           </div>
+
           <h2 className="text-lg font-semibold text-gray-800 mb-1">
             Failed to load asset
           </h2>
@@ -820,19 +822,25 @@ export default function EditCoolingWaterAsset() {
     <div className="min-h-screen bg-gray-50 font-sans mt-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* ── Page Title ── */}
-        <div className="my-6 flex items-start justify-between">
+
+        <div className="my-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
-                ✎ Edit Mode
-              </span>
-            </div>
-            <h1 className="lg:text-3xl text-2xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight">
               Edit Cooling Water Asset
             </h1>
-            <p className="text-sm text-gray-500 mt-2">
+
+            <p className="text-sm text-gray-500 mt-1 sm:mt-2 max-w-xl">
               Update the physical cooling system asset configuration.
             </p>
+          </div>
+
+          <div className="flex sm:justify-end">
+            <button
+              onClick={() => router.back()}
+              className="w-full sm:w-auto py-2 px-5 sm:px-6 bg-gray-200 border rounded-md text-sm sm:text-base hover:bg-gray-300 transition"
+            >
+              Back
+            </button>
           </div>
         </div>
 

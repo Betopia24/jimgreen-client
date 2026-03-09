@@ -19,6 +19,7 @@ import {
 import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
 import { Product } from "../product/productRowMeterialTable";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -420,7 +421,7 @@ const TrashIcon = () => (
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function CoolingWaterAssetConfig() {
   // ── Redux ──────────────────────────────────────────────────────────────────
-
+  const router = useRouter();
   const [createAssest, { isLoading }] = useGetCreateAssestMutation();
   const { data: userData } = useGetMeProfileQuery("");
   const profile = userData?.data as User;
@@ -656,13 +657,25 @@ export default function CoolingWaterAssetConfig() {
     <div className="min-h-screen bg-gray-50 font-sans mt-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* ── Page Title ── */}
-        <div className="my-6">
-          <h1 className="lg:text-3xl text-2xl font-bold text-gray-900 tracking-tight">
-            Cooling Water Asset Configuration
-          </h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Describe the physical cooling system assets used at your facility.
-          </p>
+        <div className="my-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight">
+              Cooling Water Asset Configuration
+            </h1>
+
+            <p className="text-sm text-gray-500 mt-1 sm:mt-2 max-w-xl">
+              Describe the physical cooling system assets used at your facility.
+            </p>
+          </div>
+
+          <div className="flex sm:justify-end">
+            <button
+              onClick={() => router.back()}
+              className="w-full sm:w-auto py-2 px-5 sm:px-6 bg-gray-200 border rounded-md text-sm sm:text-base hover:bg-gray-300 transition"
+            >
+              Back
+            </button>
+          </div>
         </div>
 
         {/* ── Top Fields Card ── */}
