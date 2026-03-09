@@ -14,9 +14,13 @@ import {
 } from "@/redux/api/assest/customerAssestApi";
 import { useGetCustomerQuery } from "@/redux/api/customer/customerApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
-import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import {
+  Error,
+  User,
+} from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
 import { Product } from "../product/productRowMeterialTable";
+import { toast } from "sonner";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -752,11 +756,17 @@ export default function EditCoolingWaterAsset() {
     }
 
     try {
-      await updatedAssest({ id: assetsId, data: payload }).unwrap();
-      alert("Asset updated successfully!");
+      const response = await updatedAssest({
+        id: assetsId,
+        payload,
+      }).unwrap();
+      if (response.success) {
+        toast.success(response.message);
+      }
     } catch (err) {
       console.error("Update asset failed:", err);
-      alert("Failed to update asset. Please try again.");
+      const error = err as Error;
+      toast.error(error.data.message);
     }
   };
 
