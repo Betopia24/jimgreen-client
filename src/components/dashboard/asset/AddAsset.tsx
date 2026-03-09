@@ -1701,9 +1701,9 @@ interface FormValues {
 // ── API payload ──────────────────────────────────────────────────────────────
 interface CreateAssetPayload {
   customerId: string;
-  waterTreatmentCompany: string;
-  customerName: string;
-  siteNameLocation: string;
+  waterTreatmentCompany?: string;
+  customerName?: string;
+  siteNameLocation?: string;
   name: string;
   type: string;
   // Cooling Tower / Evaporative Condenser
@@ -2132,9 +2132,9 @@ export default function CoolingWaterAssetConfig() {
     // Base payload (all types)
     const payload: CreateAssetPayload = {
       customerId: selectedCustomerId,
-      waterTreatmentCompany: data.waterTreatmentCompany,
-      customerName: data.customerName,
-      siteNameLocation: data.siteNameLocation,
+      // waterTreatmentCompany: data.waterTreatmentCompany,
+      // customerName: data.customerName,
+      // siteNameLocation: data.siteNameLocation,
       name: data.assetName,
       type: data.assetType,
       systemMetallurgy: data.metallurgy,
