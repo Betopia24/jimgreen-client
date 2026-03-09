@@ -1584,6 +1584,8 @@ import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi
 import { useGetCustomerQuery } from "@/redux/api/customer/customerApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
+import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
+import { Product } from "../product/productRowMeterialTable";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -1993,6 +1995,9 @@ export default function CoolingWaterAssetConfig() {
   console.log(profile);
 
   const companyId = profile?.companyMember?.company.id;
+  const { data: allData } = useAllProductsQuery(companyId);
+  console.log(allData);
+  const products = allData?.data as Product[];
 
   // ── Customer list API ──────────────────────────────────────────────────────
   const { data: customerResponse, isError: customerError } =
@@ -2967,7 +2972,7 @@ export default function CoolingWaterAssetConfig() {
                   </span>
                 ))}
               </div>
-              {chemicalProductFields.map((field, index) => (
+              {chemicalProductFields?.map((field, index) => (
                 <div
                   key={field.id}
                   className="grid grid-cols-[1fr_1fr_1fr_48px] items-center px-4 py-2.5 border-b border-gray-50 last:border-0"
@@ -2982,9 +2987,9 @@ export default function CoolingWaterAssetConfig() {
                           className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
                         >
                           <option value="">Select product...</option>
-                          {PRODUCT_OPTIONS.map((p) => (
-                            <option key={p} value={p}>
-                              {p}
+                          {products?.map((product) => (
+                            <option key={product.id} value={product.id}>
+                              {product.productName}
                             </option>
                           ))}
                         </select>

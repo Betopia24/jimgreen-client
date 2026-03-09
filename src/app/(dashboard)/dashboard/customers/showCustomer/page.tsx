@@ -13,6 +13,7 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import LoadingPage from "@/components/shared/loading/LoadingPage2";
 import DeleteConfirmModal from "@/components/shared/DeteleConfirm/DeleteConfirm";
+import moment from "moment";
 
 export default function AssetsList() {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function AssetsList() {
   const [deleteAssest, { isLoading: loading }] = useGetDeleteAssestMutation();
 
   const customerAssest = customerAssestResponse?.data || [];
-  // console.log(customerAssest, "customerAssest==================")
+  console.log(customerAssest, "customerAssest==================");
 
   // Filter assets based on search term
   const filteredAssets = customerAssest.filter(
@@ -125,8 +126,8 @@ export default function AssetsList() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAssets.length > 0 ? (
-                    filteredAssets.map((asset: any) => (
+                  {customerAssest.length > 0 ? (
+                    customerAssest.map((asset: any) => (
                       <tr
                         key={asset.id}
                         className="border-b border-[#E5E7EB] hover:bg-gray-50 transition-colors"
@@ -138,10 +139,10 @@ export default function AssetsList() {
                           {asset.type}
                         </td>
                         <td className="py-4 px-6 text-[#4B5563] text-sm">
-                          {asset.location}
+                          {asset.customer.location}
                         </td>
                         <td className="py-4 px-6 text-[#4B5563] text-sm">
-                          {asset.installationDate}
+                          {moment(asset.updatedAt).format("ll")}
                         </td>
                         <td className="py-4 px-6">
                           <span
