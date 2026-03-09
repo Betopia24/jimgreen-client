@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
-import { User } from "../../rowMeterials/addRowMeterials/page";
+import { Error, User } from "../../rowMeterials/addRowMeterials/page";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LuLoader } from "react-icons/lu";
@@ -57,7 +57,7 @@ export default function AddCustomer() {
       contactEmail: data.contactEmail,
       contactPhone: data.contactPhone,
       isActive: profile?.isEmailVerified,
-      companyId: profile?.companyMember?.companyId,
+      companyId: profile?.companyMember?.company.id,
     };
 
     try {
@@ -70,6 +70,8 @@ export default function AddCustomer() {
       // maybe show a success toast or navigate
     } catch (error) {
       console.error("Failed to create customer:", error);
+      const err = error as Error;
+      toast.error(err.data.message);
     }
   };
 
