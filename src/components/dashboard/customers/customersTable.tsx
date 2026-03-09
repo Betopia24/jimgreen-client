@@ -25,7 +25,7 @@ export default function CustomerTable() {
   const { data: userData } = useGetMeProfileQuery("");
   const profile = userData?.data as User;
 
-  const companyId = profile?.companyMember?.companyId;
+  const companyId = profile?.companyMember?.company.id;
   const {
     data: customerResponse,
     isLoading,

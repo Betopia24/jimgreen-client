@@ -10,16 +10,21 @@
 // } from "react-hook-form";
 // import { RootState } from "@/redux/store";
 // import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi";
-// import { useGetSingleCustomerQuery } from "@/redux/api/customer/customerApi";
+// import {
+//   useGetCustomerQuery,
+//   useGetSingleCustomerQuery,
+// } from "@/redux/api/customer/customerApi";
+// import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+// import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 
 // // ─── Types ────────────────────────────────────────────────────────────────────
 
 // type AssetType =
 //   | "Cooling Tower"
 //   | "Evaporative Condenser"
-//   | "Once-Through Cooling"
-//   | "Seawater Cooling Tower"
-//   | "Adiabatic Cooler";
+//   | "Once-Through Cooling";
+// // | "Seawater Cooling Tower"
+// // | "Adiabatic Cooler";
 
 // type TowerType =
 //   | "Counterflow"
@@ -66,11 +71,14 @@
 
 // // ── Internal form shape ──────────────────────────────────────────────────────
 // interface FormValues {
+//   // top fields
 //   waterTreatmentCompany: string;
 //   customerName: string;
 //   siteNameLocation: string;
 //   assetName: string;
 //   assetType: AssetType;
+
+//   // Cooling Tower / Evaporative Condenser fields
 //   towerType: TowerType;
 //   fillType: FillType;
 //   criticalHeatExchangerDesign: FillType;
@@ -80,30 +88,40 @@
 //   systemVolume: string;
 //   systemVolumeUnit: "gallons" | "liters";
 //   evaporationFactor: string;
-//   // temperature
 //   supplyTemperature: string;
 //   supplyTempUnit: "°F" | "°C";
 //   returnTemperature: string;
 //   returnTempUnit: "°F" | "°C";
-//   // metallurgy
+
+//   // Once-Through Cooling fields
+//   flowRate: string;
+//   flowRateUnit: string;
+//   onceThroughSupplyTemp: string;
+//   onceThroughSupplyUnit: "°F" | "°C";
+//   dischargeTemperature: string;
+//   dischargeTempUnit: "°F" | "°C";
+//   criticalCooling: string;
+//   criticalFlowRate: string;
+//   criticalFlowRateUnit: string;
+//   onceThroughHottestSkin: string;
+//   onceThroughHottestUnit: "°F" | "°C";
+
+//   // shared
 //   metallurgy: Metallurgy[];
 //   otherMaterials: OtherMaterial[];
-//   // heat exchanger
 //   hottestSkinTemp: string;
 //   hottestSkinTempUnit: "°F" | "°C";
 //   criticalHeatExchangerFlowRate: string;
-//   criticalFlowRateUnit: "ft/s" | "m/s";
-//   // special requirements
+//   criticalHxFlowRateUnit: "ft/s" | "m/s";
 //   nsfStandard60: boolean;
 //   nsfG5G7: boolean;
 //   gras: boolean;
-//   // arrays
 //   dischargeLimits: DischargeLimit[];
 //   chemicalProducts: ChemicalProduct[];
 //   controlVariables: ControlVariable[];
 // }
 
-// // ── API payload shape (exact match to backend) ───────────────────────────────
+// // ── API payload ──────────────────────────────────────────────────────────────
 // interface CreateAssetPayload {
 //   customerId: string;
 //   waterTreatmentCompany: string;
@@ -111,19 +129,29 @@
 //   siteNameLocation: string;
 //   name: string;
 //   type: string;
-//   towerType: string;
-//   fillType: string;
-//   criticalHeatExchangerDesign: string;
-//   recirculationRate: number;
-//   recirculationRateType: string;
-//   tonnageOfCooling: number;
-//   systemVolume: number;
-//   systemVolumeType: string;
-//   supplyTemperature: number;
-//   supplyTemperatureType: string;
-//   returnTemperature: number;
-//   returnTemperatureType: string;
-//   deltaTemperature: number;
+//   // Cooling Tower / Evaporative Condenser
+//   towerType?: string;
+//   fillType?: string;
+//   criticalHeatExchangerDesign?: string;
+//   recirculationRate?: number;
+//   recirculationRateType?: string;
+//   tonnageOfCooling?: number;
+//   systemVolume?: number;
+//   systemVolumeType?: string;
+//   supplyTemperature?: number;
+//   supplyTemperatureType?: string;
+//   returnTemperature?: number;
+//   returnTemperatureType?: string;
+//   deltaTemperature?: number;
+//   // Once-Through Cooling
+//   flowRate?: number;
+//   flowRateType?: string;
+//   dischargeTemperature?: number;
+//   dischargeTemperatureType?: string;
+//   criticalCooling?: string;
+//   criticalFlowRate?: number;
+//   criticalFlowRateType?: string;
+//   // shared
 //   systemMetallurgy: string[];
 //   systemMaterials: string[];
 //   hottestSkinTemperature: number;
@@ -149,13 +177,12 @@
 // }
 
 // // ─── Constants ────────────────────────────────────────────────────────────────
-
 // const ASSET_TYPES: AssetType[] = [
 //   "Cooling Tower",
 //   "Evaporative Condenser",
 //   "Once-Through Cooling",
-//   "Seawater Cooling Tower",
-//   "Adiabatic Cooler",
+//   // "Seawater Cooling Tower",
+//   // "Adiabatic Cooler",
 // ];
 // const TOWER_TYPES: TowerType[] = [
 //   "Counterflow",
@@ -164,7 +191,6 @@
 //   "Forced Draft",
 // ];
 // const FILL_TYPES: FillType[] = ["Film Fill", "Splash Fill", "Trickle Fill"];
-
 // const METALLURGY_OPTIONS: Metallurgy[] = [
 //   "Mild Steel",
 //   "Galvanized Steel",
@@ -212,9 +238,17 @@
 //   "pH Adjuster",
 //   "Custom Product...",
 // ];
+// const CRITICAL_COOLING_OPTIONS = [
+//   "Heat Exchanger",
+//   "Condenser",
+//   "Process Cooler",
+//   "Other",
+// ];
+// const FLOW_RATE_UNITS = ["gpm", "lpm", "m³/hr"];
+// const TEMP_UNITS = ["°F", "°C"];
+// const FLOW_RATE_UNITS2 = ["ft/s", "m/s", "m³/hr"];
 
 // // ─── Shared UI ────────────────────────────────────────────────────────────────
-
 // const Label = ({
 //   children,
 //   required,
@@ -328,11 +362,19 @@
 //   </div>
 // );
 
-// const UnitSelect = ({ field, options }: { field: any; options: string[] }) => (
-//   <div className="relative shrink-0">
+// const UnitSelect = ({
+//   field,
+//   options,
+//   width = "w-20",
+// }: {
+//   field: any;
+//   options: string[];
+//   width?: string;
+// }) => (
+//   <div className={`relative ${width} shrink-0`}>
 //     <select
 //       {...field}
-//       className="h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none
+//       className="w-full h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none
 //         focus:outline-none focus:ring-2 focus:ring-teal-400"
 //     >
 //       {options.map((o) => (
@@ -364,25 +406,25 @@
 // );
 
 // // ─── Main Component ───────────────────────────────────────────────────────────
-
 // export default function CoolingWaterAssetConfig() {
 //   // ── Redux ──────────────────────────────────────────────────────────────────
-//   const customerId = useSelector(
-//     (state: RootState) => state.customerId.customerId,
-//   );
+
 //   const [createAssest, { isLoading }] = useGetCreateAssestMutation();
 
-//   console.log(customerId);
-//   const { data: singleCustomer, error } = useGetSingleCustomerQuery(
-//     customerId || "",
-//   );
+//   const { data: userData } = useGetMeProfileQuery("");
+//   const profile = userData?.data as User;
+
+//   const companyId = profile?.companyMember?.company.id;
+//   const { data: customerResponse, isError } = useGetCustomerQuery(companyId, {
+//     skip: !companyId,
+//   });
 
 //   // ── Local UI state ─────────────────────────────────────────────────────────
 //   const [showAssetTypeDropdown, setShowAssetTypeDropdown] = useState(false);
+
+//   // Delta T state (Cooling Tower / Evaporative Condenser)
 //   const [supplyTempVal, setSupplyTempVal] = useState("85");
 //   const [returnTempVal, setReturnTempVal] = useState("95");
-
-//   // ── Delta T (reactive) ─────────────────────────────────────────────────────
 //   const returnNum = parseFloat(returnTempVal);
 //   const supplyNum = parseFloat(supplyTempVal);
 //   const deltaT =
@@ -394,8 +436,12 @@
 //   const { register, control, handleSubmit, watch, setValue, getValues } =
 //     useForm<FormValues>({
 //       defaultValues: {
+//         waterTreatmentCompany: "",
+//         customerName: "",
+//         siteNameLocation: "",
 //         assetName: "",
 //         assetType: "Cooling Tower",
+//         // Cooling Tower / Evap fields
 //         towerType: "",
 //         fillType: "",
 //         criticalHeatExchangerDesign: "",
@@ -409,12 +455,25 @@
 //         supplyTempUnit: "°F",
 //         returnTemperature: "95",
 //         returnTempUnit: "°F",
+//         // Once-Through fields
+//         flowRate: "",
+//         flowRateUnit: "gpm",
+//         onceThroughSupplyTemp: "",
+//         onceThroughSupplyUnit: "°F",
+//         dischargeTemperature: "",
+//         dischargeTempUnit: "°F",
+//         criticalCooling: "",
+//         criticalFlowRate: "",
+//         criticalFlowRateUnit: "ft/s",
+//         onceThroughHottestSkin: "",
+//         onceThroughHottestUnit: "°F",
+//         // shared
 //         metallurgy: [],
 //         otherMaterials: [],
 //         hottestSkinTemp: "",
 //         hottestSkinTempUnit: "°F",
 //         criticalHeatExchangerFlowRate: "",
-//         criticalFlowRateUnit: "ft/s",
+//         criticalHxFlowRateUnit: "ft/s",
 //         nsfStandard60: false,
 //         nsfG5G7: false,
 //         gras: false,
@@ -439,6 +498,12 @@
 //   const watchedNsfG5G7 = watch("nsfG5G7");
 //   const watchedGras = watch("gras");
 //   const watchedSupplyUnit = watch("supplyTempUnit");
+
+//   // ── Asset type helpers ─────────────────────────────────────────────────────
+//   const isCoolingTower = watchedAssetType === "Cooling Tower";
+//   const isEvapCondenser = watchedAssetType === "Evaporative Condenser";
+//   const isOnceThroughCooling = watchedAssetType === "Once-Through Cooling";
+//   const isCoolingTowerOrEvap = isCoolingTower || isEvapCondenser;
 
 //   // ── Field Arrays ───────────────────────────────────────────────────────────
 //   const {
@@ -478,6 +543,7 @@
 //     const deltaTNum =
 //       !isNaN(returnNum) && !isNaN(supplyNum) ? returnNum - supplyNum : 0;
 
+//     // Base payload (all types)
 //     const payload: CreateAssetPayload = {
 //       customerId: customerId as string,
 //       waterTreatmentCompany: data.waterTreatmentCompany,
@@ -485,26 +551,13 @@
 //       siteNameLocation: data.siteNameLocation,
 //       name: data.assetName,
 //       type: data.assetType,
-//       towerType: data.towerType,
-//       fillType: data.fillType,
-//       criticalHeatExchangerDesign: data.criticalHeatExchangerDesign,
-//       recirculationRate: parseFloat(data.recirculationRate) || 0,
-//       recirculationRateType: data.recirculationUnit,
-//       tonnageOfCooling: parseFloat(data.tonnageOfCooling) || 0,
-//       systemVolume: parseFloat(data.systemVolume) || 0,
-//       systemVolumeType: data.systemVolumeUnit,
-//       supplyTemperature: parseFloat(supplyTempVal) || 0,
-//       supplyTemperatureType: data.supplyTempUnit,
-//       returnTemperature: parseFloat(returnTempVal) || 0,
-//       returnTemperatureType: data.returnTempUnit,
-//       deltaTemperature: deltaTNum,
 //       systemMetallurgy: data.metallurgy,
 //       systemMaterials: data.otherMaterials,
 //       hottestSkinTemperature: parseFloat(data.hottestSkinTemp) || 0,
 //       hottestSkinTemperatureType: data.hottestSkinTempUnit,
 //       criticalHeatExchangerFlowRate:
 //         parseFloat(data.criticalHeatExchangerFlowRate) || 0,
-//       criticalHeatExchangerFlowRateType: data.criticalFlowRateUnit,
+//       criticalHeatExchangerFlowRateType: data.criticalHxFlowRateUnit,
 //       NSFStandard60: data.nsfStandard60,
 //       "NSFG5/G7": data.nsfG5G7,
 //       GRAS: data.gras,
@@ -514,7 +567,7 @@
 //         unit: d.unit,
 //       })),
 //       productPrograms: data.chemicalProducts.map((p) => ({
-//         productId: p.product, // product name → productId
+//         productId: p.product,
 //         dosage: p.dosage,
 //         unit: p.unit,
 //       })),
@@ -526,6 +579,40 @@
 //         unit: c.unit,
 //       })),
 //     };
+
+//     // Cooling Tower / Evaporative Condenser — specific fields
+//     if (isCoolingTowerOrEvap) {
+//       payload.towerType = data.towerType;
+//       payload.fillType = data.fillType;
+//       payload.criticalHeatExchangerDesign = data.criticalHeatExchangerDesign;
+//       payload.recirculationRate = parseFloat(data.recirculationRate) || 0;
+//       payload.recirculationRateType = data.recirculationUnit;
+//       payload.tonnageOfCooling = parseFloat(data.tonnageOfCooling) || 0;
+//       payload.systemVolume = parseFloat(data.systemVolume) || 0;
+//       payload.systemVolumeType = data.systemVolumeUnit;
+//       payload.supplyTemperature = parseFloat(supplyTempVal) || 0;
+//       payload.supplyTemperatureType = data.supplyTempUnit;
+//       payload.returnTemperature = parseFloat(returnTempVal) || 0;
+//       payload.returnTemperatureType = data.returnTempUnit;
+//       payload.deltaTemperature = deltaTNum;
+//     }
+
+//     // Once-Through Cooling — specific fields
+//     if (isOnceThroughCooling) {
+//       payload.flowRate = parseFloat(data.flowRate) || 0;
+//       payload.flowRateType = data.flowRateUnit;
+//       payload.supplyTemperature = parseFloat(data.onceThroughSupplyTemp) || 0;
+//       payload.supplyTemperatureType = data.onceThroughSupplyUnit;
+//       payload.dischargeTemperature = parseFloat(data.dischargeTemperature) || 0;
+//       payload.dischargeTemperatureType = data.dischargeTempUnit;
+//       payload.criticalCooling = data.criticalCooling;
+//       payload.criticalFlowRate = parseFloat(data.criticalFlowRate) || 0;
+//       payload.criticalFlowRateType = data.criticalFlowRateUnit;
+//       // override hottest skin with once-through specific fields
+//       payload.hottestSkinTemperature =
+//         parseFloat(data.onceThroughHottestSkin) || 0;
+//       payload.hottestSkinTemperatureType = data.onceThroughHottestUnit;
+//     }
 
 //     try {
 //       await createAssest(payload).unwrap();
@@ -647,265 +734,401 @@
 //             </p>
 //           </div>
 
-//           {/* Mechanical Details */}
-//           <SubSection title="Mechanical Details" />
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-//             <div>
-//               <Label>Tower Type</Label>
-//               <Controller
-//                 name="towerType"
-//                 control={control}
-//                 render={({ field }) => (
-//                   <SelectField
-//                     field={field}
-//                     options={TOWER_TYPES}
-//                     placeholder="Select tower type..."
-//                   />
-//                 )}
-//               />
-//             </div>
-//             <div>
-//               <Label>Fill Type</Label>
-//               <Controller
-//                 name="fillType"
-//                 control={control}
-//                 render={({ field }) => (
-//                   <SelectField
-//                     field={field}
-//                     options={FILL_TYPES}
-//                     placeholder="Select fill type..."
-//                   />
-//                 )}
-//               />
-//             </div>
-//             <div>
-//               <Label>Critical Heat Exchanger Design</Label>
-//               <Controller
-//                 name="criticalHeatExchangerDesign"
-//                 control={control}
-//                 render={({ field }) => (
-//                   <SelectField
-//                     field={field}
-//                     options={FILL_TYPES}
-//                     placeholder="Select fill type..."
-//                   />
-//                 )}
-//               />
-//             </div>
-//           </div>
+//           {/* ════════════════════════════════════════════════════════════════
+//               COOLING TOWER + EVAPORATIVE CONDENSER FIELDS
+//           ════════════════════════════════════════════════════════════════ */}
+//           {isCoolingTowerOrEvap && (
+//             <>
+//               {/* Mechanical Details — only for Cooling Tower */}
+//               {isCoolingTower && (
+//                 <>
+//                   <SubSection title="Mechanical Details" />
+//                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+//                     <div>
+//                       <Label>Tower Type</Label>
+//                       <Controller
+//                         name="towerType"
+//                         control={control}
+//                         render={({ field }) => (
+//                           <SelectField
+//                             field={field}
+//                             options={TOWER_TYPES}
+//                             placeholder="Select tower type..."
+//                           />
+//                         )}
+//                       />
+//                     </div>
+//                     <div>
+//                       <Label>Fill Type</Label>
+//                       <Controller
+//                         name="fillType"
+//                         control={control}
+//                         render={({ field }) => (
+//                           <SelectField
+//                             field={field}
+//                             options={FILL_TYPES}
+//                             placeholder="Select fill type..."
+//                           />
+//                         )}
+//                       />
+//                     </div>
+//                     <div>
+//                       <Label>Critical Heat Exchanger Design</Label>
+//                       <Controller
+//                         name="criticalHeatExchangerDesign"
+//                         control={control}
+//                         render={({ field }) => (
+//                           <SelectField
+//                             field={field}
+//                             options={FILL_TYPES}
+//                             placeholder="Select fill type..."
+//                           />
+//                         )}
+//                       />
+//                     </div>
+//                   </div>
+//                 </>
+//               )}
 
-//           {/* Recirculation & Volume */}
-//           <SubSection title="Recirculation & Volume" />
-//           <div className="border border-gray-200 rounded-xl mb-6 overflow-hidden">
-//             <div className="flex flex-col lg:flex-row">
-//               {/* LEFT — Recirculation Rate */}
-//               <div className="flex-1 p-5">
-//                 <Label required>Recirculation Rate</Label>
-//                 <div className="flex gap-2 mt-1">
+//               {/* Recirculation & Volume */}
+//               <SubSection title="Recirculation & Volume" />
+//               <div className="border border-gray-200 rounded-xl mb-6 overflow-hidden">
+//                 <div className="flex flex-col lg:flex-row">
+//                   {/* LEFT — Recirculation Rate */}
+//                   <div className="flex-1 p-5">
+//                     <Label required>Recirculation Rate</Label>
+//                     <div className="flex gap-2 mt-1">
+//                       <Input
+//                         type="number"
+//                         className="flex-1 min-w-0"
+//                         placeholder="e.g. 1000"
+//                         {...register("recirculationRate")}
+//                       />
+//                       <Controller
+//                         name="recirculationUnit"
+//                         control={control}
+//                         render={({ field }) => (
+//                           <div className="relative w-20 shrink-0">
+//                             <select
+//                               {...field}
+//                               className="w-full h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
+//                             >
+//                               <option value="gpm">gpm</option>
+//                               <option value="lpm">lpm</option>
+//                             </select>
+//                             <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+//                               ▾
+//                             </div>
+//                           </div>
+//                         )}
+//                       />
+//                     </div>
+//                     <p className="text-xs text-teal-600 mt-2">
+//                       Auto-calculated if tonnage is provided
+//                     </p>
+//                   </div>
+//                   {/* CENTER — OR */}
+//                   <div className="flex lg:flex-col items-center justify-center px-4 py-3 lg:py-0 bg-gray-50 border-t border-b lg:border-t-0 lg:border-b-0 lg:border-l lg:border-r border-gray-200">
+//                     <div className="w-9 h-9 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center text-xs font-bold text-gray-400 shadow-sm">
+//                       OR
+//                     </div>
+//                   </div>
+//                   {/* RIGHT — Tonnage */}
+//                   <div className="flex-1 p-5">
+//                     <Label>Tonnage of Cooling</Label>
+//                     <div className="flex gap-2 mt-1">
+//                       <Input
+//                         type="number"
+//                         className="flex-1 min-w-0"
+//                         placeholder="e.g. 350"
+//                         {...register("tonnageOfCooling")}
+//                       />
+//                       <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
+//                         tons
+//                       </span>
+//                     </div>
+//                     <p className="text-xs text-gray-400 mt-2">
+//                       Entering tonnage will auto-calculate recirculation rate
+//                     </p>
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* System Volume + Evaporation Factor */}
+//               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+//                 <div>
+//                   <Label required>System Volume</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1 min-w-0"
+//                       placeholder="e.g. 5000"
+//                       {...register("systemVolume")}
+//                     />
+//                     <Controller
+//                       name="systemVolumeUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <div className="relative w-24 shrink-0">
+//                           <select
+//                             {...field}
+//                             className="w-full h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
+//                           >
+//                             <option value="gallons">gallons</option>
+//                             <option value="liters">liters</option>
+//                           </select>
+//                           <div className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
+//                             ▾
+//                           </div>
+//                         </div>
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <Label>
+//                     Evaporation Factor{" "}
+//                     <span
+//                       className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-300 text-gray-400 text-xs ml-1 cursor-help"
+//                       title="Fraction of recirculating water that evaporates"
+//                     >
+//                       ⓘ
+//                     </span>
+//                   </Label>
 //                   <Input
 //                     type="number"
-//                     className="flex-1 min-w-0"
-//                     placeholder="e.g. 1000"
-//                     {...register("recirculationRate")}
+//                     step="0.01"
+//                     {...register("evaporationFactor")}
 //                   />
+//                 </div>
+//               </div>
+
+//               {/* Temperature Section */}
+//               <SubSection title="Temperature" />
+//               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+//                 {/* Supply Temperature */}
+//                 <div>
+//                   <Label>Supply Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <input
+//                       type="number"
+//                       className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+//                       placeholder="e.g. 85"
+//                       value={supplyTempVal}
+//                       onChange={(e) => {
+//                         setSupplyTempVal(e.target.value);
+//                         setValue("supplyTemperature", e.target.value);
+//                       }}
+//                     />
+//                     <Controller
+//                       name="supplyTempUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 {/* Return Temperature */}
+//                 <div>
+//                   <Label>Return Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <input
+//                       type="number"
+//                       className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+//                       placeholder="e.g. 95"
+//                       value={returnTempVal}
+//                       onChange={(e) => {
+//                         setReturnTempVal(e.target.value);
+//                         setValue("returnTemperature", e.target.value);
+//                       }}
+//                     />
+//                     <Controller
+//                       name="returnTempUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 {/* Delta T */}
+//                 <div className="sm:col-span-2 lg:col-span-1">
+//                   <Label>Delta T (Calculated)</Label>
+//                   <div className="flex gap-2">
+//                     <div
+//                       className={`flex-1 min-w-0 px-3 py-2 text-sm rounded-lg font-semibold border-2 transition-all duration-200 ${
+//                         deltaT !== "—"
+//                           ? "border-teal-400 bg-teal-50 text-teal-700"
+//                           : "border-gray-200 bg-gray-50 text-gray-400"
+//                       }`}
+//                     >
+//                       {deltaT}
+//                     </div>
+//                     <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
+//                       {watchedSupplyUnit || "°F"}
+//                     </span>
+//                   </div>
+//                   <p className="text-xs text-gray-400 mt-1.5">
+//                     Formula: Delta T = Return − Supply
+//                   </p>
+//                 </div>
+//               </div>
+//             </>
+//           )}
+
+//           {/* ════════════════════════════════════════════════════════════════
+//               ONCE-THROUGH COOLING FIELDS
+//           ════════════════════════════════════════════════════════════════ */}
+//           {isOnceThroughCooling && (
+//             <>
+//               {/* System Size and Temperatures */}
+//               <SubSection title="System Size and Temperatures" />
+//               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+//                 {/* Flow Rate */}
+//                 <div>
+//                   <Label>Flow Rate</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1 min-w-0"
+//                       placeholder="e.g. 200"
+//                       {...register("flowRate")}
+//                     />
+//                     <Controller
+//                       name="flowRateUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect field={field} options={FLOW_RATE_UNITS} />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 {/* Supply Temperature */}
+//                 <div>
+//                   <Label>Supply Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1 min-w-0"
+//                       placeholder="e.g. 5"
+//                       {...register("onceThroughSupplyTemp")}
+//                     />
+//                     <Controller
+//                       name="onceThroughSupplyUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 {/* Discharge Temperature */}
+//                 <div>
+//                   <Label>Discharge Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1 min-w-0"
+//                       placeholder="e.g. 200"
+//                       {...register("dischargeTemperature")}
+//                     />
+//                     <Controller
+//                       name="dischargeTempUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+
+//               {/* Heat Exchanger Details (Once-Through specific) */}
+//               <SubSection title="Heat Exchanger Details" />
+//               <div className="grid grid-cols-1 gap-4 mb-6">
+//                 {/* Critical Cooling */}
+//                 <div>
+//                   <Label>Critical Cooling</Label>
 //                   <Controller
-//                     name="recirculationUnit"
+//                     name="criticalCooling"
 //                     control={control}
 //                     render={({ field }) => (
-//                       <div className="relative w-20 shrink-0">
-//                         <select
-//                           {...field}
-//                           className="w-full h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
-//                         >
-//                           <option value="gpm">gpm</option>
-//                           <option value="lpm">lpm</option>
-//                         </select>
-//                         <div className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-//                           ▾
-//                         </div>
-//                       </div>
+//                       <SelectField
+//                         field={field}
+//                         options={CRITICAL_COOLING_OPTIONS}
+//                         placeholder="Select..."
+//                       />
 //                     )}
 //                   />
 //                 </div>
-//                 <p className="text-xs text-teal-600 mt-2">
-//                   Auto-calculated if tonnage is provided
-//                 </p>
 //               </div>
-
-//               {/* CENTER — OR */}
-//               <div className="flex lg:flex-col items-center justify-center px-4 py-3 lg:py-0 bg-gray-50 border-t border-b lg:border-t-0 lg:border-b-0 lg:border-l lg:border-r border-gray-200">
-//                 <div className="w-9 h-9 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center text-xs font-bold text-gray-400 shadow-sm">
-//                   OR
+//               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+//                 {/* Hottest Skin Temperature */}
+//                 <div>
+//                   <Label>Hottest Skin Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1"
+//                       placeholder="e.g. 200"
+//                       {...register("onceThroughHottestSkin")}
+//                     />
+//                     <Controller
+//                       name="onceThroughHottestUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 {/* Critical Flow Rate */}
+//                 <div>
+//                   <Label>Critical Flow Rate</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1"
+//                       placeholder="e.g. 5"
+//                       {...register("criticalFlowRate")}
+//                     />
+//                     <Controller
+//                       name="criticalFlowRateUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect field={field} options={FLOW_RATE_UNITS2} />
+//                       )}
+//                     />
+//                   </div>
 //                 </div>
 //               </div>
+//             </>
+//           )}
 
-//               {/* RIGHT — Tonnage */}
-//               <div className="flex-1 p-5">
-//                 <Label>Tonnage of Cooling</Label>
-//                 <div className="flex gap-2 mt-1">
-//                   <Input
-//                     type="number"
-//                     className="flex-1 min-w-0"
-//                     placeholder="e.g. 350"
-//                     {...register("tonnageOfCooling")}
-//                   />
-//                   <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
-//                     tons
-//                   </span>
-//                 </div>
-//                 <p className="text-xs text-gray-400 mt-2">
-//                   Entering tonnage will auto-calculate recirculation rate
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* System Volume + Evaporation Factor */}
-//           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-//             <div>
-//               <Label required>System Volume</Label>
-//               <div className="flex gap-2">
-//                 <Input
-//                   type="number"
-//                   className="flex-1 min-w-0"
-//                   placeholder="e.g. 5000"
-//                   {...register("systemVolume")}
-//                 />
-//                 <Controller
-//                   name="systemVolumeUnit"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <div className="relative w-24 shrink-0">
-//                       <select
-//                         {...field}
-//                         className="w-full h-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
-//                       >
-//                         <option value="gallons">gallons</option>
-//                         <option value="liters">liters</option>
-//                       </select>
-//                       <div className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-//                         ▾
-//                       </div>
-//                     </div>
-//                   )}
-//                 />
-//               </div>
-//             </div>
-//             <div>
-//               <Label>
-//                 Evaporation Factor{" "}
-//                 <span
-//                   className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-300 text-gray-400 text-xs ml-1 cursor-help"
-//                   title="Fraction of recirculating water that evaporates"
-//                 >
-//                   ⓘ
-//                 </span>
-//               </Label>
-//               <Input
-//                 type="number"
-//                 step="0.01"
-//                 {...register("evaporationFactor")}
-//               />
-//             </div>
-//           </div>
-
-//           {/* System Volume & Temperature */}
-//           <SubSection title="System Volume & Temperature" />
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//             {/* Supply Temperature */}
-//             <div>
-//               <Label>Supply Temperature</Label>
-//               <div className="flex gap-2">
-//                 <input
-//                   type="number"
-//                   className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800
-//                     placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
-//                   placeholder="e.g. 85"
-//                   value={supplyTempVal}
-//                   onChange={(e) => {
-//                     setSupplyTempVal(e.target.value);
-//                     setValue("supplyTemperature", e.target.value);
-//                   }}
-//                 />
-//                 <Controller
-//                   name="supplyTempUnit"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <div className="relative w-16 shrink-0">
-//                       <select
-//                         {...field}
-//                         className="w-full h-full px-1 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
-//                       >
-//                         <option value="°F">°F</option>
-//                         <option value="°C">°C</option>
-//                       </select>
-//                       <div className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-//                         ▾
-//                       </div>
-//                     </div>
-//                   )}
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Return Temperature */}
-//             <div>
-//               <Label>Return Temperature</Label>
-//               <div className="flex gap-2">
-//                 <input
-//                   type="number"
-//                   className="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800
-//                     placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
-//                   placeholder="e.g. 95"
-//                   value={returnTempVal}
-//                   onChange={(e) => {
-//                     setReturnTempVal(e.target.value);
-//                     setValue("returnTemperature", e.target.value);
-//                   }}
-//                 />
-//                 <Controller
-//                   name="returnTempUnit"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <div className="relative w-16 shrink-0">
-//                       <select
-//                         {...field}
-//                         className="w-full h-full px-1 py-2 text-sm border border-gray-200 rounded-lg bg-white appearance-none focus:outline-none focus:ring-2 focus:ring-teal-400"
-//                       >
-//                         <option value="°F">°F</option>
-//                         <option value="°C">°C</option>
-//                       </select>
-//                       <div className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 text-gray-400 text-xs">
-//                         ▾
-//                       </div>
-//                     </div>
-//                   )}
-//                 />
-//               </div>
-//             </div>
-
-//             {/* Delta T — calculated */}
-//             <div className="sm:col-span-2 lg:col-span-1">
-//               <Label>Delta T (Calculated)</Label>
-//               <div className="flex gap-2">
-//                 <div
-//                   className={`flex-1 min-w-0 px-3 py-2 text-sm rounded-lg font-semibold border-2 transition-all duration-200 ${
-//                     deltaT !== "—"
-//                       ? "border-teal-400 bg-teal-50 text-teal-700"
-//                       : "border-gray-200 bg-gray-50 text-gray-400"
-//                   }`}
-//                 >
-//                   {deltaT}
-//                 </div>
-//                 <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
-//                   {watchedSupplyUnit || "°F"}
-//                 </span>
-//               </div>
-//               <p className="text-xs text-gray-400 mt-1.5">
-//                 Formula: Delta T = Return − Supply
-//               </p>
-//             </div>
-//           </div>
+//           {/* ════════════════════════════════════════════════════════════════
+//               SYSTEM METALLURGY — shown for all asset types
+//           ════════════════════════════════════════════════════════════════ */}
 //         </Card>
 
 //         {/* ── System Metallurgy & Materials ── */}
@@ -936,46 +1159,54 @@
 //             ))}
 //           </div>
 
-//           {/* Heat Exchanger Details */}
-//           <SubSection title="Heat Exchanger Details" />
-//           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-//             <div>
-//               <Label required>Hottest Skin Temperature</Label>
-//               <div className="flex gap-2">
-//                 <Input
-//                   type="number"
-//                   className="flex-1"
-//                   placeholder="e.g. 200"
-//                   {...register("hottestSkinTemp")}
-//                 />
-//                 <Controller
-//                   name="hottestSkinTempUnit"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <UnitSelect field={field} options={["°F", "°C"]} />
-//                   )}
-//                 />
+//           {/* Heat Exchanger Details — shown for Cooling Tower & Evaporative Condenser */}
+//           {isCoolingTowerOrEvap && (
+//             <>
+//               <SubSection title="Heat Exchanger Details" />
+//               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+//                 <div>
+//                   <Label required>Hottest Skin Temperature</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1"
+//                       placeholder="e.g. 200"
+//                       {...register("hottestSkinTemp")}
+//                     />
+//                     <Controller
+//                       name="hottestSkinTempUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect
+//                           field={field}
+//                           options={TEMP_UNITS}
+//                           width="w-16"
+//                         />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
+//                 <div>
+//                   <Label required>Critical Heat Exchanger Flow Rate</Label>
+//                   <div className="flex gap-2">
+//                     <Input
+//                       type="number"
+//                       className="flex-1"
+//                       placeholder="e.g. 5"
+//                       {...register("criticalHeatExchangerFlowRate")}
+//                     />
+//                     <Controller
+//                       name="criticalHxFlowRateUnit"
+//                       control={control}
+//                       render={({ field }) => (
+//                         <UnitSelect field={field} options={FLOW_RATE_UNITS2} />
+//                       )}
+//                     />
+//                   </div>
+//                 </div>
 //               </div>
-//             </div>
-//             <div>
-//               <Label required>Critical Heat Exchanger Flow Rate</Label>
-//               <div className="flex gap-2">
-//                 <Input
-//                   type="number"
-//                   className="flex-1"
-//                   placeholder="e.g. 5"
-//                   {...register("criticalHeatExchangerFlowRate")}
-//                 />
-//                 <Controller
-//                   name="criticalFlowRateUnit"
-//                   control={control}
-//                   render={({ field }) => (
-//                     <UnitSelect field={field} options={["ft/s", "m/s"]} />
-//                   )}
-//                 />
-//               </div>
-//             </div>
-//           </div>
+//             </>
+//           )}
 
 //           {/* Special Requirements */}
 //           <SubSection title="Special Requirements" />
@@ -1350,16 +1581,18 @@ import {
 } from "react-hook-form";
 import { RootState } from "@/redux/store";
 import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi";
-import { useGetSingleCustomerQuery } from "@/redux/api/customer/customerApi";
+import { useGetCustomerQuery } from "@/redux/api/customer/customerApi";
+import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
+import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type AssetType =
   | "Cooling Tower"
   | "Evaporative Condenser"
-  | "Once-Through Cooling";
-// | "Seawater Cooling Tower"
-// | "Adiabatic Cooler";
+  | "Once-Through Cooling"
+  | "Seawater Cooling Tower"
+  | "Adiabatic Cooler";
 
 type TowerType =
   | "Counterflow"
@@ -1402,6 +1635,15 @@ interface ControlVariable {
   minValue: string;
   maxValue: string;
   unit: string;
+}
+
+// ── API Customer shape ───────────────────────────────────────────────────────
+interface CustomerItem {
+  id: string;
+  name: string;
+  siteName: string;
+  location: string;
+  companyId: string;
 }
 
 // ── Internal form shape ──────────────────────────────────────────────────────
@@ -1516,8 +1758,8 @@ const ASSET_TYPES: AssetType[] = [
   "Cooling Tower",
   "Evaporative Condenser",
   "Once-Through Cooling",
-  // "Seawater Cooling Tower",
-  // "Adiabatic Cooler",
+  "Seawater Cooling Tower",
+  "Adiabatic Cooler",
 ];
 const TOWER_TYPES: TowerType[] = [
   "Counterflow",
@@ -1743,11 +1985,25 @@ const TrashIcon = () => (
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function CoolingWaterAssetConfig() {
   // ── Redux ──────────────────────────────────────────────────────────────────
-  const customerId = useSelector(
-    (state: RootState) => state.customerId.customerId,
-  );
+
   const [createAssest, { isLoading }] = useGetCreateAssestMutation();
-  const { data: singleCustomer } = useGetSingleCustomerQuery(customerId || "");
+  const { data: userData } = useGetMeProfileQuery("");
+  const profile = userData?.data as User;
+
+  console.log(profile);
+
+  const companyId = profile?.companyMember?.company.id;
+
+  // ── Customer list API ──────────────────────────────────────────────────────
+  const { data: customerResponse, isError: customerError } =
+    useGetCustomerQuery(companyId, {
+      skip: !companyId,
+    });
+  const customers: CustomerItem[] = customerResponse?.data ?? [];
+
+  // ── Selected customer state (drives customerId in payload) ─────────────────
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
+  const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
 
   // ── Local UI state ─────────────────────────────────────────────────────────
   const [showAssetTypeDropdown, setShowAssetTypeDropdown] = useState(false);
@@ -1875,7 +2131,7 @@ export default function CoolingWaterAssetConfig() {
 
     // Base payload (all types)
     const payload: CreateAssetPayload = {
-      customerId: customerId as string,
+      customerId: selectedCustomerId,
       waterTreatmentCompany: data.waterTreatmentCompany,
       customerName: data.customerName,
       siteNameLocation: data.siteNameLocation,
@@ -1973,21 +2229,78 @@ export default function CoolingWaterAssetConfig() {
             <div>
               <Label>Water Treatment Company</Label>
               <Input
-                placeholder="e.g. Aqua Tech Solutions"
+                placeholder={profile?.companyMember?.company?.name}
                 {...register("waterTreatmentCompany")}
+                disabled
               />
             </div>
             <div>
               <Label>Customer Name</Label>
-              <Input
-                placeholder="e.g. Tech Industries Corp."
-                {...register("customerName")}
-              />
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowCustomerDropdown((v) => !v)}
+                  className="w-full flex items-center justify-between px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white text-gray-800 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                >
+                  <span
+                    className={
+                      selectedCustomerId ? "text-gray-800" : "text-gray-400"
+                    }
+                  >
+                    {selectedCustomerId
+                      ? (customers.find((c) => c.id === selectedCustomerId)
+                          ?.name ?? "Select customer")
+                      : "Select customer"}
+                  </span>
+                  <span className="text-gray-400 text-xs ml-2">▾</span>
+                </button>
+                {showCustomerDropdown && (
+                  <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-100 rounded-xl shadow-lg z-40 overflow-hidden max-h-48 overflow-y-auto">
+                    {customerError && (
+                      <p className="px-4 py-2.5 text-xs text-red-500">
+                        Failed to load customers
+                      </p>
+                    )}
+                    {!customerError && customers.length === 0 && (
+                      <p className="px-4 py-2.5 text-xs text-gray-400">
+                        No customers found
+                      </p>
+                    )}
+                    {customers.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedCustomerId(c.id);
+                          setValue("customerName", c.name);
+                          setValue(
+                            "siteNameLocation",
+                            `${c.siteName} – ${c.location}`,
+                          );
+                          setShowCustomerDropdown(false);
+                        }}
+                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition ${
+                          selectedCustomerId === c.id
+                            ? "text-teal-600 font-medium bg-teal-50/40"
+                            : "text-gray-700"
+                        }`}
+                      >
+                        <span className="font-medium">{c.name}</span>
+                        <span className="text-xs text-gray-400 ml-2">
+                          {c.siteName}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div>
               <Label>Site Name & Location</Label>
               <Input
-                placeholder="e.g. Main Facility – Houston, TX"
+                placeholder="Auto-filled on customer select"
+                readOnly
+                className="bg-gray-50 cursor-default"
                 {...register("siteNameLocation")}
               />
             </div>
