@@ -60,8 +60,7 @@ export default function ProductRowMeterialTable() {
   const { data, isLoading: profielLoading } = useGetMeProfileQuery("");
   const [deleteProduct, { isLoading: loading }] = useDeleteProductMutation();
 
-  const id =
-    data?.data?.companyMember?.companyId || user?.companyMember?.companyId;
+  const id = data?.data?.companyMember?.company.id || "";
   const { data: allData, isLoading } = useAllProductsQuery(id);
   console.log(allData);
   const products = allData?.data as Product[];

@@ -668,16 +668,46 @@ export interface User {
   lastName: string;
   email: string;
   avatar: string | null;
+  provider: "EMAIL" | string;
   isEmailVerified: boolean;
-  role: "USER";
-  status: "UNBLOCK";
+  role: "USER" | "ADMIN" | string;
+  status: "UNBLOCK" | "BLOCK" | string;
   createdAt: string;
   updatedAt: string;
-  companyMember: {
-    role: "owner";
-    companyId: string;
-    status: "active";
-  };
+  companyMember: CompanyMember;
+  activeSubscription: ActiveSubscription;
+}
+
+export interface CompanyMember {
+  role: "member" | "admin" | string;
+  company: Company;
+  status: "active" | "inactive" | string;
+}
+
+export interface Company {
+  id: string;
+  name: string;
+  email: string;
+  isActive: boolean;
+}
+
+export interface ActiveSubscription {
+  id: string;
+  status: "ACTIVE" | "INACTIVE" | string;
+  startDate: string;
+  endDate: string;
+  canceledAt: string | null;
+  planSnapshot: PlanSnapshot;
+  remainingReportGeneration: number;
+  remainingAccountAddition: number;
+}
+
+export interface PlanSnapshot {
+  name: string;
+  price: number;
+  maxReports: number;
+  maxAccounts: number;
+  features: string[];
 }
 
 interface FormulaRow {
@@ -743,12 +773,12 @@ export default function AddRowMeterials() {
   const userProfile = data?.data as User;
 
   const onSubmit = async (data: FormValues) => {
-    if (!userProfile?.companyMember?.companyId) {
+    if (!userProfile?.companyMember?.company?.id) {
       console.error("Company ID is missing");
       return;
     }
     const payload = {
-      companyId: userProfile.companyMember.companyId,
+      companyId: userProfile.companyMember.company.id,
       commonName: data.commonName,
       manufacturer: data.manufacturer,
       manufacturerProductName: data.manufacturerProductName,
