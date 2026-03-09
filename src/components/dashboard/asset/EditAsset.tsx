@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import {
   useForm,
   useFieldArray,
   Controller,
   SubmitHandler,
 } from "react-hook-form";
-import { RootState } from "@/redux/store";
-import { useGetCreateAssestMutation } from "@/redux/api/assest/customerAssestApi";
+import {
+  useGetSingleAssestQuery,
+  useGetUpdateAssestMutation,
+} from "@/redux/api/assest/customerAssestApi";
 import { useGetCustomerQuery } from "@/redux/api/customer/customerApi";
 import { useGetMeProfileQuery } from "@/redux/api/getMe/getMeApi";
 import { User } from "@/app/(dashboard)/dashboard/rowMeterials/addRowMeterials/page";
@@ -68,7 +70,6 @@ interface ControlVariable {
   unit: string;
 }
 
-// ── API Customer shape ───────────────────────────────────────────────────────
 interface CustomerItem {
   id: string;
   name: string;
@@ -77,16 +78,12 @@ interface CustomerItem {
   companyId: string;
 }
 
-// ── Internal form shape ──────────────────────────────────────────────────────
 interface FormValues {
-  // top fields
   waterTreatmentCompany: string;
   customerName: string;
   siteNameLocation: string;
   assetName: string;
   assetType: AssetType;
-
-  // Cooling Tower / Evaporative Condenser fields
   towerType: TowerType;
   fillType: FillType;
   criticalHeatExchangerDesign: FillType;
@@ -100,8 +97,6 @@ interface FormValues {
   supplyTempUnit: "°F" | "°C";
   returnTemperature: string;
   returnTempUnit: "°F" | "°C";
-
-  // Once-Through Cooling fields
   flowRate: string;
   flowRateUnit: string;
   onceThroughSupplyTemp: string;
@@ -113,8 +108,6 @@ interface FormValues {
   criticalFlowRateUnit: string;
   onceThroughHottestSkin: string;
   onceThroughHottestUnit: "°F" | "°C";
-
-  // shared
   metallurgy: Metallurgy[];
   otherMaterials: OtherMaterial[];
   hottestSkinTemp: string;
@@ -129,15 +122,10 @@ interface FormValues {
   controlVariables: ControlVariable[];
 }
 
-// ── API payload ──────────────────────────────────────────────────────────────
-interface CreateAssetPayload {
-  customerId: string;
-  waterTreatmentCompany?: string;
-  customerName?: string;
-  siteNameLocation?: string;
+interface UpdateAssetPayload {
+  customerId?: string;
   name: string;
   type: string;
-  // Cooling Tower / Evaporative Condenser
   towerType?: string;
   fillType?: string;
   criticalHeatExchangerDesign?: string;
@@ -151,7 +139,6 @@ interface CreateAssetPayload {
   returnTemperature?: number;
   returnTemperatureType?: string;
   deltaTemperature?: number;
-  // Once-Through Cooling
   flowRate?: number;
   flowRateType?: string;
   dischargeTemperature?: number;
@@ -159,7 +146,6 @@ interface CreateAssetPayload {
   criticalCooling?: string;
   criticalFlowRate?: number;
   criticalFlowRateType?: string;
-  // shared
   systemMetallurgy: string[];
   systemMaterials: string[];
   hottestSkinTemperature: number;
@@ -238,14 +224,6 @@ const VARIABLE_OPTIONS = [
   "Custom Variable...",
 ];
 const SOURCE_OPTIONS = ["Water Analysis", "Manual Input"] as const;
-const PRODUCT_OPTIONS = [
-  "Scale Inhibitor",
-  "Corrosion Inhibitor",
-  "Biocide",
-  "Dispersant",
-  "pH Adjuster",
-  "Custom Product...",
-];
 const CRITICAL_COOLING_OPTIONS = [
   "Heat Exchanger",
   "Condenser",
@@ -413,36 +391,48 @@ const TrashIcon = () => (
   </svg>
 );
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-export default function CoolingWaterAssetConfig() {
-  // ── Redux ──────────────────────────────────────────────────────────────────
+// ─── Skeleton Loader ──────────────────────────────────────────────────────────
+const SkeletonCard = () => (
+  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 animate-pulse">
+    <div className="h-5 bg-gray-200 rounded w-1/3 mb-4" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i}>
+          <div className="h-3 bg-gray-200 rounded w-1/2 mb-2" />
+          <div className="h-9 bg-gray-100 rounded-lg" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
-  const [createAssest, { isLoading }] = useGetCreateAssestMutation();
+// ─── Main Edit Component ──────────────────────────────────────────────────────
+export default function EditCoolingWaterAsset() {
+  // ── Params & API ──────────────────────────────────────────────────────────
+  const { showCustomerId } = useParams();
+  const { data: singleCustomerAssest, error } =
+    useGetSingleAssestQuery(showCustomerId);
+  const assetsId = singleCustomerAssest?.data?.id;
+  const [updatedAssest, { isLoading }] = useGetUpdateAssestMutation();
+
   const { data: userData } = useGetMeProfileQuery("");
   const profile = userData?.data as User;
-
-  console.log(profile);
-
   const companyId = profile?.companyMember?.company.id;
+
   const { data: allData } = useAllProductsQuery(companyId);
-  console.log(allData);
   const products = allData?.data as Product[];
 
-  // ── Customer list API ──────────────────────────────────────────────────────
   const { data: customerResponse, isError: customerError } =
-    useGetCustomerQuery(companyId, {
-      skip: !companyId,
-    });
+    useGetCustomerQuery(companyId, { skip: !companyId });
   const customers: CustomerItem[] = customerResponse?.data ?? [];
 
-  // ── Selected customer state (drives customerId in payload) ─────────────────
+  // ── Local UI state ─────────────────────────────────────────────────────────
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("");
   const [showCustomerDropdown, setShowCustomerDropdown] = useState(false);
-
-  // ── Local UI state ─────────────────────────────────────────────────────────
   const [showAssetTypeDropdown, setShowAssetTypeDropdown] = useState(false);
+  const [isFormPopulated, setIsFormPopulated] = useState(false);
 
-  // Delta T state (Cooling Tower / Evaporative Condenser)
+  // Delta T state
   const [supplyTempVal, setSupplyTempVal] = useState("85");
   const [returnTempVal, setReturnTempVal] = useState("95");
   const returnNum = parseFloat(returnTempVal);
@@ -453,7 +443,7 @@ export default function CoolingWaterAssetConfig() {
       : "—";
 
   // ── React Hook Form ────────────────────────────────────────────────────────
-  const { register, control, handleSubmit, watch, setValue, getValues } =
+  const { register, control, handleSubmit, watch, setValue, getValues, reset } =
     useForm<FormValues>({
       defaultValues: {
         waterTreatmentCompany: "",
@@ -461,7 +451,6 @@ export default function CoolingWaterAssetConfig() {
         siteNameLocation: "",
         assetName: "",
         assetType: "Cooling Tower",
-        // Cooling Tower / Evap fields
         towerType: "",
         fillType: "",
         criticalHeatExchangerDesign: "",
@@ -475,7 +464,6 @@ export default function CoolingWaterAssetConfig() {
         supplyTempUnit: "°F",
         returnTemperature: "95",
         returnTempUnit: "°F",
-        // Once-Through fields
         flowRate: "",
         flowRateUnit: "gpm",
         onceThroughSupplyTemp: "",
@@ -487,7 +475,6 @@ export default function CoolingWaterAssetConfig() {
         criticalFlowRateUnit: "ft/s",
         onceThroughHottestSkin: "",
         onceThroughHottestUnit: "°F",
-        // shared
         metallurgy: [],
         otherMaterials: [],
         hottestSkinTemp: "",
@@ -511,6 +498,144 @@ export default function CoolingWaterAssetConfig() {
       },
     });
 
+  // ── Populate form with existing data ──────────────────────────────────────
+  useEffect(() => {
+    const asset = singleCustomerAssest?.data;
+    if (!asset || isFormPopulated) return;
+
+    // Set customer
+    if (asset.customerId) {
+      setSelectedCustomerId(asset.customerId);
+    }
+
+    // Set supply / return temp local state for delta T
+    if (asset.supplyTemperature != null) {
+      setSupplyTempVal(String(asset.supplyTemperature));
+    }
+    if (asset.returnTemperature != null) {
+      setReturnTempVal(String(asset.returnTemperature));
+    }
+
+    // Map discharge limits
+    const dischargeLimits =
+      asset.environmentalDischargeLimits?.length > 0
+        ? asset.environmentalDischargeLimits.map((d: any) => ({
+            parameter: d.parameter ?? "",
+            limitValue: d.limitValue ?? "",
+            unit: d.unit ?? "mg/L",
+          }))
+        : DEFAULT_DISCHARGE_LIMITS;
+
+    // Map product programs
+    const chemicalProducts =
+      asset.productPrograms?.length > 0
+        ? asset.productPrograms.map((p: any) => ({
+            product: p.productId ?? "",
+            dosage: String(p.dosage ?? ""),
+            unit: p.unit ?? "ppm",
+          }))
+        : [{ product: "", dosage: "", unit: "ppm" }];
+
+    // Map control variables
+    const controlVariables =
+      asset.controlVariablesAndTargets?.length > 0
+        ? asset.controlVariablesAndTargets.map((c: any) => ({
+            variable: c.variable ?? "",
+            source:
+              (c.source as "Water Analysis" | "Manual Input") ??
+              "Water Analysis",
+            minValue: String(c.minValue ?? ""),
+            maxValue: String(c.maxValue ?? ""),
+            unit: c.unit ?? "ppm",
+          }))
+        : [
+            {
+              variable: "",
+              source: "Water Analysis" as const,
+              minValue: "",
+              maxValue: "",
+              unit: "ppm",
+            },
+          ];
+
+    reset({
+      waterTreatmentCompany: asset.waterTreatmentCompany ?? "",
+      customerName: asset.customerName ?? "",
+      siteNameLocation: asset.siteNameLocation ?? "",
+      assetName: asset.name ?? "",
+      assetType: (asset.type as AssetType) ?? "Cooling Tower",
+      towerType: (asset.towerType as TowerType) ?? "",
+      fillType: (asset.fillType as FillType) ?? "",
+      criticalHeatExchangerDesign:
+        (asset.criticalHeatExchangerDesign as FillType) ?? "",
+      recirculationRate:
+        asset.recirculationRate != null ? String(asset.recirculationRate) : "",
+      recirculationUnit:
+        (asset.recirculationRateType as "gpm" | "lpm") ?? "gpm",
+      tonnageOfCooling:
+        asset.tonnageOfCooling != null ? String(asset.tonnageOfCooling) : "",
+      systemVolume:
+        asset.systemVolume != null ? String(asset.systemVolume) : "",
+      systemVolumeUnit:
+        (asset.systemVolumeType as "gallons" | "liters") ?? "gallons",
+      evaporationFactor: "0.85",
+      supplyTemperature:
+        asset.supplyTemperature != null
+          ? String(asset.supplyTemperature)
+          : "85",
+      supplyTempUnit: (asset.supplyTemperatureType as "°F" | "°C") ?? "°F",
+      returnTemperature:
+        asset.returnTemperature != null
+          ? String(asset.returnTemperature)
+          : "95",
+      returnTempUnit: (asset.returnTemperatureType as "°F" | "°C") ?? "°F",
+      flowRate: asset.flowRate != null ? String(asset.flowRate) : "",
+      flowRateUnit: asset.flowRateType ?? "gpm",
+      onceThroughSupplyTemp:
+        asset.supplyTemperature != null ? String(asset.supplyTemperature) : "",
+      onceThroughSupplyUnit:
+        (asset.supplyTemperatureType as "°F" | "°C") ?? "°F",
+      dischargeTemperature:
+        asset.dischargeTemperature != null
+          ? String(asset.dischargeTemperature)
+          : "",
+      dischargeTempUnit:
+        (asset.dischargeTemperatureType as "°F" | "°C") ?? "°F",
+      criticalCooling: asset.criticalCooling ?? "",
+      criticalFlowRate:
+        asset.criticalFlowRate != null ? String(asset.criticalFlowRate) : "",
+      criticalFlowRateUnit: asset.criticalFlowRateType ?? "ft/s",
+      onceThroughHottestSkin:
+        asset.hottestSkinTemperature != null
+          ? String(asset.hottestSkinTemperature)
+          : "",
+      onceThroughHottestUnit:
+        (asset.hottestSkinTemperatureType as "°F" | "°C") ?? "°F",
+      metallurgy: (asset.systemMetallurgy as Metallurgy[]) ?? [],
+      otherMaterials: (asset.systemMaterials as OtherMaterial[]) ?? [],
+      hottestSkinTemp:
+        asset.hottestSkinTemperature != null
+          ? String(asset.hottestSkinTemperature)
+          : "",
+      hottestSkinTempUnit:
+        (asset.hottestSkinTemperatureType as "°F" | "°C") ?? "°F",
+      criticalHeatExchangerFlowRate:
+        asset.criticalHeatExchangerFlowRate != null
+          ? String(asset.criticalHeatExchangerFlowRate)
+          : "",
+      criticalHxFlowRateUnit:
+        (asset.criticalHeatExchangerFlowRateType as "ft/s" | "m/s") ?? "ft/s",
+      nsfStandard60: asset.NSFStandard60 ?? false,
+      nsfG5G7: asset["NSFG5/G7"] ?? false,
+      gras: asset.GRAS ?? false,
+      dischargeLimits,
+      chemicalProducts,
+      controlVariables,
+    });
+
+    setIsFormPopulated(true);
+  }, [singleCustomerAssest, isFormPopulated, reset]);
+
   const watchedAssetType = watch("assetType");
   const watchedMetallurgy = watch("metallurgy");
   const watchedOtherMaterials = watch("otherMaterials");
@@ -519,7 +644,6 @@ export default function CoolingWaterAssetConfig() {
   const watchedGras = watch("gras");
   const watchedSupplyUnit = watch("supplyTempUnit");
 
-  // ── Asset type helpers ─────────────────────────────────────────────────────
   const isCoolingTower = watchedAssetType === "Cooling Tower";
   const isEvapCondenser = watchedAssetType === "Evaporative Condenser";
   const isOnceThroughCooling = watchedAssetType === "Once-Through Cooling";
@@ -558,17 +682,13 @@ export default function CoolingWaterAssetConfig() {
     );
   };
 
-  // ── Submit → build payload → call API ─────────────────────────────────────
+  // ── Submit → update asset ──────────────────────────────────────────────────
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const deltaTNum =
       !isNaN(returnNum) && !isNaN(supplyNum) ? returnNum - supplyNum : 0;
 
-    // Base payload (all types)
-    const payload: CreateAssetPayload = {
-      customerId: selectedCustomerId,
-      // waterTreatmentCompany: data.waterTreatmentCompany,
-      // customerName: data.customerName,
-      // siteNameLocation: data.siteNameLocation,
+    const payload: UpdateAssetPayload = {
+      customerId: selectedCustomerId || undefined,
       name: data.assetName,
       type: data.assetType,
       systemMetallurgy: data.metallurgy,
@@ -600,7 +720,6 @@ export default function CoolingWaterAssetConfig() {
       })),
     };
 
-    // Cooling Tower / Evaporative Condenser — specific fields
     if (isCoolingTowerOrEvap) {
       payload.towerType = data.towerType;
       payload.fillType = data.fillType;
@@ -617,7 +736,6 @@ export default function CoolingWaterAssetConfig() {
       payload.deltaTemperature = deltaTNum;
     }
 
-    // Once-Through Cooling — specific fields
     if (isOnceThroughCooling) {
       payload.flowRate = parseFloat(data.flowRate) || 0;
       payload.flowRateType = data.flowRateUnit;
@@ -628,33 +746,84 @@ export default function CoolingWaterAssetConfig() {
       payload.criticalCooling = data.criticalCooling;
       payload.criticalFlowRate = parseFloat(data.criticalFlowRate) || 0;
       payload.criticalFlowRateType = data.criticalFlowRateUnit;
-      // override hottest skin with once-through specific fields
       payload.hottestSkinTemperature =
         parseFloat(data.onceThroughHottestSkin) || 0;
       payload.hottestSkinTemperatureType = data.onceThroughHottestUnit;
     }
 
     try {
-      await createAssest(payload).unwrap();
-      alert("Asset created successfully!");
+      await updatedAssest({ id: assetsId, data: payload }).unwrap();
+      alert("Asset updated successfully!");
     } catch (err) {
-      console.error("Create asset failed:", err);
-      alert("Failed to create asset. Please try again.");
+      console.error("Update asset failed:", err);
+      alert("Failed to update asset. Please try again.");
     }
   };
+
+  // ── Loading / Error states ─────────────────────────────────────────────────
+  if (!singleCustomerAssest && !error) {
+    return (
+      <div className="min-h-screen bg-gray-50 font-sans mt-6 space-y-4">
+        <div className="my-6">
+          <div className="h-8 bg-gray-200 rounded w-72 animate-pulse mb-2" />
+          <div className="h-4 bg-gray-100 rounded w-52 animate-pulse" />
+        </div>
+        <SkeletonCard />
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 font-sans mt-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg
+              className="w-8 h-8 text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <h2 className="text-lg font-semibold text-gray-800 mb-1">
+            Failed to load asset
+          </h2>
+          <p className="text-sm text-gray-500">
+            Please refresh the page or try again later.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // ─── JSX ──────────────────────────────────────────────────────────────────
   return (
     <div className="min-h-screen bg-gray-50 font-sans mt-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* ── Page Title ── */}
-        <div className="my-6">
-          <h1 className="lg:text-3xl text-2xl font-bold text-gray-900 tracking-tight">
-            Cooling Water Asset Configuration
-          </h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Describe the physical cooling system assets used at your facility.
-          </p>
+        <div className="my-6 flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">
+                ✎ Edit Mode
+              </span>
+            </div>
+            <h1 className="lg:text-3xl text-2xl font-bold text-gray-900 tracking-tight">
+              Edit Cooling Water Asset
+            </h1>
+            <p className="text-sm text-gray-500 mt-2">
+              Update the physical cooling system asset configuration.
+            </p>
+          </div>
         </div>
 
         {/* ── Top Fields Card ── */}
@@ -807,16 +976,13 @@ export default function CoolingWaterAssetConfig() {
               Asset Details
             </h2>
             <p className="text-sm text-gray-500 mt-0.5">
-              Configure evaporative condenser operating parameters
+              Update the cooling system operating parameters
             </p>
           </div>
 
-          {/* ════════════════════════════════════════════════════════════════
-              COOLING TOWER + EVAPORATIVE CONDENSER FIELDS
-          ════════════════════════════════════════════════════════════════ */}
+          {/* COOLING TOWER + EVAPORATIVE CONDENSER FIELDS */}
           {isCoolingTowerOrEvap && (
             <>
-              {/* Mechanical Details — only for Cooling Tower */}
               {isCoolingTower && (
                 <>
                   <SubSection title="Mechanical Details" />
@@ -867,11 +1033,9 @@ export default function CoolingWaterAssetConfig() {
                 </>
               )}
 
-              {/* Recirculation & Volume */}
               <SubSection title="Recirculation & Volume" />
               <div className="border border-gray-200 rounded-xl mb-6 overflow-hidden">
                 <div className="flex flex-col lg:flex-row">
-                  {/* LEFT — Recirculation Rate */}
                   <div className="flex-1 p-5">
                     <Label required>Recirculation Rate</Label>
                     <div className="flex gap-2 mt-1">
@@ -904,13 +1068,11 @@ export default function CoolingWaterAssetConfig() {
                       Auto-calculated if tonnage is provided
                     </p>
                   </div>
-                  {/* CENTER — OR */}
                   <div className="flex lg:flex-col items-center justify-center px-4 py-3 lg:py-0 bg-gray-50 border-t border-b lg:border-t-0 lg:border-b-0 lg:border-l lg:border-r border-gray-200">
                     <div className="w-9 h-9 rounded-full border-2 border-gray-300 bg-white flex items-center justify-center text-xs font-bold text-gray-400 shadow-sm">
                       OR
                     </div>
                   </div>
-                  {/* RIGHT — Tonnage */}
                   <div className="flex-1 p-5">
                     <Label>Tonnage of Cooling</Label>
                     <div className="flex gap-2 mt-1">
@@ -931,7 +1093,6 @@ export default function CoolingWaterAssetConfig() {
                 </div>
               </div>
 
-              {/* System Volume + Evaporation Factor */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 <div>
                   <Label required>System Volume</Label>
@@ -980,10 +1141,8 @@ export default function CoolingWaterAssetConfig() {
                 </div>
               </div>
 
-              {/* Temperature Section */}
               <SubSection title="Temperature" />
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {/* Supply Temperature */}
                 <div>
                   <Label>Supply Temperature</Label>
                   <div className="flex gap-2">
@@ -1010,7 +1169,6 @@ export default function CoolingWaterAssetConfig() {
                     />
                   </div>
                 </div>
-                {/* Return Temperature */}
                 <div>
                   <Label>Return Temperature</Label>
                   <div className="flex gap-2">
@@ -1037,7 +1195,6 @@ export default function CoolingWaterAssetConfig() {
                     />
                   </div>
                 </div>
-                {/* Delta T */}
                 <div className="sm:col-span-2 lg:col-span-1">
                   <Label>Delta T (Calculated)</Label>
                   <div className="flex gap-2">
@@ -1062,15 +1219,11 @@ export default function CoolingWaterAssetConfig() {
             </>
           )}
 
-          {/* ════════════════════════════════════════════════════════════════
-              ONCE-THROUGH COOLING FIELDS
-          ════════════════════════════════════════════════════════════════ */}
+          {/* ONCE-THROUGH COOLING FIELDS */}
           {isOnceThroughCooling && (
             <>
-              {/* System Size and Temperatures */}
               <SubSection title="System Size and Temperatures" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {/* Flow Rate */}
                 <div>
                   <Label>Flow Rate</Label>
                   <div className="flex gap-2">
@@ -1089,7 +1242,6 @@ export default function CoolingWaterAssetConfig() {
                     />
                   </div>
                 </div>
-                {/* Supply Temperature */}
                 <div>
                   <Label>Supply Temperature</Label>
                   <div className="flex gap-2">
@@ -1112,7 +1264,6 @@ export default function CoolingWaterAssetConfig() {
                     />
                   </div>
                 </div>
-                {/* Discharge Temperature */}
                 <div>
                   <Label>Discharge Temperature</Label>
                   <div className="flex gap-2">
@@ -1137,10 +1288,8 @@ export default function CoolingWaterAssetConfig() {
                 </div>
               </div>
 
-              {/* Heat Exchanger Details (Once-Through specific) */}
               <SubSection title="Heat Exchanger Details" />
               <div className="grid grid-cols-1 gap-4 mb-6">
-                {/* Critical Cooling */}
                 <div>
                   <Label>Critical Cooling</Label>
                   <Controller
@@ -1157,7 +1306,6 @@ export default function CoolingWaterAssetConfig() {
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {/* Hottest Skin Temperature */}
                 <div>
                   <Label>Hottest Skin Temperature</Label>
                   <div className="flex gap-2">
@@ -1180,7 +1328,6 @@ export default function CoolingWaterAssetConfig() {
                     />
                   </div>
                 </div>
-                {/* Critical Flow Rate */}
                 <div>
                   <Label>Critical Flow Rate</Label>
                   <div className="flex gap-2">
@@ -1202,10 +1349,6 @@ export default function CoolingWaterAssetConfig() {
               </div>
             </>
           )}
-
-          {/* ════════════════════════════════════════════════════════════════
-              SYSTEM METALLURGY — shown for all asset types
-          ════════════════════════════════════════════════════════════════ */}
         </Card>
 
         {/* ── System Metallurgy & Materials ── */}
@@ -1236,7 +1379,6 @@ export default function CoolingWaterAssetConfig() {
             ))}
           </div>
 
-          {/* Heat Exchanger Details — shown for Cooling Tower & Evaporative Condenser */}
           {isCoolingTowerOrEvap && (
             <>
               <SubSection title="Heat Exchanger Details" />
@@ -1285,7 +1427,6 @@ export default function CoolingWaterAssetConfig() {
             </>
           )}
 
-          {/* Special Requirements */}
           <SubSection title="Special Requirements" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {(
@@ -1611,7 +1752,14 @@ export default function CoolingWaterAssetConfig() {
         </Card>
 
         {/* ── Submit ── */}
-        <div className="flex justify-end pb-8">
+        <div className="flex justify-end pb-8 gap-3">
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="px-6 py-3 bg-white text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 active:scale-95 transition border border-gray-200 shadow-sm"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             disabled={isLoading}
@@ -1638,7 +1786,7 @@ export default function CoolingWaterAssetConfig() {
                 />
               </svg>
             )}
-            {isLoading ? "Saving..." : "Save Data"}
+            {isLoading ? "Updating..." : "Update Asset"}
           </button>
         </div>
       </form>
