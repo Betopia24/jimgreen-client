@@ -123,7 +123,7 @@ export default function CustomerTable() {
                         {material.address}
                       </td>
                       <td className="py-4 px-6 text-[#4A5565] text-sm">
-                        {material?.assets?.length}
+                        {material?._count?.assets}
                       </td>
                       <td className="py-4 px-6">
                         <span
