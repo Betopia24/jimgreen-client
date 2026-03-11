@@ -612,7 +612,8 @@ export default function WaterChemistryForm() {
     (state: RootState) => state.user.user,
   );
 
-  const companyId = company?.companyMember?.companyId;
+  console.log(company);
+  const companyId = company?.companyMember?.company?.id;
 
   const { data } = useGetCoustomerListQuery(companyId as string, {
     skip: !companyId,
