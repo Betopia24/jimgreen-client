@@ -488,7 +488,7 @@ function AddProduct() {
   const user = useSelector((state: RootState) => state.user.user);
   const { data, isLoading: profileLoading } = useGetMeProfileQuery("");
   const companyId =
-    data?.data?.companyMember?.companyId || user?.companyMember?.companyId;
+    data?.data?.companyMember?.company?.id || user?.companyMember?.company?.id;
 
   const { data: allRawMaterials, isLoading: rawMaterialsLoading } =
     useAllRowMaterialsQuery(companyId, { skip: !companyId });

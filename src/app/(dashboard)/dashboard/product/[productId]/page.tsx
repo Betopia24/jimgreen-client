@@ -527,8 +527,8 @@ function UpdateProduct() {
   const { data: profileData, isLoading: profileLoading } =
     useGetMeProfileQuery("");
   const companyId =
-    profileData?.data?.companyMember?.companyId ||
-    user?.companyMember?.companyId;
+    profileData?.data?.companyMember?.company?.id ||
+    user?.companyMember?.company?.id;
 
   const { data: allRawMaterials, isLoading: rawMaterialsLoading } =
     useAllRowMaterialsQuery(companyId, { skip: !companyId });

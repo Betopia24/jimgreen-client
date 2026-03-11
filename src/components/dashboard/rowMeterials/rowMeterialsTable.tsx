@@ -68,7 +68,7 @@ export default function RowMeterialsTable() {
     useDeleteRowMaterialsMutation();
 
   const id =
-    data?.data?.companyMember?.companyId || user?.companyMember?.companyId;
+    data?.data?.companyMember?.company?.id || user?.companyMember?.company?.id;
   const { data: allData, isLoading } = useAllRowMaterialsQuery(id);
   console.log(allData);
   const materials = allData?.data as Material[];
