@@ -22,6 +22,7 @@ import { LuLoader } from "react-icons/lu";
 import { useState } from "react";
 import { PiMagicWandLight } from "react-icons/pi";
 import {
+  Box,
   Building,
   FileInput,
   GlassWater,
@@ -49,9 +50,9 @@ export default function AppSidebar() {
       size: 16,
     },
     {
-      href: "/dashboard/analysisInput",
-      icon: FileInput,
-      label: "Analysis Input",
+      href: "/dashboard/saturation",
+      icon: Box,
+      label: "Saturation Analysis",
       size: 16,
     },
     {
