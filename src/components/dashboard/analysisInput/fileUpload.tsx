@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useUploadAnalysisFileMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { useDispatch } from "react-redux";
 import { setAnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
+import { toast } from "sonner";
 
 // antonio794@hotmail.com
 
@@ -87,9 +88,10 @@ export default function FileUpload() {
 
       // Go to next page
       router.push("/dashboard/analysisInput/analysisChemistyInput");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Upload failed:", error);
-      alert("Upload failed. Please try again.");
+
+      toast.error(error.data.message);
       setSelectedFile(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";

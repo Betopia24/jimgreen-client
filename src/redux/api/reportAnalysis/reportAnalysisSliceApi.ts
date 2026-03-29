@@ -4,7 +4,7 @@ export const analysisApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     uploadAnalysisFile: builder.mutation({
       query: (body) => ({
-        url: "/report-analysis/extract-report",
+        url: "/report-analysis/water-reports/extract",
         method: "POST",
         body,
       }),
@@ -13,7 +13,8 @@ export const analysisApi = baseApi.injectEndpoints({
 
     analyzeReport: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/analyze-report`,
+        // url: `/report-analysis/analyze-report`,
+        url: `/report-analysis/water-reports`,
         method: "POST",
         body: payload,
       }),
@@ -22,7 +23,7 @@ export const analysisApi = baseApi.injectEndpoints({
 
     modifyRepordGraph: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/modify-report-graph`,
+        url: `/report-analysis/water-reports/modify-graph`,
         method: "POST",
         body: payload,
       }),
@@ -31,7 +32,7 @@ export const analysisApi = baseApi.injectEndpoints({
 
     recalculateReportAnalysis: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/recalculate-report`,
+        url: `/report-analysis/water-reports/recalculate`,
         method: "POST",
         body: payload,
       }),
@@ -46,14 +47,35 @@ export const analysisApi = baseApi.injectEndpoints({
       providesTags: ["reportAnalysis"],
     }),
 
-    getReportHistory: builder.query<any, { companyId: string; searchTerm?: string, page?: number, limit?: number }>({
-      query: ({ companyId, searchTerm, page = 1, limit = 10 }: { companyId: string; searchTerm?: string; page?: number; limit?: number }) => ({
+    getCoustomerAndAsetList: builder.query({
+      query: (id) => ({
+        url: `/report-analysis/company-overview/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["reportAnalysis"],
+    }),
+
+    getReportHistory: builder.query<
+      any,
+      { companyId: string; searchTerm?: string; page?: number; limit?: number }
+    >({
+      query: ({
+        companyId,
+        searchTerm,
+        page = 1,
+        limit = 10,
+      }: {
+        companyId: string;
+        searchTerm?: string;
+        page?: number;
+        limit?: number;
+      }) => ({
         url: `/report-analysis/history/${companyId}`,
         method: "GET",
         params: {
           searchTerm,
           page,
-          limit
+          limit,
         },
       }),
     }),
@@ -63,9 +85,17 @@ export const analysisApi = baseApi.injectEndpoints({
       query: (id) => ({
         url: `/report-analysis/report/${id}`,
         method: "GET",
-      })
-    })
+      }),
+    }),
 
+    saturatonAnalysis: builder.mutation({
+      query: (payload) => ({
+        url: `/report-analysis/saturation-analysis`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["reportAnalysis"],
+    }),
   }),
 });
 
@@ -77,4 +107,6 @@ export const {
   useRecalculateReportAnalysisMutation,
   useGetReportHistoryQuery,
   useGetReportHistorySignleQuery,
+  useGetCoustomerAndAsetListQuery,
+  useSaturatonAnalysisMutation,
 } = analysisApi;
