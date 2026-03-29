@@ -1,5 +1,11 @@
+import SaturationAnalysis from "@/components/dashboard/saturationCom/SaturationAnalysis";
+
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div>
+      <SaturationAnalysis />
+    </div>
+  );
 };
 
 export default page;

@@ -87,6 +87,15 @@ export const analysisApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    saturatonAnalysis: builder.mutation({
+      query: (payload) => ({
+        url: `/report-analysis/saturation-analysis`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["reportAnalysis"],
+    }),
   }),
 });
 
@@ -99,4 +108,5 @@ export const {
   useGetReportHistoryQuery,
   useGetReportHistorySignleQuery,
   useGetCoustomerAndAsetListQuery,
+  useSaturatonAnalysisMutation,
 } = analysisApi;
