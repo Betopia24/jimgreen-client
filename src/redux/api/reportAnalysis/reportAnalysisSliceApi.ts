@@ -23,7 +23,7 @@ export const analysisApi = baseApi.injectEndpoints({
 
     modifyRepordGraph: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/modify-report-graph`,
+        url: `/report-analysis/water-reports/modify-graph`,
         method: "POST",
         body: payload,
       }),
@@ -32,7 +32,7 @@ export const analysisApi = baseApi.injectEndpoints({
 
     recalculateReportAnalysis: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/recalculate-report`,
+        url: `/report-analysis/water-reports/recalculate`,
         method: "POST",
         body: payload,
       }),

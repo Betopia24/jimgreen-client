@@ -49,6 +49,12 @@ export default function AppSidebar() {
       size: 16,
     },
     {
+      href: "/dashboard/analysisInput",
+      icon: FileInput,
+      label: "Analysis Input",
+      size: 16,
+    },
+    {
       href: "/dashboard/analysisLab",
       icon: WandSparkles,
       label: "Analysis Lab",
