@@ -452,6 +452,8 @@ export default function WaterChemistryForm() {
     { skip: !companyId },
   );
 
+  console.log(company);
+
   // Customers list from coustomerAndAset API
   const customers: Customer[] = customerData?.data?.customers ?? [];
 
@@ -633,8 +635,6 @@ export default function WaterChemistryForm() {
       }
     } catch (error: any) {
       toast.error(error?.data?.message || "Something went wrong");
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -645,7 +645,7 @@ export default function WaterChemistryForm() {
   return (
     <div className="mt-10 relative">
       {(isLoading || ReCulLoading) && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/02 backdrop-blur-xs z-50">
+        <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-white/02 backdrop-blur-xs z-50">
           <Loader2 className="animate-spin w-10 h-10 text-[#0058DD]" />
         </div>
       )}

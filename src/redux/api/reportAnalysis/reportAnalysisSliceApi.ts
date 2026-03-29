@@ -13,7 +13,8 @@ export const analysisApi = baseApi.injectEndpoints({
 
     analyzeReport: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/analyze-report`,
+        // url: `/report-analysis/analyze-report`,
+        url: `/report-analysis/water-reports`,
         method: "POST",
         body: payload,
       }),
