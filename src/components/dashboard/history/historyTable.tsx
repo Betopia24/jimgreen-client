@@ -212,15 +212,36 @@ interface User {
   };
 }
 
-interface Report {
+// interface Report {
+//   id: string;
+//   report_id: string;
+//   customerName: string;
+//   createdAt: string;
+//   total_score?: {
+//     overall_score: number | string;
+//     rating: string;
+//   };
+// }
+
+export interface Report {
   id: string;
-  report_id: string;
+  aiReportId: string;
+  originalFilename: string;
+
+  sampleLocation: string | null;
+  sampleDate: string | null;
+
+  assetId: string;
+  assetName: string;
+
+  customerId: string;
   customerName: string;
-  createdAt: string;
-  total_score?: {
-    overall_score: number | string;
-    rating: string;
-  };
+  customerSiteName: string;
+
+  companyId: string;
+  companyName: string;
+
+  createdAt: string; // ISO date
 }
 
 interface ReportHistoryResponse {
@@ -318,6 +339,8 @@ export default function HistoryTable() {
     isError: boolean;
   };
 
+  console.log(reportHistoryData);
+
   // Reset to page 1 when search changes
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -394,8 +417,8 @@ export default function HistoryTable() {
                   "Report ID",
                   "Customer Name",
                   "Date",
-                  "Score",
-                  "Rating",
+                  "Company Name",
+                  "Asset Name",
                   "Action",
                 ].map((heading) => (
                   <th
@@ -419,12 +442,16 @@ export default function HistoryTable() {
                   >
                     {/* Report ID */}
                     <td className="py-4 px-6 text-sm font-semibold text-blue-600">
-                      {report?.report_id ?? "—"}
+                      {report?.aiReportId ?? "—"}
                     </td>
 
                     {/* Customer Name */}
                     <td className="py-4 px-6 text-sm font-medium text-gray-900">
                       {report?.customerName ?? "—"}
+                    </td>
+                    {/* Customer Name */}
+                    <td className="py-4 px-6 text-sm font-medium text-gray-900">
+                      {report?.companyName ?? "—"}
                     </td>
 
                     {/* Date */}
@@ -437,16 +464,9 @@ export default function HistoryTable() {
                         : "—"}
                     </td>
 
-                    {/* Score */}
-                    <td className="py-4 px-6">
-                      <span className="text-sm font-semibold text-gray-900">
-                        {report?.total_score?.overall_score ?? "—"}
-                      </span>
-                    </td>
-
                     {/* Rating */}
                     <td className="py-4 px-6">
-                      <RatingBadge rating={report?.total_score?.rating} />
+                      <RatingBadge rating={report?.assetName} />
                     </td>
 
                     {/* Action */}

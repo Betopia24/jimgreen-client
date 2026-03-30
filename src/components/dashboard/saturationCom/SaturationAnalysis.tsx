@@ -934,8 +934,11 @@ import {
   useGetSaltSaturationQuery,
   useSaturatonAnalysisMutation,
 } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
+import { setSaturationAnalysisAllData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
+import { useRouter } from "next/navigation";
 import React, { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 // ─── Type Definitions ────────────────────────────────────────────────────────
 
@@ -1357,6 +1360,7 @@ function RangeFields({
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export default function SaturationAnalysis() {
+  const router = useRouter();
   // Step tracking
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -1394,6 +1398,7 @@ export default function SaturationAnalysis() {
   const [tempUnit, setTempUnit] = useState("°C");
   const [pHMode, setPHMode] = useState<"natural" | "fixed">("natural");
   const [fixedPh, setFixedPh] = useState("");
+  const dispatch = useDispatch();
 
   // ── Auth / API
   const company = useSelector((state: RootState) => state.user.user);
@@ -1542,7 +1547,17 @@ export default function SaturationAnalysis() {
       ...(Object.keys(treatment).length > 0 && { treatment }),
     };
 
-    await runAnalysis(payload);
+    try {
+      const response = await runAnalysis(payload).unwrap();
+      console.log(response.data.aiResponse);
+      if (response.success) {
+        toast.success(response.message);
+        dispatch(setSaturationAnalysisAllData(response.data.aiResponse));
+        router.push("/dashboard/saturation/saturation-analysis");
+      }
+    } catch (error: any) {
+      toast.error(error.data.message);
+    }
   };
 
   const canSubmit =

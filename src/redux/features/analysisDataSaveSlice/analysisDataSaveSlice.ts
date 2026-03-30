@@ -4,11 +4,13 @@ import { AnalysisData } from "@/redux/features/analysisDataSaveSlice/analysisTyp
 interface AnalysisState {
   analysisData: AnalysisData | null;
   analysisAllData: {} | null;
+  saturationAnalysis: {} | null;
 }
 
 const initialState: AnalysisState = {
   analysisData: null,
   analysisAllData: null,
+  saturationAnalysis: null,
 };
 
 const analysisSlice = createSlice({
@@ -28,6 +30,13 @@ const analysisSlice = createSlice({
     clearAnalysisAllDetailsData: (state) => {
       state.analysisAllData = null;
     },
+
+    setSaturationAnalysisAllData: (state, action) => {
+      state.saturationAnalysis = action.payload;
+    },
+    clearSaturationAnalysisAllData: (state) => {
+      state.saturationAnalysis = null;
+    },
   },
 });
 
@@ -36,6 +45,8 @@ export const {
   clearAnalysisData,
   setAnalysisAllDetailsData,
   clearAnalysisAllDetailsData,
+  setSaturationAnalysisAllData,
+  clearSaturationAnalysisAllData,
 } = analysisSlice.actions;
 
 export default analysisSlice.reducer;
