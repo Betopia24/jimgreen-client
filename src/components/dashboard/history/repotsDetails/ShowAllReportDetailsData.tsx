@@ -780,7 +780,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       </div>
 
       {/* Graph */}
-      {/* <GraphSection report={report} id={raw.id} /> */}
+      <GraphSection report={report} id={raw.id} />
       <div className="relative w-full aspect-[16/9] overflow-auto border rounded-lg bg-white">
         <Image
           src={reportDetailsData?.data?.parameterGraph?.graph_url}
