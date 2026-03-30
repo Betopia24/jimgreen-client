@@ -55,10 +55,29 @@ export const analysisApi = baseApi.injectEndpoints({
       providesTags: ["reportAnalysis"],
     }),
 
-    getReportHistory: builder.query<
-      any,
-      { companyId: string; searchTerm?: string; page?: number; limit?: number }
-    >({
+    // getReportHistory: builder.query({
+    //   query: ({
+    //     companyId,
+    //     searchTerm,
+    //     page = 1,
+    //     limit = 10,
+    //   }: {
+    //     companyId: string;
+    //     searchTerm?: string;
+    //     page?: number;
+    //     limit?: number;
+    //   }) => ({
+    //     url: `/report-analysis/water-reports?companyId=${companyId}`,
+    //     method: "GET",
+    //     params: {
+    //       searchTerm,
+    //       page,
+    //       limit,
+    //     },
+    //   }),
+    // }),
+
+    getReportHistory: builder.query({
       query: ({
         companyId,
         searchTerm,
@@ -70,10 +89,11 @@ export const analysisApi = baseApi.injectEndpoints({
         page?: number;
         limit?: number;
       }) => ({
-        url: `/report-analysis/history/${companyId}`,
+        url: `/report-analysis/water-reports`,
         method: "GET",
         params: {
-          searchTerm,
+          companyId,
+          ...(searchTerm && { searchTerm }),
           page,
           limit,
         },
@@ -83,18 +103,26 @@ export const analysisApi = baseApi.injectEndpoints({
     // get report history signle data
     getReportHistorySignle: builder.query({
       query: (id) => ({
-        url: `/report-analysis/report/${id}`,
+        url: `/report-analysis/water-reports/${id}`,
         method: "GET",
       }),
     }),
 
+    // saturation analysis
     saturatonAnalysis: builder.mutation({
       query: (payload) => ({
-        url: `/report-analysis/saturation-analysis`,
+        url: `/report-analysis/saturation-analyses`,
         method: "POST",
         body: payload,
       }),
       invalidatesTags: ["reportAnalysis"],
+    }),
+
+    getSaltSaturation: builder.query({
+      query: () => ({
+        url: `/report-analysis/saturation/available-salts`,
+        method: "GET",
+      }),
     }),
   }),
 });
@@ -109,4 +137,5 @@ export const {
   useGetReportHistorySignleQuery,
   useGetCoustomerAndAsetListQuery,
   useSaturatonAnalysisMutation,
+  useGetSaltSaturationQuery,
 } = analysisApi;
