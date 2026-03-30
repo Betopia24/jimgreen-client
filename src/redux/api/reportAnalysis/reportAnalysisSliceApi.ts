@@ -116,6 +116,13 @@ export const analysisApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["reportAnalysis"],
     }),
+
+    getSaltSaturation: builder.query({
+      query: () => ({
+        url: `/report-analysis/saturation/available-salts`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -129,4 +136,5 @@ export const {
   useGetReportHistorySignleQuery,
   useGetCoustomerAndAsetListQuery,
   useSaturatonAnalysisMutation,
+  useGetSaltSaturationQuery,
 } = analysisApi;
