@@ -477,6 +477,7 @@ import ScoreCard from "../../analysisInput/detailsComonents/ScoreCard";
 import { useGetReportHistorySignleQuery } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
 import { useRouter } from "next/router";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 interface Props {
   data?: any;
@@ -609,6 +610,8 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
 
   const { data: reportDetailsData, isLoading } =
     useGetReportHistorySignleQuery(historyId);
+
+  console.log(reportDetailsData?.data?.parameterGraph?.graph_url);
 
   const raw = reportDetailsData?.data ?? data?.data ?? {};
 
@@ -777,7 +780,17 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       </div>
 
       {/* Graph */}
-      <GraphSection report={report} id={raw.id} />
+      {/* <GraphSection report={report} id={raw.id} /> */}
+      <div className="relative w-full aspect-[16/9] overflow-auto border rounded-lg bg-white">
+        <Image
+          src={reportDetailsData?.data?.parameterGraph?.graph_url}
+          alt="Parameter Comparison Graph"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw,            (max-width: 1200px) 80vw,            1200px"
+          priority
+        />
+      </div>
 
       {/* Report Information */}
       <Section title="Report Information">
