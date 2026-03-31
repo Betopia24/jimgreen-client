@@ -1371,7 +1371,7 @@ export default function SaturationAnalysis() {
 
   // ── Advanced Settings (inputConfig)
   const [saltsSelection, setSaltsSelection] = useState<"Auto" | "Manual">(
-    "Auto",
+    "Manual",
   );
   const [saltsOfInterest, setSaltsOfInterest] = useState<string[]>([]); // multi-select array
   const [primarySaltId, setPrimarySaltId] = useState(""); // salt_id (single)
@@ -1504,11 +1504,16 @@ export default function SaturationAnalysis() {
     // Build inputConfig — only include fields with actual values
     const inputConfig: Record<string, unknown> = {};
 
-    if (saltsSelection === "Manual") {
-      if (primarySaltId) inputConfig.salt_id = primarySaltId;
-      if (saltsOfInterest.length > 0) {
-        inputConfig.salts_of_interest = saltsOfInterest;
-      }
+    // if (saltsSelection === "Manual") {
+    //   if (primarySaltId) inputConfig.salt_id = primarySaltId;
+    //   if (saltsOfInterest.length > 0) {
+    //     inputConfig.salts_of_interest = saltsOfInterest;
+    //   }
+    // }
+
+    if (primarySaltId) inputConfig.salt_id = primarySaltId;
+    if (saltsOfInterest.length > 0) {
+      inputConfig.salts_of_interest = saltsOfInterest;
     }
 
     if (overrideDosage) inputConfig.dosage_ppm = Number(overrideDosage);
@@ -1683,7 +1688,7 @@ export default function SaturationAnalysis() {
           {/* ── Advanced Settings ── */}
           <SectionCard title="Advanced Settings" badge="Optional">
             {/* Salts Selection Mode — options driven from API response */}
-            <SelectField
+            {/* <SelectField
               label="Salts Selection"
               value={saltsSelection}
               onChange={(v) => {
@@ -1698,64 +1703,13 @@ export default function SaturationAnalysis() {
                 { value: "Auto", label: "Auto — test all available salts" },
                 { value: "Manual", label: "Manual — choose specific salts" },
               ]}
-            />
+            /> */}
 
             {/* Salts Of Interest */}
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-medium text-gray-700">
-                  Salts Of Interest
-                  {saltsSelection === "Auto" && (
-                    <span className="ml-2 text-xs text-gray-400 font-normal">
-                      (all {salts.length} salts tested automatically)
-                    </span>
-                  )}
-                </p>
-                {saltsSelection === "Manual" && saltsOfInterest.length > 0 && (
-                  <span className="text-xs text-primaryColor font-medium bg-blue-50 px-2 py-0.5 rounded-full">
-                    {saltsOfInterest.length} / {salts.length} selected
-                  </span>
-                )}
-              </div>
-
-              {saltsSelection === "Auto" ? (
-                /* Auto mode — preview all salts as muted, non-interactive pills */
-                <div className="flex flex-wrap gap-2">
-                  {saltsLoading
-                    ? [...Array(8)].map((_, i) => (
-                        <div
-                          key={i}
-                          className="h-8 w-20 rounded-full bg-gray-100 animate-pulse"
-                        />
-                      ))
-                    : salts.map((s) => (
-                        <span
-                          key={s.name}
-                          title={s.chemical_formula}
-                          className="px-3 py-1.5 rounded-full text-xs font-medium bg-gray-50 text-gray-400 border border-gray-100 flex items-center gap-1"
-                        >
-                          {s.name}
-                          <span className="text-[10px] text-gray-300">
-                            {s.chemical_formula}
-                          </span>
-                        </span>
-                      ))}
-                </div>
-              ) : (
-                /* Manual mode — full interactive multi-select from API */
-                <MultiSelectSaltPills
-                  salts={salts}
-                  selected={saltsOfInterest}
-                  onChange={setSaltsOfInterest}
-                  isLoading={saltsLoading}
-                />
-              )}
-            </div>
-
-            {/* Primary Salt (salt_id) — only in Manual mode, dropdown from API */}
-            {saltsSelection === "Manual" && (
+              {/* Primary Salt (salt_id) — only in Manual mode, dropdown from API */}
               <SelectField
-                label="Primary Salt (salt_id)"
+                label="Primary Salt:"
                 value={primarySaltId}
                 onChange={setPrimarySaltId}
                 placeholder={
@@ -1764,7 +1718,30 @@ export default function SaturationAnalysis() {
                 options={saltOptions}
                 disabled={saltsLoading}
               />
-            )}
+              <div className="flex items-center justify-between mb-2 mt-6">
+                <p className="text-sm font-medium text-gray-700">
+                  Salts Of Interest
+                  {saltsSelection === "Auto" && (
+                    <span className="ml-2 text-xs text-gray-400 font-normal">
+                      (all {salts.length} salts tested automatically)
+                    </span>
+                  )}
+                </p>
+
+                {saltsSelection === "Manual" && saltsOfInterest.length > 0 && (
+                  <span className="text-xs text-primaryColor font-medium bg-blue-50 px-2 py-0.5 rounded-full">
+                    {saltsOfInterest.length} / {salts.length} selected
+                  </span>
+                )}
+              </div>
+
+              <MultiSelectSaltPills
+                salts={salts}
+                selected={saltsOfInterest}
+                onChange={setSaltsOfInterest}
+                isLoading={saltsLoading}
+              />
+            </div>
 
             {/* Override Dosage */}
             <div className="flex flex-col gap-1.5">
