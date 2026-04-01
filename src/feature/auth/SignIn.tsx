@@ -54,6 +54,7 @@ export default function SignInPage() {
   const dispatch = useDispatch();
 
   console.log(process.env.NEXT_PUBLIC_DOMAIN_URL_TWO);
+  console.log(process.env.NEXT_PUBLIC_DOMAIN_URL_ONE);
 
   const domain = window.location.origin;
   const onSubmit = async (data: FormValues) => {
