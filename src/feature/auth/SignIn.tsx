@@ -63,7 +63,11 @@ export default function SignInPage() {
       const response = await signIn(data).unwrap();
       console.log(response);
       if (response?.success) {
-        Cookies.set("token", response.data.accessToken);
+        Cookies.set("token", response.data.accessToken, {
+          domain: ".aquaadvisor.ai",
+          secure: true,
+          sameSite: "None",
+        });
         dispatch(
           setUser({
             token: response.data.accessToken,
