@@ -1605,7 +1605,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
         </div>
 
         {/* Database Info */}
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h3 className="font-semibold text-lg mb-3">Database Information</h3>
           <div className="bg-gray-50 border rounded-lg p-4">
             <p className="text-sm">
@@ -1613,7 +1613,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
               {report.chemical_status.database_used}
             </p>
           </div>
-        </div>
+        </div> */}
       </Section>
 
       {/* Total Score */}
