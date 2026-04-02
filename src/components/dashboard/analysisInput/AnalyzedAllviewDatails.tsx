@@ -1673,7 +1673,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
       </Section>
 
       {/* Chemical Composition */}
-      <Section title="Chemical Composition">
+      {/* <Section title="Chemical Composition">
         <div className="overflow-auto">
           <table className="min-w-full text-sm border">
             <thead className="bg-gray-100">
@@ -1702,7 +1702,7 @@ const WaterFullReport: React.FC<Props> = ({ data }) => {
             </tbody>
           </table>
         </div>
-      </Section>
+      </Section> */}
 
       {/* Biological Indicators */}
       <Section title="Biological Indicators">
