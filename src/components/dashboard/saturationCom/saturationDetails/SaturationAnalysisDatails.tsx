@@ -1290,7 +1290,7 @@ interface SaturationAnalysisData {
 
 // ==================== COMPONENT ====================
 
-const O2SaturationAnalysis: React.FC = () => {
+const SaturationAnalysis: React.FC = () => {
   const data = useSelector(
     (state: RootState) => state.analysis.saturationAnalysis,
   ) as SaturationAnalysisData | null;
