@@ -1387,6 +1387,7 @@ export default function SaturationAnalysis() {
   const [productId, setProductId] = useState("");
   const [rawMaterialId, setRawMaterialId] = useState("");
   const [dosagePpm, setDosagePpm] = useState("");
+  const [saturationName, setSaturationName] = useState("");
 
   // ── Simulation Parameters (inputConfig)
   const [cocMin, setCocMin] = useState("");
@@ -1656,6 +1657,23 @@ export default function SaturationAnalysis() {
 
         <div className="flex flex-col gap-5">
           {/* ── Selection Flow ── */}
+          <SectionCard title="Saturation Name">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                  name
+                </label>
+                <input
+                  type="text"
+                  value={saturationName}
+                  onChange={(e) => setSaturationName(e.target.value)}
+                  placeholder="suturation name"
+                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-all"
+                />
+              </div>
+            </div>
+          </SectionCard>
+
           <SectionCard title="Selection Flow">
             <SelectField
               label="Select Customer"
