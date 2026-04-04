@@ -929,6 +929,7 @@
 
 "use client";
 
+import SaturationDashboard from "@/app/testing/__comp/ThreeD";
 import {
   useGetCoustomerAndAsetListQuery,
   useGetSaltSaturationQuery,
@@ -1505,13 +1506,6 @@ export default function SaturationAnalysis() {
     // Build inputConfig — only include fields with actual values
     const inputConfig: Record<string, unknown> = {};
 
-    // if (saltsSelection === "Manual") {
-    //   if (primarySaltId) inputConfig.salt_id = primarySaltId;
-    //   if (saltsOfInterest.length > 0) {
-    //     inputConfig.salts_of_interest = saltsOfInterest;
-    //   }
-    // }
-
     if (primarySaltId) inputConfig.salt_id = primarySaltId;
     if (saltsOfInterest.length > 0) {
       inputConfig.salts_of_interest = saltsOfInterest;
@@ -1548,6 +1542,7 @@ export default function SaturationAnalysis() {
 
     const payload = {
       assetId: selectedAssetId,
+      name: saturationName,
       waterReportId: selectedReport?.aiReportId ?? selectedReportId,
       ...(Object.keys(inputConfig).length > 0 && { inputConfig }),
       ...(Object.keys(treatment).length > 0 && { treatment }),
@@ -1558,7 +1553,7 @@ export default function SaturationAnalysis() {
       console.log(response.data.aiResponse);
       if (response.success) {
         toast.success(response.message);
-        dispatch(setSaturationAnalysisAllData(response.data.aiResponse));
+        dispatch(setSaturationAnalysisAllData(response.data));
         router.push("/dashboard/saturation/saturation-analysis");
       }
     } catch (error: any) {
