@@ -52,6 +52,7 @@ export default function SignInPage() {
 
   const router = useRouter();
   const dispatch = useDispatch();
+  const isProduction = process.env.NODE_ENV === "production";
 
   console.log(process.env.NEXT_PUBLIC_DOMAIN_URL_TWO);
   console.log(process.env.NEXT_PUBLIC_DOMAIN_URL_ONE);
@@ -63,10 +64,15 @@ export default function SignInPage() {
       const response = await signIn(data).unwrap();
       console.log(response);
       if (response?.success) {
+        // Cookies.set("token", response.data.accessToken, {
+        //   domain: ".aquaadvisor.ai",
+        //   secure: true,
+        //   sameSite: "None",
+        // });
         Cookies.set("token", response.data.accessToken, {
-          domain: ".aquaadvisor.ai",
-          secure: true,
-          sameSite: "None",
+          domain: isProduction ? ".aquaadvisor.ai" : undefined,
+          secure: isProduction,
+          sameSite: isProduction ? "None" : "Lax",
         });
         dispatch(
           setUser({

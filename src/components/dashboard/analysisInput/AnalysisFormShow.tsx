@@ -34,6 +34,7 @@ interface WaterChemistryFormData {
   assetId: string;
   sampleLocation?: string;
   sampleDate?: string;
+  name?: string;
   filename?: string;
   [key: string]: number | string | undefined;
 }
@@ -86,6 +87,7 @@ export default function WaterChemistryForm() {
       sampleLocation: "",
       sampleDate: "",
       filename: "",
+      name: "",
     },
   });
 
@@ -226,10 +228,38 @@ export default function WaterChemistryForm() {
 
   const onSubmit = async (formData: WaterChemistryFormData) => {
     setIsSubmitting(true);
+    console.log(formData);
 
     try {
+      // const parameters: WaterParameter[] = Object.entries(formData)
+      //   .filter(([key, value]) => {
+      //     if (
+      //       [
+      //         "customerId",
+      //         "assetId",
+      //         "sampleLocation",
+      //         "sampleDate",
+      //         "filename",
+      //         "name",
+      //       ].includes(key)
+      //     )
+      //       return false;
+      //     if (value === undefined || value === null || value === "")
+      //       return false;
+      //     return true;
+      //   })
+      //   .map(([key, value]) => {
+      //     const param = availableParameters.find((p: any) => p.name === key);
+      //     return {
+      //       name: displayNameMapping[key] || key,
+      //       value: Number(value),
+      //       unit: param?.unit || "",
+      //       detection_limit: param?.detectionLimit ?? null,
+      //     };
+      //   });
       const parameters: WaterParameter[] = Object.entries(formData)
         .filter(([key, value]) => {
+          // ❌ exclude non-parameter fields
           if (
             [
               "customerId",
@@ -237,15 +267,23 @@ export default function WaterChemistryForm() {
               "sampleLocation",
               "sampleDate",
               "filename",
+              "name", // ✅ IMPORTANT FIX
             ].includes(key)
           )
             return false;
+
+          // ❌ remove empty values
           if (value === undefined || value === null || value === "")
             return false;
+
+          // ❌ remove NaN
+          if (typeof value === "number" && isNaN(value)) return false;
+
           return true;
         })
         .map(([key, value]) => {
           const param = availableParameters.find((p: any) => p.name === key);
+
           return {
             name: displayNameMapping[key] || key,
             value: Number(value),
@@ -256,8 +294,13 @@ export default function WaterChemistryForm() {
 
       if (id) {
         // Recalculate flow — payload stays the same
+        // const payload = {
+        //   reportId: id,
+        //   adjustedParameters: parameters,
+        // };
         const payload = {
           reportId: id,
+          name: formData.name, // ✅ add this
           adjustedParameters: parameters,
         };
         const response = await ReCulanalyzePost(payload).unwrap();
@@ -271,6 +314,7 @@ export default function WaterChemistryForm() {
         // New analysis — updated payload shape
         const payload: Record<string, any> = {
           assetId: formData.assetId,
+          name: formData.name,
           filename: analysisData.data.filename,
           parameters,
         };
@@ -316,6 +360,17 @@ export default function WaterChemistryForm() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+          {/* name  */}
+          <div className="grid grid-cols-1  gap-6 max-w-4xl">
+            <div>
+              <label className="block mb-2 font-medium text-sm">Name</label>
+              <input
+                type="text"
+                {...register("name", { required: "Name is required" })}
+                className="w-full border rounded-lg px-4 py-2"
+              />
+            </div>
+          </div>
           {/* ── Customer + Asset selects ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
             {/* Customer */}

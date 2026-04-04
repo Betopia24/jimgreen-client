@@ -1183,60 +1183,11 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import SaturationDashboard from "@/app/testing/__comp/ThreeD";
 
 // ==================== FULL TYPE DEFINITIONS ====================
-
-interface GraphAxes {
-  x: string;
-  y: string;
-  z: string;
-}
-
-interface GraphPoint {
-  x: number;
-  y: number | null;
-  z: number;
-  color: string;
-  pH: number;
-}
-
-interface GraphData {
-  axes: GraphAxes;
-  salt_id: string;
-  points: GraphPoint[];
-  color_map: {
-    green: string;
-    yellow: string;
-    red: string;
-    error: string;
-  };
-}
-
-interface Summary {
-  green: number;
-  yellow: number;
-  red: number;
-  error: number;
-}
-
-interface Thresholds {
-  max_si_at_dose: number;
-  band_lower: number;
-  band_upper: number;
-}
-
-interface WaterParameter {
-  value: number | string;
-  unit: string;
-  detection_limit: number | null;
-}
-
-interface BaseWaterParameters {
-  [key: string]: WaterParameter;
-}
 
 interface AssetInfo {
   name: string;
@@ -1248,118 +1199,117 @@ interface AssetInfo {
   recirculationRate: number;
 }
 
-interface SaturationAnalysisData {
+interface Summary {
+  green: number;
+  yellow: number;
+  red: number;
+  error: number;
+}
+
+interface AiResponse {
   run_id: string;
-  salt_id: string;
+  salt_id: string | null;
   salts_of_interest: string[];
   dosage_ppm: number;
   coc_min: number;
   coc_max: number;
-  coc_interval: number;
   temp_min: number;
   temp_max: number;
-  temp_interval: number;
   temp_unit: string;
   ph_mode: string;
   fixed_ph: number;
-  adjustment_chemical: string;
   balance_cation: string;
   balance_anion: string;
   database_used: string;
   total_grid_points: number;
-  grid_results: Array<{
-    _grid_CoC: number;
-    _grid_temp: number;
-    _grid_pH: number;
-    saturation_indices: Record<string, any>;
-    description_of_solution: string | null;
-    color_code: string;
-    ionic_strength: number;
-    charge_balance_error_pct: number;
-  }>;
-  graph_url: string;
-  graph_data: GraphData;
   summary: Summary;
-  thresholds: Thresholds;
-  base_water_parameters: BaseWaterParameters;
   asset_info: AssetInfo;
   created_at: string;
-  product_blend: any | null;
-  raw_material_chemistry: any | null;
+}
+
+interface SaturationAnalysisData {
+  id: string;
+  name: string;
+  aiResponse: AiResponse;
+  inputConfig: {
+    base_water_parameters: Record<
+      string,
+      { value: number | string; unit: string }
+    >;
+    asset_info: AssetInfo & {
+      supplyTemperature?: number;
+      returnTemperature?: number;
+    };
+  };
 }
 
 // ==================== COMPONENT ====================
 
-const O2SaturationAnalysis: React.FC = () => {
+const SaturationAnalysisDetails: React.FC = () => {
   const data = useSelector(
     (state: RootState) => state.analysis.saturationAnalysis,
   ) as SaturationAnalysisData | null;
 
-  // Safe fallback if data is missing
-  if (!data?.run_id) {
+  if (!data?.id) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-600 font-medium">
-            Loading O₂(g) Saturation Analysis...
+            Loading Saturation Analysis...
           </p>
         </div>
       </div>
     );
   }
 
+  // ✅ FIX: Pull fields from aiResponse, not from data directly
+  const aiResponse = data.aiResponse;
+  const asset_info = aiResponse.asset_info;
+  const inputConfig = data.inputConfig;
+
   const {
     run_id,
     salt_id,
-    salts_of_interest,
     dosage_ppm,
     coc_min,
     coc_max,
     temp_min,
     temp_max,
     temp_unit,
-    graph_url,
-    graph_data,
+    ph_mode,
+    balance_cation,
+    balance_anion,
+    database_used,
     summary,
-    thresholds,
-    base_water_parameters,
-    asset_info,
     created_at,
     total_grid_points,
-  } = data;
+  } = aiResponse;
 
-  const getStatusColor = (status: keyof Summary): string => {
-    const colors: Record<string, string> = {
-      green: "bg-emerald-500 text-white",
-      yellow: "bg-amber-500 text-white",
-      red: "bg-red-500 text-white",
-      error: "bg-gray-400 text-white",
-    };
-    return colors[status] || "bg-gray-400 text-white";
-  };
-
-  const formatDate = (date: string): string => {
-    return new Date(date).toLocaleString("en-US", {
+  const formatDate = (date: string): string =>
+    new Date(date).toLocaleString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
+
+  const statusColors: Record<string, string> = {
+    green: "bg-emerald-500 text-white",
+    yellow: "bg-amber-500 text-white",
+    red: "bg-red-500 text-white",
+    error: "bg-gray-400 text-white",
   };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className=" space-y-8">
+      <div className="space-y-8">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-sm border p-8">
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold text-gray-900">
-                O₂(g) Saturation Analysis
-              </h1>
-              <p className="text-gray-500 mt-2 font-mono">Run ID: {run_id}</p>
+              <h1 className="text-4xl font-bold text-gray-900">{data.name}</h1>
             </div>
             <div className="text-right">
               <p className="text-xs uppercase tracking-widest text-gray-500">
@@ -1372,35 +1322,23 @@ const O2SaturationAnalysis: React.FC = () => {
           </div>
         </div>
 
-        {/* Asset Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Asset Info + Materials */}
+        <div className="grid grid-cols-1 -2 gap-6">
           <div className="bg-white rounded-3xl shadow-sm border p-7">
             <h2 className="text-xl font-semibold mb-5">Asset Information</h2>
             <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Name</span>
-                <span className="font-medium">{asset_info.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Type</span>
-                <span className="font-medium">{asset_info.type}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Tower</span>
-                <span className="font-medium">{asset_info.towerType}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Volume</span>
-                <span className="font-medium">
-                  {asset_info.systemVolume} m³
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Recirculation</span>
-                <span className="font-medium">
-                  {asset_info.recirculationRate} m³/h
-                </span>
-              </div>
+              {[
+                ["Name", asset_info.name],
+                ["Type", asset_info.type],
+                ["Tower", asset_info.towerType],
+                ["Volume", `${asset_info.systemVolume} m³`],
+                ["Recirculation", `${asset_info.recirculationRate} m³/h`],
+              ].map(([label, value]) => (
+                <div key={label} className="flex justify-between">
+                  <span className="text-gray-600">{label}</span>
+                  <span className="font-medium">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -1427,123 +1365,19 @@ const O2SaturationAnalysis: React.FC = () => {
           </div>
         </div>
 
-        {/* Parameters */}
-        <div className="bg-white rounded-3xl shadow-sm border p-8">
-          <h2 className="text-2xl font-semibold mb-6">Analysis Parameters</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div>
-              <p className="text-gray-500 text-sm">Salt</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">{salt_id}</p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Dosage</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">
-                {dosage_ppm} ppm
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">CoC Range</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">
-                {coc_min} – {coc_max}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-500 text-sm">Temperature</p>
-              <p className="text-2xl font-bold text-gray-900 mt-1">
-                {temp_min} – {temp_max} °{temp_unit}
-              </p>
-            </div>
-          </div>
-        </div>
+        {/* Analysis Config */}
 
-        {/* Graph */}
-        <div className="bg-white rounded-3xl shadow-sm border overflow-hidden">
-          <div className="p-8 border-b">
-            <h2 className="text-2xl font-semibold">Saturation Index Graph</h2>
-            <p className="text-gray-500 mt-1">
-              {graph_data?.axes?.y} vs {graph_data?.axes?.x} at{" "}
-              {graph_data?.axes?.z}
-            </p>
-          </div>
-
-          <div className="p-10 bg-gray-50 flex justify-center">
-            <div className="relative w-full max-w-5xl aspect-[16/9.5] rounded-2xl overflow-hidden shadow border bg-white">
-              {graph_url && (
-                <Image
-                  src={graph_url}
-                  alt={`${salt_id} Saturation Graph`}
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              )}
-            </div>
-          </div>
-
-          {/* Legend */}
-          <div className="p-8 bg-white border-t flex flex-wrap justify-center gap-8">
-            {Object.entries(graph_data?.color_map || {}).map(([key, color]) => (
-              <div key={key} className="flex items-center gap-3">
-                <div
-                  className="w-6 h-6 rounded-full shadow"
-                  style={{ backgroundColor: color }}
-                />
-                <span className="capitalize font-medium text-gray-700">
-                  {key} Zone
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Summary */}
-        <div className="bg-white rounded-3xl shadow-sm border p-8">
-          <h2 className="text-2xl font-semibold mb-6">
-            Results Summary ({total_grid_points} points)
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {(Object.keys(summary) as Array<keyof Summary>).map((status) => (
-              <div
-                key={status}
-                className={`rounded-3xl p-10 text-center transition hover:scale-105 ${getStatusColor(status)}`}
-              >
-                <div className="text-6xl font-bold mb-3">{summary[status]}</div>
-                <p className="uppercase tracking-widest text-sm opacity-90">
-                  {status} Points
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Base Water Parameters */}
-        <div className="bg-white rounded-3xl shadow-sm border p-8">
-          <h2 className="text-2xl font-semibold mb-6">Base Water Parameters</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-12 gap-y-6 text-sm">
-            {Object.entries(base_water_parameters).map(([key, param]) => (
-              <div
-                key={key}
-                className="flex justify-between border-b pb-3 last:border-0"
-              >
-                <span className="text-gray-600 capitalize">
-                  {key.replace(/_/g, " ")}
-                </span>
-                <span className="font-semibold">
-                  {param.value} {param.unit}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* 3D Dashboard */}
+        <SaturationDashboard apiResponse={aiResponse as any} />
 
         {/* Footer */}
         <div className="text-center text-xs text-gray-400 py-6">
-          Database: {data.database_used} • pH Mode: {data.ph_mode} • Balance:{" "}
-          {data.balance_cation} / {data.balance_anion}
+          Database: {database_used} • pH Mode: {ph_mode} • Balance:{" "}
+          {balance_cation} / {balance_anion}
         </div>
       </div>
     </div>
   );
 };
 
-export default O2SaturationAnalysis;
+export default SaturationAnalysisDetails;
