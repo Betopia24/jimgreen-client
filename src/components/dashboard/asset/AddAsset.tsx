@@ -33,10 +33,13 @@ type AssetType =
 type TowerType =
   | "Counterflow"
   | "Crossflow"
-  | "Induced Draft"
-  | "Forced Draft"
+  | "Natural Draft / Hyperbolic"
   | "";
 type FillType = "Film Fill" | "Splash Fill" | "Trickle Fill" | "";
+type CriticalHeatExchangerFillType =
+  | "Shell & Tube (Water on Tube Side)"
+  | "Shell & Tube (Water on Shell Side)"
+  | "Plate & Frame";
 
 type Metallurgy =
   | "Mild Steel"
@@ -194,16 +197,19 @@ const ASSET_TYPES: AssetType[] = [
   "Cooling Tower",
   "Evaporative Condenser",
   "Once-Through Cooling",
-  "Seawater Cooling Tower",
-  "Adiabatic Cooler",
 ];
 const TOWER_TYPES: TowerType[] = [
   "Counterflow",
   "Crossflow",
-  "Induced Draft",
-  "Forced Draft",
+  "Natural Draft / Hyperbolic",
 ];
-const FILL_TYPES: FillType[] = ["Film Fill", "Splash Fill", "Trickle Fill"];
+const FILL_TYPES: FillType[] = ["Film Fill", "Splash Fill"];
+
+export const CriticalHeatExchanger: CriticalHeatExchangerFillType[] = [
+  "Shell & Tube (Water on Tube Side)",
+  "Shell & Tube (Water on Shell Side)",
+  "Plate & Frame",
+];
 const METALLURGY_OPTIONS: Metallurgy[] = [
   "Mild Steel",
   "Galvanized Steel",
@@ -878,7 +884,7 @@ export default function CoolingWaterAssetConfig() {
                         render={({ field }) => (
                           <SelectField
                             field={field}
-                            options={FILL_TYPES}
+                            options={CriticalHeatExchanger}
                             placeholder="Select fill type..."
                           />
                         )}
