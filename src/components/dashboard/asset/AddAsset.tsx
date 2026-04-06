@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   useForm,
@@ -33,10 +33,13 @@ type AssetType =
 type TowerType =
   | "Counterflow"
   | "Crossflow"
-  | "Induced Draft"
-  | "Forced Draft"
+  | "Natural Draft / Hyperbolic"
   | "";
 type FillType = "Film Fill" | "Splash Fill" | "Trickle Fill" | "";
+type CriticalHeatExchangerFillType =
+  | "Shell & Tube (Water on Tube Side)"
+  | "Shell & Tube (Water on Shell Side)"
+  | "Plate & Frame";
 
 type Metallurgy =
   | "Mild Steel"
@@ -194,16 +197,19 @@ const ASSET_TYPES: AssetType[] = [
   "Cooling Tower",
   "Evaporative Condenser",
   "Once-Through Cooling",
-  "Seawater Cooling Tower",
-  "Adiabatic Cooler",
 ];
 const TOWER_TYPES: TowerType[] = [
   "Counterflow",
   "Crossflow",
-  "Induced Draft",
-  "Forced Draft",
+  "Natural Draft / Hyperbolic",
 ];
-const FILL_TYPES: FillType[] = ["Film Fill", "Splash Fill", "Trickle Fill"];
+const FILL_TYPES: FillType[] = ["Film Fill", "Splash Fill"];
+
+export const CriticalHeatExchanger: CriticalHeatExchangerFillType[] = [
+  "Shell & Tube (Water on Tube Side)",
+  "Shell & Tube (Water on Shell Side)",
+  "Plate & Frame",
+];
 const METALLURGY_OPTIONS: Metallurgy[] = [
   "Mild Steel",
   "Galvanized Steel",
@@ -563,6 +569,19 @@ export default function CoolingWaterAssetConfig() {
     );
   };
 
+  // 1. Add this watch near your other watches
+  const watchedTonnage = watch("tonnageOfCooling");
+
+  // 2. Add this useEffect (import useEffect from react)
+  useEffect(() => {
+    const tonnage = parseFloat(watchedTonnage);
+    if (!isNaN(tonnage) && tonnage > 0) {
+      // Standard formula: 1 ton of cooling ≈ 3 GPM recirculation
+      const calculated = (tonnage * 3).toFixed(0);
+      setValue("recirculationRate", calculated);
+    }
+  }, [watchedTonnage]);
+
   // ── Submit → build payload → call API ─────────────────────────────────────
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const deltaTNum =
@@ -878,7 +897,7 @@ export default function CoolingWaterAssetConfig() {
                         render={({ field }) => (
                           <SelectField
                             field={field}
-                            options={FILL_TYPES}
+                            options={CriticalHeatExchanger}
                             placeholder="Select fill type..."
                           />
                         )}
@@ -891,7 +910,7 @@ export default function CoolingWaterAssetConfig() {
               {/* Recirculation & Volume */}
               <SubSection title="Recirculation & Volume" />
               <div className="border border-gray-200 rounded-xl mb-6 overflow-hidden">
-                <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col-reverse lg:flex-row-reverse">
                   {/* LEFT — Recirculation Rate */}
                   <div className="flex-1 p-5">
                     <Label required>Recirculation Rate</Label>
@@ -900,6 +919,12 @@ export default function CoolingWaterAssetConfig() {
                         type="number"
                         className="flex-1 min-w-0"
                         placeholder="e.g. 1000"
+                        readOnly={!!watchedTonnage} // <-- lock it when tonnage is filled
+                        style={
+                          watchedTonnage
+                            ? { background: "#f0fdf9", color: "#0f6e56" }
+                            : {}
+                        }
                         {...register("recirculationRate")}
                       />
                       <Controller
@@ -939,7 +964,15 @@ export default function CoolingWaterAssetConfig() {
                         type="number"
                         className="flex-1 min-w-0"
                         placeholder="e.g. 350"
-                        {...register("tonnageOfCooling")}
+                        {...register("tonnageOfCooling", {
+                          onChange: (e) => {
+                            const val = e.target.value;
+                            if (!val) {
+                              // If tonnage is cleared, let user re-enter recirculation manually
+                              setValue("recirculationRate", "");
+                            }
+                          },
+                        })}
                       />
                       <span className="inline-flex items-center px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg bg-gray-50 shrink-0">
                         tons
