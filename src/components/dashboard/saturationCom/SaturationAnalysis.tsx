@@ -1,12 +1,18 @@
 // "use client";
 
+// import SaturationDashboard from "@/app/testing/__comp/ThreeD";
+// import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
 // import {
 //   useGetCoustomerAndAsetListQuery,
 //   useGetSaltSaturationQuery,
 //   useSaturatonAnalysisMutation,
 // } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
+// import { useAllRowMaterialsQuery } from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
+// import { setSaturationAnalysisAllData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
+// import { useRouter } from "next/navigation";
 // import React, { useState, useMemo } from "react";
-// import { useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
+// import { toast } from "sonner";
 
 // // ─── Type Definitions ────────────────────────────────────────────────────────
 
@@ -52,6 +58,18 @@
 
 // interface CustomerDataResponse {
 //   data: { customers: Customer[] };
+// }
+
+// interface Salt {
+//   name: string;
+//   chemical_formula: string;
+//   phase: string | null;
+// }
+
+// interface SaltDataResponse {
+//   success: boolean;
+//   message: string;
+//   data: Salt[];
 // }
 
 // // ─── Step Indicator ───────────────────────────────────────────────────────────
@@ -216,33 +234,101 @@
 //   );
 // }
 
-// // ─── Toggle Pill ──────────────────────────────────────────────────────────────
+// // ─── Multi-Select Salt Pills ──────────────────────────────────────────────────
 
-// function TogglePill({
-//   options,
-//   value,
+// function MultiSelectSaltPills({
+//   salts,
+//   selected,
 //   onChange,
+//   isLoading,
 // }: {
-//   options: string[];
-//   value: string;
-//   onChange: (v: string) => void;
+//   salts: Salt[];
+//   selected: string[];
+//   onChange: (values: string[]) => void;
+//   isLoading: boolean;
 // }) {
+//   const allSelected = salts.length > 0 && selected.length === salts.length;
+
+//   const toggleAll = () => {
+//     onChange(allSelected ? [] : salts.map((s) => s.name));
+//   };
+
+//   const toggleOne = (name: string) => {
+//     onChange(
+//       selected.includes(name)
+//         ? selected.filter((s) => s !== name)
+//         : [...selected, name],
+//     );
+//   };
+
+//   if (isLoading) {
+//     return (
+//       <div className="flex flex-wrap gap-2">
+//         {[...Array(6)].map((_, i) => (
+//           <div
+//             key={i}
+//             className="h-9 w-24 rounded-full bg-gray-100 animate-pulse"
+//           />
+//         ))}
+//       </div>
+//     );
+//   }
+
 //   return (
 //     <div className="flex gap-2 flex-wrap">
-//       {options.map((opt) => (
-//         <button
-//           key={opt}
-//           type="button"
-//           onClick={() => onChange(opt)}
-//           className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 border ${
-//             value === opt
-//               ? "bg-primaryColor text-white border-primaryColor shadow-sm"
-//               : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-//           }`}
-//         >
-//           {opt}
-//         </button>
-//       ))}
+//       {/* Select All pill */}
+//       <button
+//         type="button"
+//         onClick={toggleAll}
+//         className={`px-4 py-2 rounded-full text-xs font-semibold transition-all duration-200 border ${
+//           allSelected
+//             ? "bg-primaryColor text-white border-primaryColor shadow-sm"
+//             : "bg-white text-gray-500 border-gray-300 hover:border-primaryColor hover:text-primaryColor"
+//         }`}
+//       >
+//         {allSelected ? "✓ All" : "Select All"}
+//       </button>
+
+//       {salts.map((salt) => {
+//         const isSelected = selected.includes(salt.name);
+//         return (
+//           <button
+//             key={salt.name}
+//             type="button"
+//             onClick={() => toggleOne(salt.name)}
+//             title={salt.chemical_formula}
+//             className={`px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 border flex items-center gap-1.5 ${
+//               isSelected
+//                 ? "bg-primaryColor text-white border-primaryColor shadow-sm"
+//                 : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+//             }`}
+//           >
+//             {isSelected && (
+//               <svg
+//                 className="w-3 h-3 flex-shrink-0"
+//                 fill="none"
+//                 viewBox="0 0 24 24"
+//                 stroke="currentColor"
+//               >
+//                 <path
+//                   strokeLinecap="round"
+//                   strokeLinejoin="round"
+//                   strokeWidth={3}
+//                   d="M5 13l4 4L19 7"
+//                 />
+//               </svg>
+//             )}
+//             <span>{salt.name}</span>
+//             <span
+//               className={`text-[10px] ${
+//                 isSelected ? "text-white/70" : "text-gray-400"
+//               }`}
+//             >
+//               {salt.chemical_formula}
+//             </span>
+//           </button>
+//         );
+//       })}
 //     </div>
 //   );
 // }
@@ -348,6 +434,7 @@
 // // ─── Main Component ───────────────────────────────────────────────────────────
 
 // export default function SaturationAnalysis() {
+//   const router = useRouter();
 //   // Step tracking
 //   const [currentStep, setCurrentStep] = useState(0);
 
@@ -357,8 +444,11 @@
 //   const [selectedReportId, setSelectedReportId] = useState("");
 
 //   // ── Advanced Settings (inputConfig)
-//   const [saltsSelection, setSaltsSelection] = useState("Auto");
-//   const [saltOfInterest, setSaltOfInterest] = useState("Gypsum");
+//   const [saltsSelection, setSaltsSelection] = useState<"Auto" | "Manual">(
+//     "Manual",
+//   );
+//   const [saltsOfInterest, setSaltsOfInterest] = useState<string[]>([]); // multi-select array
+//   const [primarySaltId, setPrimarySaltId] = useState(""); // salt_id (single)
 //   const [overrideDosage, setOverrideDosage] = useState("");
 //   const [adjustmentChemical, setAdjustmentChemical] = useState("");
 //   const [balanceCation, setBalanceCation] = useState("");
@@ -371,6 +461,7 @@
 //   const [productId, setProductId] = useState("");
 //   const [rawMaterialId, setRawMaterialId] = useState("");
 //   const [dosagePpm, setDosagePpm] = useState("");
+//   const [saturationName, setSaturationName] = useState("");
 
 //   // ── Simulation Parameters (inputConfig)
 //   const [cocMin, setCocMin] = useState("");
@@ -382,19 +473,24 @@
 //   const [tempUnit, setTempUnit] = useState("°C");
 //   const [pHMode, setPHMode] = useState<"natural" | "fixed">("natural");
 //   const [fixedPh, setFixedPh] = useState("");
+//   const dispatch = useDispatch();
 
 //   // ── Auth / API
-//   const company: UserProfile | null = useSelector(
-//     (state: RootState) => state.user.user,
-//   );
-//   const companyId = company?.companyMember?.company?.id ?? "mock-company-id";
+//   const company = useSelector((state: RootState) => state.user.user);
+//   const companyId = company?.companyMember?.company?.id ?? "";
 
-//   const { data: customerData } = useGetCoustomerAndAsetListQuery(
-//     companyId as string,
-//     { skip: !companyId },
-//   );
+//   const { data: customerData } = useGetCoustomerAndAsetListQuery(companyId, {
+//     skip: !companyId,
+//   }) as { data: CustomerDataResponse | undefined };
+//   const { data: allDataRowMaterials } = useAllRowMaterialsQuery(companyId);
+//   const { data: allDataProducts } = useAllProductsQuery(companyId);
 
-//   const { data: saltData } = useGetSaltSaturationQuery("");
+//   const { data: saltData, isLoading: saltsLoading } = useGetSaltSaturationQuery(
+//     "",
+//   ) as {
+//     data: SaltDataResponse | undefined;
+//     isLoading: boolean;
+//   };
 
 //   const [runAnalysis, { isLoading, isSuccess }] =
 //     useSaturatonAnalysisMutation();
@@ -403,6 +499,18 @@
 //   const customers = useMemo(
 //     () => customerData?.data?.customers ?? [],
 //     [customerData],
+//   );
+
+//   const salts: Salt[] = useMemo(() => saltData?.data ?? [], [saltData]);
+
+//   // Dropdown options for primary salt_id — built from API response
+//   const saltOptions = useMemo(
+//     () =>
+//       salts.map((s) => ({
+//         value: s.name,
+//         label: `${s.name} (${s.chemical_formula})`,
+//       })),
+//     [salts],
 //   );
 
 //   const customerOptions = useMemo(
@@ -461,52 +569,45 @@
 //     setCurrentStep(3);
 //   };
 
-//   // ── Submit — builds new API payload format
+//   // ── Submit
 //   const handleSubmit = async () => {
 //     if (!selectedAssetId || !selectedReportId) return;
 //     setCurrentStep(4);
 
-//     // Resolve aiReportId from selected report
 //     const selectedReport = selectedAsset?.waterReports.find(
 //       (r) => r.id === selectedReportId,
 //     );
 
-//     // Build inputConfig — only include fields that have values
+//     // Build inputConfig — only include fields with actual values
 //     const inputConfig: Record<string, unknown> = {};
 
-//     // Salts — only populate when Manual mode
-//     if (saltsSelection === "Manual") {
-//       inputConfig.salt_id = saltOfInterest;
-//       inputConfig.salts_of_interest = [saltOfInterest];
+//     if (primarySaltId) inputConfig.salt_id = primarySaltId;
+//     if (saltsOfInterest.length > 0) {
+//       inputConfig.salts_of_interest = saltsOfInterest;
 //     }
 
-//     // Dosage override
 //     if (overrideDosage) inputConfig.dosage_ppm = Number(overrideDosage);
 
-//     // CoC range
 //     if (cocMin) inputConfig.coc_min = Number(cocMin);
 //     if (cocMax) inputConfig.coc_max = Number(cocMax);
 //     if (cocInterval) inputConfig.coc_interval = Number(cocInterval);
 
-//     // Temperature range
 //     if (tempMin) inputConfig.temp_min = Number(tempMin);
 //     if (tempMax) inputConfig.temp_max = Number(tempMax);
 //     if (tempInterval) inputConfig.temp_interval = Number(tempInterval);
 //     inputConfig.temp_unit = tempUnit === "°C" ? "C" : "F";
 
-//     // pH mode
 //     inputConfig.ph_mode = pHMode;
 //     if (pHMode === "fixed" && fixedPh) {
 //       inputConfig.fixed_ph = Number(fixedPh);
 //     }
 
-//     // Charge balance
 //     if (adjustmentChemical)
 //       inputConfig.adjustment_chemical = adjustmentChemical;
 //     if (balanceCation) inputConfig.balance_cation = balanceCation;
 //     if (balanceAnion) inputConfig.balance_anion = balanceAnion;
 
-//     // Build treatment block — only include what's set
+//     // Build treatment block
 //     const treatment: Record<string, unknown> = {};
 //     if (treatmentMode === "product" && productId)
 //       treatment.productId = productId;
@@ -515,19 +616,69 @@
 //     if (dosagePpm) treatment.dosage = Number(dosagePpm);
 
 //     const payload = {
-//       // ✅ REQUIRED
 //       assetId: selectedAssetId,
+//       name: saturationName,
 //       waterReportId: selectedReport?.aiReportId ?? selectedReportId,
-
-//       // ⬇️ OPTIONAL
 //       ...(Object.keys(inputConfig).length > 0 && { inputConfig }),
 //       ...(Object.keys(treatment).length > 0 && { treatment }),
 //     };
 
-//     await runAnalysis(payload);
+//     try {
+//       const response = await runAnalysis(payload).unwrap();
+//       console.log(response.data.aiResponse);
+//       if (response.success) {
+//         toast.success(response.message);
+//         dispatch(setSaturationAnalysisAllData(response.data));
+//         router.push("/dashboard/saturation/saturation-analysis");
+//       }
+//     } catch (error: any) {
+//       toast.error(error.data.message);
+//     }
 //   };
 
-//   const canSubmit = selectedCustomerId && selectedAssetId && selectedReportId;
+//   const canSubmit =
+//     Boolean(selectedCustomerId) &&
+//     Boolean(selectedAssetId) &&
+//     Boolean(selectedReportId);
+
+//   // ── Charge balance field config
+//   const chargeBalanceFields: {
+//     label: string;
+//     value: string;
+//     set: (v: string) => void;
+//     opts: { value: string; label: string }[];
+//   }[] = [
+//     {
+//       label: "Adjustment Chemical",
+//       value: adjustmentChemical,
+//       set: setAdjustmentChemical,
+//       opts: [
+//         { value: "HCl", label: "HCl" },
+//         { value: "NaOH", label: "NaOH" },
+//         { value: "H2SO4", label: "H₂SO₄" },
+//       ],
+//     },
+//     {
+//       label: "Balance Cation",
+//       value: balanceCation,
+//       set: setBalanceCation,
+//       opts: [
+//         { value: "Ca", label: "Ca²⁺" },
+//         { value: "Mg", label: "Mg²⁺" },
+//         { value: "Na", label: "Na⁺" },
+//       ],
+//     },
+//     {
+//       label: "Balance Anion",
+//       value: balanceAnion,
+//       set: setBalanceAnion,
+//       opts: [
+//         { value: "Cl", label: "Cl⁻" },
+//         { value: "SO4", label: "SO₄²⁻" },
+//         { value: "HCO3", label: "HCO₃⁻" },
+//       ],
+//     },
+//   ];
 
 //   return (
 //     <div className="mt-6">
@@ -576,6 +727,23 @@
 
 //         <div className="flex flex-col gap-5">
 //           {/* ── Selection Flow ── */}
+//           <SectionCard title="Saturation Name">
+//             <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
+//               <div>
+//                 <label className="text-sm font-medium text-gray-700 block mb-1.5">
+//                   name
+//                 </label>
+//                 <input
+//                   type="text"
+//                   value={saturationName}
+//                   onChange={(e) => setSaturationName(e.target.value)}
+//                   placeholder="suturation name"
+//                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-all"
+//                 />
+//               </div>
+//             </div>
+//           </SectionCard>
+
 //           <SectionCard title="Selection Flow">
 //             <SelectField
 //               label="Select Customer"
@@ -607,33 +775,63 @@
 
 //           {/* ── Advanced Settings ── */}
 //           <SectionCard title="Advanced Settings" badge="Optional">
-//             <SelectField
+//             {/* Salts Selection Mode — options driven from API response */}
+//             {/* <SelectField
 //               label="Salts Selection"
 //               value={saltsSelection}
-//               onChange={setSaltsSelection}
+//               onChange={(v) => {
+//                 const mode = v as "Auto" | "Manual";
+//                 setSaltsSelection(mode);
+//                 if (mode === "Auto") {
+//                   setSaltsOfInterest([]);
+//                   setPrimarySaltId("");
+//                 }
+//               }}
 //               options={[
-//                 { value: "Auto", label: "Auto" },
-//                 { value: "Manual", label: "Manual" },
+//                 { value: "Auto", label: "Auto — test all available salts" },
+//                 { value: "Manual", label: "Manual — choose specific salts" },
 //               ]}
-//             />
+//             /> */}
 
-//             {/* Salts of Interest — only relevant in Manual mode */}
+//             {/* Salts Of Interest */}
 //             <div>
-//               <p className="text-sm font-medium text-gray-700 mb-2">
-//                 Salts Of Interest
-//                 {saltsSelection === "Auto" && (
-//                   <span className="ml-2 text-xs text-gray-400 font-normal">
-//                     (all salts tested in Auto mode)
+//               {/* Primary Salt (salt_id) — only in Manual mode, dropdown from API */}
+//               <SelectField
+//                 label="Primary Salt:"
+//                 value={primarySaltId}
+//                 onChange={setPrimarySaltId}
+//                 placeholder={
+//                   saltsLoading ? "Loading salts..." : "Select primary salt..."
+//                 }
+//                 options={saltOptions}
+//                 disabled={saltsLoading}
+//               />
+//               <div className="flex items-center justify-between mb-2 mt-6">
+//                 <p className="text-sm font-medium text-gray-700">
+//                   Salts Of Interest
+//                   {saltsSelection === "Auto" && (
+//                     <span className="ml-2 text-xs text-gray-400 font-normal">
+//                       (all {salts.length} salts tested automatically)
+//                     </span>
+//                   )}
+//                 </p>
+
+//                 {saltsSelection === "Manual" && saltsOfInterest.length > 0 && (
+//                   <span className="text-xs text-primaryColor font-medium bg-blue-50 px-2 py-0.5 rounded-full">
+//                     {saltsOfInterest.length} / {salts.length} selected
 //                   </span>
 //                 )}
-//               </p>
-//               <TogglePill
-//                 options={["Gypsum", "Calcite", "Silica"]}
-//                 value={saltOfInterest}
-//                 onChange={setSaltOfInterest}
+//               </div>
+
+//               <MultiSelectSaltPills
+//                 salts={salts}
+//                 selected={saltsOfInterest}
+//                 onChange={setSaltsOfInterest}
+//                 isLoading={saltsLoading}
 //               />
 //             </div>
 
+//             {/* Override Dosage */}
 //             <div className="flex flex-col gap-1.5">
 //               <label className="text-sm font-medium text-gray-700">
 //                 Override Dosage (ppm)
@@ -647,43 +845,13 @@
 //               />
 //             </div>
 
+//             {/* Charge Balance Adjustment */}
 //             <div>
 //               <p className="text-sm font-semibold text-gray-800 mb-3">
 //                 Charge Balance Adjustment
 //               </p>
 //               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-//                 {[
-//                   {
-//                     label: "Adjustment Chemical",
-//                     value: adjustmentChemical,
-//                     set: setAdjustmentChemical,
-//                     opts: [
-//                       { value: "HCl", label: "HCl" },
-//                       { value: "NaOH", label: "NaOH" },
-//                       { value: "H2SO4", label: "H₂SO₄" },
-//                     ],
-//                   },
-//                   {
-//                     label: "Balance Cation",
-//                     value: balanceCation,
-//                     set: setBalanceCation,
-//                     opts: [
-//                       { value: "Ca", label: "Ca²⁺" },
-//                       { value: "Mg", label: "Mg²⁺" },
-//                       { value: "Na", label: "Na⁺" },
-//                     ],
-//                   },
-//                   {
-//                     label: "Balance Anion",
-//                     value: balanceAnion,
-//                     set: setBalanceAnion,
-//                     opts: [
-//                       { value: "Cl", label: "Cl⁻" },
-//                       { value: "SO4", label: "SO₄²⁻" },
-//                       { value: "HCO3", label: "HCO₃⁻" },
-//                     ],
-//                   },
-//                 ].map(({ label, value, set, opts }) => (
+//                 {chargeBalanceFields.map(({ label, value, set, opts }) => (
 //                   <SelectField
 //                     key={label}
 //                     label={label}
@@ -845,7 +1013,6 @@
 //                 />
 //               </div>
 
-//               {/* Fixed pH input — shown only when pHMode is "fixed" */}
 //               {pHMode === "fixed" && (
 //                 <div className="mt-3 flex flex-col gap-1.5">
 //                   <label className="text-sm font-medium text-gray-700">
@@ -929,12 +1096,13 @@
 
 "use client";
 
-import SaturationDashboard from "@/app/testing/__comp/ThreeD";
+import { useAllProductsQuery } from "@/redux/api/productsManage/productSliceApi";
 import {
   useGetCoustomerAndAsetListQuery,
   useGetSaltSaturationQuery,
   useSaturatonAnalysisMutation,
 } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
+import { useAllRowMaterialsQuery } from "@/redux/api/rowMaterials/rowMaterialsSliceApi";
 import { setSaturationAnalysisAllData } from "@/redux/features/analysisDataSaveSlice/analysisDataSaveSlice";
 import { useRouter } from "next/navigation";
 import React, { useState, useMemo } from "react";
@@ -997,6 +1165,30 @@ interface SaltDataResponse {
   success: boolean;
   message: string;
   data: Salt[];
+}
+
+interface Product {
+  id: string;
+  productName: string;
+  manufacturerName: string;
+}
+
+interface RawMaterial {
+  id: string;
+  commonName: string;
+  manufacturer: string;
+}
+
+interface ProductDataResponse {
+  success: boolean;
+  message: string;
+  data: Product[];
+}
+
+interface RawMaterialDataResponse {
+  success: boolean;
+  message: string;
+  data: RawMaterial[];
 }
 
 // ─── Step Indicator ───────────────────────────────────────────────────────────
@@ -1203,7 +1395,6 @@ function MultiSelectSaltPills({
 
   return (
     <div className="flex gap-2 flex-wrap">
-      {/* Select All pill */}
       <button
         type="button"
         onClick={toggleAll}
@@ -1362,7 +1553,9 @@ function RangeFields({
 
 export default function SaturationAnalysis() {
   const router = useRouter();
-  // Step tracking
+  const dispatch = useDispatch();
+
+  // ── Step tracking
   const [currentStep, setCurrentStep] = useState(0);
 
   // ── Selection Flow
@@ -1370,12 +1563,10 @@ export default function SaturationAnalysis() {
   const [selectedAssetId, setSelectedAssetId] = useState("");
   const [selectedReportId, setSelectedReportId] = useState("");
 
-  // ── Advanced Settings (inputConfig)
-  const [saltsSelection, setSaltsSelection] = useState<"Auto" | "Manual">(
-    "Manual",
-  );
-  const [saltsOfInterest, setSaltsOfInterest] = useState<string[]>([]); // multi-select array
-  const [primarySaltId, setPrimarySaltId] = useState(""); // salt_id (single)
+  // ── Advanced Settings
+  const [saltsSelection] = useState<"Auto" | "Manual">("Manual");
+  const [saltsOfInterest, setSaltsOfInterest] = useState<string[]>([]);
+  const [primarySaltId, setPrimarySaltId] = useState("");
   const [overrideDosage, setOverrideDosage] = useState("");
   const [adjustmentChemical, setAdjustmentChemical] = useState("");
   const [balanceCation, setBalanceCation] = useState("");
@@ -1390,7 +1581,7 @@ export default function SaturationAnalysis() {
   const [dosagePpm, setDosagePpm] = useState("");
   const [saturationName, setSaturationName] = useState("");
 
-  // ── Simulation Parameters (inputConfig)
+  // ── Simulation Parameters
   const [cocMin, setCocMin] = useState("");
   const [cocMax, setCocMax] = useState("");
   const [cocInterval, setCocInterval] = useState("");
@@ -1400,7 +1591,6 @@ export default function SaturationAnalysis() {
   const [tempUnit, setTempUnit] = useState("°C");
   const [pHMode, setPHMode] = useState<"natural" | "fixed">("natural");
   const [fixedPh, setFixedPh] = useState("");
-  const dispatch = useDispatch();
 
   // ── Auth / API
   const company = useSelector((state: RootState) => state.user.user);
@@ -1409,6 +1599,18 @@ export default function SaturationAnalysis() {
   const { data: customerData } = useGetCoustomerAndAsetListQuery(companyId, {
     skip: !companyId,
   }) as { data: CustomerDataResponse | undefined };
+
+  const { data: allDataProducts, isLoading: productsLoading } =
+    useAllProductsQuery(companyId, { skip: !companyId }) as {
+      data: ProductDataResponse | undefined;
+      isLoading: boolean;
+    };
+
+  const { data: allDataRowMaterials, isLoading: rawMaterialsLoading } =
+    useAllRowMaterialsQuery(companyId, { skip: !companyId }) as {
+      data: RawMaterialDataResponse | undefined;
+      isLoading: boolean;
+    };
 
   const { data: saltData, isLoading: saltsLoading } = useGetSaltSaturationQuery(
     "",
@@ -1428,7 +1630,25 @@ export default function SaturationAnalysis() {
 
   const salts: Salt[] = useMemo(() => saltData?.data ?? [], [saltData]);
 
-  // Dropdown options for primary salt_id — built from API response
+  // ── Product & Raw Material options from API
+  const productOptions = useMemo(
+    () =>
+      (allDataProducts?.data ?? []).map((p) => ({
+        value: p.id,
+        label: p.productName,
+      })),
+    [allDataProducts],
+  );
+
+  const rawMaterialOptions = useMemo(
+    () =>
+      (allDataRowMaterials?.data ?? []).map((r) => ({
+        value: r.id,
+        label: r.commonName,
+      })),
+    [allDataRowMaterials],
+  );
+
   const saltOptions = useMemo(
     () =>
       salts.map((s) => ({
@@ -1503,7 +1723,6 @@ export default function SaturationAnalysis() {
       (r) => r.id === selectedReportId,
     );
 
-    // Build inputConfig — only include fields with actual values
     const inputConfig: Record<string, unknown> = {};
 
     if (primarySaltId) inputConfig.salt_id = primarySaltId;
@@ -1532,7 +1751,6 @@ export default function SaturationAnalysis() {
     if (balanceCation) inputConfig.balance_cation = balanceCation;
     if (balanceAnion) inputConfig.balance_anion = balanceAnion;
 
-    // Build treatment block
     const treatment: Record<string, unknown> = {};
     if (treatmentMode === "product" && productId)
       treatment.productId = productId;
@@ -1550,14 +1768,13 @@ export default function SaturationAnalysis() {
 
     try {
       const response = await runAnalysis(payload).unwrap();
-      console.log(response.data.aiResponse);
       if (response.success) {
         toast.success(response.message);
         dispatch(setSaturationAnalysisAllData(response.data));
         router.push("/dashboard/saturation/saturation-analysis");
       }
     } catch (error: any) {
-      toast.error(error.data.message);
+      toast.error(error?.data?.message ?? "Something went wrong");
     }
   };
 
@@ -1567,12 +1784,7 @@ export default function SaturationAnalysis() {
     Boolean(selectedReportId);
 
   // ── Charge balance field config
-  const chargeBalanceFields: {
-    label: string;
-    value: string;
-    set: (v: string) => void;
-    opts: { value: string; label: string }[];
-  }[] = [
+  const chargeBalanceFields = [
     {
       label: "Adjustment Chemical",
       value: adjustmentChemical,
@@ -1607,7 +1819,7 @@ export default function SaturationAnalysis() {
 
   return (
     <div className="mt-6">
-      <div className="">
+      <div>
         {/* Header */}
         <div className="mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
@@ -1651,24 +1863,23 @@ export default function SaturationAnalysis() {
         )}
 
         <div className="flex flex-col gap-5">
-          {/* ── Selection Flow ── */}
+          {/* ── Saturation Name ── */}
           <SectionCard title="Saturation Name">
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 block mb-1.5">
-                  name
-                </label>
-                <input
-                  type="text"
-                  value={saturationName}
-                  onChange={(e) => setSaturationName(e.target.value)}
-                  placeholder="suturation name"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-all"
-                />
-              </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 block mb-1.5">
+                Name
+              </label>
+              <input
+                type="text"
+                value={saturationName}
+                onChange={(e) => setSaturationName(e.target.value)}
+                placeholder="Enter saturation name"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-primaryColor/20 focus:border-primaryColor transition-all"
+              />
             </div>
           </SectionCard>
 
+          {/* ── Selection Flow ── */}
           <SectionCard title="Selection Flow">
             <SelectField
               label="Select Customer"
@@ -1700,29 +1911,9 @@ export default function SaturationAnalysis() {
 
           {/* ── Advanced Settings ── */}
           <SectionCard title="Advanced Settings" badge="Optional">
-            {/* Salts Selection Mode — options driven from API response */}
-            {/* <SelectField
-              label="Salts Selection"
-              value={saltsSelection}
-              onChange={(v) => {
-                const mode = v as "Auto" | "Manual";
-                setSaltsSelection(mode);
-                if (mode === "Auto") {
-                  setSaltsOfInterest([]);
-                  setPrimarySaltId("");
-                }
-              }}
-              options={[
-                { value: "Auto", label: "Auto — test all available salts" },
-                { value: "Manual", label: "Manual — choose specific salts" },
-              ]}
-            /> */}
-
-            {/* Salts Of Interest */}
             <div>
-              {/* Primary Salt (salt_id) — only in Manual mode, dropdown from API */}
               <SelectField
-                label="Primary Salt:"
+                label="Primary Salt"
                 value={primarySaltId}
                 onChange={setPrimarySaltId}
                 placeholder={
@@ -1740,14 +1931,12 @@ export default function SaturationAnalysis() {
                     </span>
                   )}
                 </p>
-
-                {saltsSelection === "Manual" && saltsOfInterest.length > 0 && (
+                {saltsOfInterest.length > 0 && (
                   <span className="text-xs text-primaryColor font-medium bg-blue-50 px-2 py-0.5 rounded-full">
                     {saltsOfInterest.length} / {salts.length} selected
                   </span>
                 )}
               </div>
-
               <MultiSelectSaltPills
                 salts={salts}
                 selected={saltsOfInterest}
@@ -1756,7 +1945,6 @@ export default function SaturationAnalysis() {
               />
             </div>
 
-            {/* Override Dosage */}
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-gray-700">
                 Override Dosage (ppm)
@@ -1770,7 +1958,6 @@ export default function SaturationAnalysis() {
               />
             </div>
 
-            {/* Charge Balance Adjustment */}
             <div>
               <p className="text-sm font-semibold text-gray-800 mb-3">
                 Charge Balance Adjustment
@@ -1792,6 +1979,7 @@ export default function SaturationAnalysis() {
 
           {/* ── Treatment Setup ── */}
           <SectionCard title="Treatment Setup" badge="Optional">
+            {/* Treatment Mode Toggle */}
             <div>
               <p className="text-sm font-medium text-gray-700 mb-2">
                 Treatment Mode
@@ -1801,9 +1989,14 @@ export default function SaturationAnalysis() {
                   <label
                     key={m}
                     className="flex items-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      setTreatmentMode(m);
+                      // Clear the opposite field when switching modes
+                      if (m === "product") setRawMaterialId("");
+                      else setProductId("");
+                    }}
                   >
                     <div
-                      onClick={() => setTreatmentMode(m)}
                       className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${
                         treatmentMode === m
                           ? "border-primaryColor"
@@ -1822,6 +2015,7 @@ export default function SaturationAnalysis() {
               </div>
             </div>
 
+            {/* Product / Raw Material selector + Dosage */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="sm:col-span-2">
                 {treatmentMode === "product" ? (
@@ -1832,21 +2026,15 @@ export default function SaturationAnalysis() {
                       setProductId(val);
                       setRawMaterialId("");
                     }}
-                    placeholder="Choose a product..."
-                    options={[
-                      {
-                        value: "69abaa6897ccf9ca1415f27b",
-                        label: "Corrosion Inhibitor A-200",
-                      },
-                      {
-                        value: "69abaa6897ccf9ca1415f27c",
-                        label: "Scale Inhibitor B-100",
-                      },
-                      {
-                        value: "69abaa6897ccf9ca1415f27d",
-                        label: "Biocide C-50",
-                      },
-                    ]}
+                    placeholder={
+                      productsLoading
+                        ? "Loading products..."
+                        : productOptions.length === 0
+                          ? "No products available"
+                          : "Choose a product..."
+                    }
+                    options={productOptions}
+                    disabled={productsLoading}
                   />
                 ) : (
                   <SelectField
@@ -1856,24 +2044,19 @@ export default function SaturationAnalysis() {
                       setRawMaterialId(val);
                       setProductId("");
                     }}
-                    placeholder="Choose a raw material..."
-                    options={[
-                      {
-                        value: "69a6598f361c31d6053fb3ed",
-                        label: "Phosphonate",
-                      },
-                      {
-                        value: "69a6598f361c31d6053fb3ee",
-                        label: "Polymer",
-                      },
-                      {
-                        value: "69a6598f361c31d6053fb3ef",
-                        label: "Molybdate",
-                      },
-                    ]}
+                    placeholder={
+                      rawMaterialsLoading
+                        ? "Loading raw materials..."
+                        : rawMaterialOptions.length === 0
+                          ? "No raw materials available"
+                          : "Choose a raw material..."
+                    }
+                    options={rawMaterialOptions}
+                    disabled={rawMaterialsLoading}
                   />
                 )}
               </div>
+
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-1.5">
                   Dosage (ppm)
