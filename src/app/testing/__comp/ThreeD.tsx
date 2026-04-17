@@ -4503,7 +4503,9 @@ const COLOR_HEX: Record<string, string> = {
 
 const BAR_W = 1.55;
 const SPACING = 2.4;
-const BAR_MAX_H = 6.0;
+// Hard cap on visual bar height — bars are ALWAYS normalised into this range.
+// The Y-axis tick labels still show the real SI values.
+const BAR_MAX_H = 8.0;
 
 const SIDEBAR_MIN = 240;
 const SIDEBAR_MAX = 560;
@@ -4693,9 +4695,10 @@ function buildScene(
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf8fafc);
-  scene.fog = new THREE.FogExp2(0xf8fafc, 0.007);
+  // No fog — fog was clipping tall bars
 
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
+  // Far-clip extended to 2000 so nothing ever disappears after zooming out
+  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 2000);
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.85));
   const sun = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -4716,7 +4719,6 @@ function buildScene(
   const xMax = (nCoC - 1) * SPACING + cocOffset + SPACING / 2;
   const zMin = tempOffset - SPACING / 2;
   const zMax = (nTemp - 1) * SPACING + tempOffset + SPACING / 2;
-  const yMax = BAR_MAX_H;
   const axOriginX = xMin - 0.3;
   const axOriginY = 0;
   const axOriginZ = zMax + 0.3;
@@ -4724,18 +4726,14 @@ function buildScene(
   const barMeshes: THREE.Mesh[] = [];
 
   gridResults.forEach((d) => {
-    // const siValue = activeSaltId
-    //   ? (d.saturation_indices[activeSaltId]?.SI ?? null)
-    //   : null;
-    // const displayVal =
-    //   siValue !== null ? siValue : Math.abs(d.indices.lsi.lsi ?? 0);
-    // const h = Math.max(0.15, (displayVal / maxSI) * BAR_MAX_H);
-
     const siValue = activeSaltId
       ? (d.saturation_indices[activeSaltId]?.SI ?? null)
       : null;
-    const displayVal = siValue !== null ? siValue : (d.indices.lsi.lsi ?? 0);
-    const h = Math.max(0.1, (Math.abs(displayVal) / maxSI) * BAR_MAX_H); // ← add Math.abs()
+    const displayVal =
+      siValue !== null ? siValue : Math.abs(d.indices.lsi.lsi ?? 0);
+
+    // Normalise: tallest bar → BAR_MAX_H, shortest → proportionally smaller
+    const h = Math.max(0.15, (displayVal / maxSI) * BAR_MAX_H);
 
     const ci = cocUniq.indexOf(d._grid_CoC);
     const ti = tempUniq.indexOf(d._grid_temp);
@@ -4777,6 +4775,7 @@ function buildScene(
     );
   });
 
+  // Floor grid
   const gridW = Math.max(nCoC, nTemp) * SPACING + SPACING;
   const gridHelper = new THREE.GridHelper(
     gridW + 4,
@@ -4800,6 +4799,9 @@ function buildScene(
   const AX_TEMP = 0xea580c;
   const AX_SI = 0x059669;
 
+  // Y-axis extends a bit above BAR_MAX_H
+  const yAxisTop = BAR_MAX_H + 2.0;
+
   mkLine(
     [
       new THREE.Vector3(axOriginX, axOriginY, axOriginZ),
@@ -4819,7 +4821,7 @@ function buildScene(
   mkLine(
     [
       new THREE.Vector3(axOriginX, 0, axOriginZ),
-      new THREE.Vector3(axOriginX, yMax + 0.8, axOriginZ),
+      new THREE.Vector3(axOriginX, yAxisTop, axOriginZ),
     ],
     AX_SI,
     0.9,
@@ -4846,7 +4848,7 @@ function buildScene(
   );
   mkArrow(
     new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(axOriginX, yMax + 0.8, axOriginZ),
+    new THREE.Vector3(axOriginX, yAxisTop, axOriginZ),
     AX_SI,
   );
 
@@ -4918,10 +4920,21 @@ function buildScene(
   tempTitle.position.set(axOriginX - 2.0, 0, (zMin + zMax) / 2);
   scene.add(tempTitle);
 
-  const siStep = maxSI <= 1 ? 0.25 : maxSI <= 2 ? 0.5 : 1.0;
+  // Y-axis tick labels — real SI values mapped to visual heights
+  const siStep =
+    maxSI <= 1
+      ? 0.25
+      : maxSI <= 2
+        ? 0.5
+        : maxSI <= 5
+          ? 1.0
+          : maxSI <= 20
+            ? 5
+            : 10;
   const siTicks: number[] = [];
   for (let v = 0; v <= maxSI + siStep * 0.5; v += siStep)
     siTicks.push(parseFloat(v.toFixed(3)));
+
   siTicks.forEach((v) => {
     const yPos = (v / maxSI) * BAR_MAX_H;
     const lbl = makeLabel(v.toFixed(2), {
@@ -4960,16 +4973,16 @@ function buildScene(
     fontSize: "11px",
     fontWeight: "700",
   });
-  siTitle.position.set(axOriginX - 0.7, yMax + 1.2, axOriginZ);
+  siTitle.position.set(axOriginX - 0.7, yAxisTop + 0.5, axOriginZ);
   scene.add(siTitle);
 
-  // const nMax = Math.max(nCoC, nTemp);
-  // const initDist = Math.max(25, nMax * 6.5);
-
-  // Auto-compute a sensible initial look-at Y so tall bars are centred in view
+  // ── Initial camera distance — auto-fit so all bars are visible ─────────────
   const nMax = Math.max(nCoC, nTemp);
-  const initDist = Math.max(30, nMax * 6.5 + BAR_MAX_H * 1.5);
-  const initLookAtY = BAR_MAX_H * 0.4;
+  const spreadXZ = nMax * SPACING;
+  // Keep the full bar height in view from the initial 38° elevation angle
+  const initDist = Math.max(32, spreadXZ * 2.4, BAR_MAX_H * 4.0);
+  // Look at the vertical centre of the bars so neither top nor bottom is clipped
+  const initLookAtY = BAR_MAX_H * 0.5;
 
   return {
     renderer,
@@ -4982,7 +4995,7 @@ function buildScene(
   };
 }
 
-// ─── SceneState type ──────────────────────────────────────────────────────────
+// ─── SceneState ───────────────────────────────────────────────────────────────
 
 interface SceneState {
   renderer: THREE.WebGLRenderer;
@@ -4993,8 +5006,7 @@ interface SceneState {
   rotY: number;
   rotX: number;
   dist: number;
-  // Pan target — camera always looks at (panX, panY, panZ)
-  panX: number;
+  panX: number; // look-at / orbit-centre offset
   panY: number;
   panZ: number;
   isDragging: boolean;
@@ -5054,26 +5066,11 @@ export default function SaturationDashboard({ apiResponse }: Props) {
     [gridResults],
   );
 
-  // const maxSI = useMemo(() => {
-  //   if (!gridResults.length) return 0.5;
-  //   if (activeSaltId)
-  //     return Math.max(
-  //       ...gridResults.map((d) => d.saturation_indices[activeSaltId]?.SI ?? 0),
-  //       0.5,
-  //     );
-  //   return Math.max(
-  //     ...gridResults.map((d) => Math.abs(d.indices?.lsi?.lsi ?? 0)),
-  //     0.5,
-  //   );
-  // }, [gridResults, activeSaltId]);
-
   const maxSI = useMemo(() => {
     if (!gridResults.length) return 0.5;
     if (activeSaltId)
       return Math.max(
-        ...gridResults.map((d) =>
-          Math.abs(d.saturation_indices[activeSaltId]?.SI ?? 0),
-        ),
+        ...gridResults.map((d) => d.saturation_indices[activeSaltId]?.SI ?? 0),
         0.5,
       );
     return Math.max(
@@ -5137,7 +5134,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
   const sceneRef = useRef<SceneState | null>(null);
   const [activeData, setActiveData] = useState<GridResult | null>(null);
 
-  // ── Camera update — uses panX/Y/Z as look-at target ───────────────────────
+  // ── Camera orbits around (panX, panY, panZ) ────────────────────────────────
   const updateCamera = useCallback(() => {
     const s = sceneRef.current;
     if (!s) return;
@@ -5188,10 +5185,10 @@ export default function SaturationDashboard({ apiResponse }: Props) {
       camera,
       barMeshes,
       rotY: 0.55,
-      rotX: 0.4,
+      rotX: 0.38,
       dist: initDist,
       panX: 0,
-      panY: initLookAtY, // start centred on bar mid-height
+      panY: initLookAtY,
       panZ: 0,
       isDragging: false,
       isPanning: false,
@@ -5242,7 +5239,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
     updateCamera,
   ]);
 
-  // ── Mouse / touch interaction ──────────────────────────────────────────────
+  // ── Pointer / touch interaction ────────────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -5268,22 +5265,20 @@ export default function SaturationDashboard({ apiResponse }: Props) {
       return hits.length > 0 ? (hits[0].object as THREE.Mesh) : null;
     };
 
-    // Compute world-space pan vectors perpendicular to view direction
+    // Screen-space pan vectors
     const getPanVectors = (s: SceneState) => {
-      // Right vector: perpendicular to camera dir in the XZ plane
       const right = new THREE.Vector3(
         Math.cos(s.rotY),
         0,
         -Math.sin(s.rotY),
       ).normalize();
-      // Up vector: perpendicular to camera dir in the vertical plane
-      const forward = new THREE.Vector3(
+      const fwd = new THREE.Vector3(
         -Math.sin(s.rotY) * Math.cos(s.rotX),
         Math.sin(s.rotX),
         -Math.cos(s.rotY) * Math.cos(s.rotX),
       ).normalize();
       const up = new THREE.Vector3()
-        .crossVectors(right, forward)
+        .crossVectors(right, fwd)
         .negate()
         .normalize();
       return { right, up };
@@ -5292,7 +5287,6 @@ export default function SaturationDashboard({ apiResponse }: Props) {
     const onMouseDown = (e: MouseEvent) => {
       const s = S();
       if (!s) return;
-      // Right-click or middle-click = pan mode
       if (e.button === 1 || e.button === 2) {
         s.isPanning = true;
         s.isDragging = false;
@@ -5310,13 +5304,15 @@ export default function SaturationDashboard({ apiResponse }: Props) {
       const dx = e.clientX - s.prevX;
       const dy = e.clientY - s.prevY;
 
-      // ── Pan mode: right-click drag OR middle-click drag ──
+      // ── Right / middle drag → pan ──────────────────────────────────────────
       if (s.isPanning && (e.buttons === 2 || e.buttons === 4)) {
-        const panSpeed = s.dist * 0.0018;
-        const { right, up } = getPanVectors(s);
-        s.panX -= right.x * dx * panSpeed;
-        s.panZ -= right.z * dx * panSpeed;
-        s.panY += dy * panSpeed; // drag up  → move target up
+        const speed = s.dist * 0.0018;
+        const { right } = getPanVectors(s);
+        // Horizontal mouse → pan left/right along XZ
+        s.panX -= right.x * dx * speed;
+        s.panZ -= right.z * dx * speed;
+        // Vertical mouse → pan up/down (drag down = scene moves down = look-at moves down)
+        s.panY -= dy * speed;
         s.prevX = e.clientX;
         s.prevY = e.clientY;
         updateCamera();
@@ -5324,14 +5320,13 @@ export default function SaturationDashboard({ apiResponse }: Props) {
         return;
       }
 
-      // ── Orbit mode: left-click drag ──
+      // ── Left drag → orbit ──────────────────────────────────────────────────
       if (
         e.buttons === 1 &&
         !s.isDragging &&
         (Math.abs(dx) > 3 || Math.abs(dy) > 3)
       )
         s.isDragging = true;
-
       if (s.isDragging && e.buttons === 1) {
         s.rotY += dx * 0.008;
         s.rotX -= dy * 0.008;
@@ -5343,7 +5338,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
         return;
       }
 
-      // ── Hover raycast ──
+      // ── Hover raycasting ───────────────────────────────────────────────────
       const hit = raycast(e.clientX, e.clientY);
       if (
         s.hoveredMesh &&
@@ -5406,15 +5401,14 @@ export default function SaturationDashboard({ apiResponse }: Props) {
     const onWheel = (e: WheelEvent) => {
       const s = S();
       if (!s) return;
-      s.dist = Math.max(8, Math.min(120, s.dist + e.deltaY * 0.05));
+      s.dist = Math.max(8, Math.min(300, s.dist + e.deltaY * 0.07));
       updateCamera();
       e.preventDefault();
     };
 
-    // Suppress context menu on the canvas so right-click pan works
     const onContextMenu = (e: MouseEvent) => e.preventDefault();
 
-    // Touch: single finger = orbit, two fingers = pan vertically
+    // Touch: 1-finger orbit, 2-finger vertical pan
     let lastTouchY2 = 0;
     const onTouchStart = (e: TouchEvent) => {
       const s = S();
@@ -5423,18 +5417,15 @@ export default function SaturationDashboard({ apiResponse }: Props) {
       s.prevY = e.touches[0].clientY;
       s.isDragging = false;
       s.isPanning = false;
-      if (e.touches.length === 2) {
+      if (e.touches.length === 2)
         lastTouchY2 = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      }
     };
     const onTouchMove = (e: TouchEvent) => {
       const s = S();
       if (!s) return;
       if (e.touches.length === 2) {
-        // Two-finger pan (vertical)
         const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        const dy = midY - lastTouchY2;
-        s.panY += dy * s.dist * 0.0018;
+        s.panY -= (midY - lastTouchY2) * s.dist * 0.0018;
         lastTouchY2 = midY;
         updateCamera();
         e.preventDefault();
@@ -5478,7 +5469,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
     d && activeSaltId ? (d.saturation_indices[activeSaltId]?.SI ?? null) : null;
   const displaySI = saltSI ?? d?.indices?.lsi?.lsi ?? null;
   const colorCode = d?.color_code;
-  const statusLabel =
+  const statusLabel: string =
     colorCode === "yellow"
       ? "Caution"
       : colorCode === "red"
@@ -5575,15 +5566,11 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                 title={
                   isActive ? "Reset to LSI view" : `Switch chart to ${s} SI`
                 }
-                className={`
-                  text-[13px] px-3 py-1 rounded-full border font-semibold shrink-0
-                  transition-all duration-150 cursor-pointer
-                  ${
-                    isActive
-                      ? "border-blue-500 text-white bg-blue-600 shadow shadow-blue-100"
-                      : "border-slate-300 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50"
-                  }
-                `}
+                className={`text-[13px] px-3 py-1 rounded-full border font-semibold shrink-0 transition-all duration-150 cursor-pointer ${
+                  isActive
+                    ? "border-blue-500 text-white bg-blue-600 shadow shadow-blue-100"
+                    : "border-slate-300 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50"
+                }`}
               >
                 {s}
                 {isActive && (
@@ -5610,7 +5597,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
 
       {/* ── Main ── */}
       <div className="flex flex-1 overflow-hidden">
-        {/* 3D viewport */}
+        {/* 3-D viewport */}
         <div
           ref={wrapRef}
           className="flex-1 min-w-0 relative overflow-hidden"
@@ -5634,7 +5621,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                 className="block w-full h-full cursor-grab"
               />
 
-              {/* Axis legend card */}
+              {/* Axis legend */}
               <div
                 className="absolute bottom-4 left-4 pointer-events-none bg-white border border-slate-200 rounded-xl px-3 py-2.5 shadow-md"
                 style={{ zIndex: 20 }}
@@ -5665,13 +5652,13 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                 ))}
               </div>
 
-              {/* Controls hint — updated to mention right-click pan */}
+              {/* Controls hint */}
               <div
                 className="absolute bottom-4 right-4 pointer-events-none bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm text-[11px] text-slate-400"
                 style={{ zIndex: 20 }}
               >
-                Left-drag · Rotate &nbsp;|&nbsp; Right-drag · Pan &nbsp;|&nbsp;
-                Scroll · Zoom &nbsp;|&nbsp; Click · Pin
+                Left-drag · Rotate &nbsp;|&nbsp; Right-drag · Pan up/down
+                &nbsp;|&nbsp; Scroll · Zoom &nbsp;|&nbsp; Click · Pin
               </div>
             </>
           )}
@@ -5777,10 +5764,13 @@ export default function SaturationDashboard({ apiResponse }: Props) {
 
               <div className="mt-5 border-t border-slate-100 pt-4 space-y-1">
                 <p className="text-[11px] text-slate-400 italic">
-                  ↔ Left-drag to rotate the chart
+                  ↔ Left-drag to rotate
                 </p>
                 <p className="text-[11px] text-slate-400 italic">
-                  ↕ Right-drag (or 2-finger on touch) to pan up/down
+                  ↕ Right-drag to pan up / down / sideways
+                </p>
+                <p className="text-[11px] text-slate-400 italic">
+                  🖱 Scroll to zoom in / out
                 </p>
                 <p className="text-[11px] text-slate-400 italic">
                   ↔ Drag the left edge to resize this panel
