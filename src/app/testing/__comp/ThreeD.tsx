@@ -4843,6 +4843,8 @@ export default function SaturationDashboard({ apiResponse }: Props) {
           )}
         </aside>
       </div>
+
+      <div>{JSON.stringify(apiResponse)}</div>
     </div>
   );
 }
