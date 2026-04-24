@@ -3893,6 +3893,7 @@ interface Props {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SaturationDashboard({ apiResponse }: Props) {
+  console.log(apiResponse?.run_id);
   const meta = useMemo(() => resolveMeta(apiResponse), [apiResponse]);
   const gridResults = useMemo(
     (): GridResult[] => meta?.gridResults ?? [],
@@ -4352,10 +4353,10 @@ export default function SaturationDashboard({ apiResponse }: Props) {
           <div>
             <div className="text-[15px] font-bold text-slate-900">
               Saturation Analysis —{" "}
-              <span className="text-blue-600">{displaySaltLabel}</span>
+              {/* <span className="text-blue-600">{displaySaltLabel}</span> */}
               <span className="font-normal text-slate-400"> · 3D Grid</span>
             </div>
-            <div className="text-[12px] text-slate-400 mt-0.5 flex flex-wrap gap-x-4">
+            {/* <div className="text-[12px] text-slate-400 mt-0.5 flex flex-wrap gap-x-4">
               {assetName && (
                 <span className="text-slate-600 font-semibold">
                   {assetName}
@@ -4373,7 +4374,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
               )}
               {dosage > 0 && <span>Dosage {dosage} ppm</span>}
               {meta?.totalGridPoints && <span>{meta.totalGridPoints} pts</span>}
-            </div>
+            </div> */}
           </div>
           <div className="flex items-center gap-3 flex-wrap">
             {summary && (
@@ -4419,7 +4420,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
 
         {/* ── Salt chips ── */}
         {saltsOfInterest.length > 0 && (
-          <div className="flex items-center gap-2 px-5 py-2 bg-slate-50 border-b border-slate-200 overflow-x-auto shrink-0">
+          <div className="flex items-center gap-2 px-5 py-2 bg-slate-50 border-b border-slate-200 overflow-x-auto shrink-0 min-w-0">
             <span className="text-[11px] font-semibold text-slate-400 shrink-0 mr-1 tracking-widest uppercase">
               Salt View:
             </span>
