@@ -3616,19 +3616,19 @@ function buildScene(
     scene.add(mesh);
     barMeshes.push(mesh);
 
-    const labelVal =
-      siValue !== null
-        ? siValue.toFixed(2)
-        : `LSI ${d.indices.lsi.lsi.toFixed(2)}`;
-    const siLbl = makeLabel(labelVal, {
-      color: "rgba(15,23,42,0.92)",
-      fontSize: "9px",
-      fontWeight: "700",
-      background: "rgba(255,255,255,0.88)",
-      padding: "1px 4px",
-    });
-    siLbl.position.set(0, h / 2 + 0.22, 0);
-    mesh.add(siLbl);
+    // const labelVal =
+    //   siValue !== null
+    //     ? siValue.toFixed(2)
+    //     : `LSI ${d.indices.lsi.lsi.toFixed(2)}`;
+    // const siLbl = makeLabel(labelVal, {
+    //   color: "rgba(15,23,42,0.92)",
+    //   fontSize: "9px",
+    //   fontWeight: "700",
+    //   background: "rgba(255,255,255,0.88)",
+    //   padding: "1px 4px",
+    // });
+    // siLbl.position.set(0, h / 2 + 0.22, 0);
+    // mesh.add(siLbl);
 
     mesh.add(
       new THREE.LineSegments(
@@ -3751,7 +3751,8 @@ function buildScene(
   cocTitle.position.set((xMin + xMax) / 2, 0, axOriginZ + 2.1);
   scene.add(cocTitle);
 
-  tempUniq.forEach((temp, ti) => {
+  tempUniq.forEach((_temp, ti) => {
+    const temp = tempUniq[tempUniq.length - 1 - ti];
     const z = ti * SPACING + tempOffset;
     const lbl = makeLabel(`${temp}°${tempUnit}`, {
       color: "#c2410c",
@@ -4344,507 +4345,522 @@ export default function SaturationDashboard({ apiResponse }: Props) {
 
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div className="bg-white text-slate-800 border font-sans text-[14px] h-screen overflow-hidden flex flex-col select-none">
-      {/* ── Header ── */}
-      <header className="flex items-center justify-between px-5 py-3 bg-white border-b border-slate-200 shadow-sm shrink-0 gap-4 flex-wrap">
-        <div>
-          <div className="text-[15px] font-bold text-slate-900">
-            Saturation Analysis —{" "}
-            <span className="text-blue-600">{displaySaltLabel}</span>
-            <span className="font-normal text-slate-400"> · 3D Grid</span>
-          </div>
-          <div className="text-[12px] text-slate-400 mt-0.5 flex flex-wrap gap-x-4">
-            {assetName && (
-              <span className="text-slate-600 font-semibold">{assetName}</span>
-            )}
-            {(cocMin > 0 || cocMax > 0) && (
-              <span>
-                CoC {cocMin}–{cocMax}
-              </span>
-            )}
-            {(tempMin > 0 || tempMax > 0) && (
-              <span>
-                Temp {tempMin}–{tempMax} °{tempUnit}
-              </span>
-            )}
-            {dosage > 0 && <span>Dosage {dosage} ppm</span>}
-            {meta?.totalGridPoints && <span>{meta.totalGridPoints} pts</span>}
-          </div>
-        </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          {summary && (
-            <div className="flex gap-1.5 text-[12px]">
-              {summary.green > 0 && (
-                <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
-                  {summary.green} Protected
-                </span>
-              )}
-              {summary.yellow > 0 && (
-                <span className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-semibold">
-                  {summary.yellow} Caution
-                </span>
-              )}
-              {summary.red > 0 && (
-                <span className="px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 font-semibold">
-                  {summary.red} Scale Risk
-                </span>
-              )}
+    <>
+      <div className="bg-white text-slate-800 border font-sans text-[14px] h-screen overflow-hidden flex flex-col select-none">
+        {/* ── Header ── */}
+        <header className="flex items-center justify-between px-5 py-3 bg-white border-b border-slate-200 shadow-sm shrink-0 gap-4 flex-wrap">
+          <div>
+            <div className="text-[15px] font-bold text-slate-900">
+              Saturation Analysis —{" "}
+              <span className="text-blue-600">{displaySaltLabel}</span>
+              <span className="font-normal text-slate-400"> · 3D Grid</span>
             </div>
-          )}
-          {(["Caution", "Scale Risk", "Protected"] as const).map((label) => {
-            const dot =
-              label === "Caution"
-                ? "bg-amber-400"
-                : label === "Scale Risk"
-                  ? "bg-red-500"
-                  : "bg-emerald-500";
-            return (
-              <div
-                key={label}
-                className="flex items-center gap-1.5 text-[12px] text-slate-500"
-              >
-                <span className={`w-2.5 h-2.5 rounded-[2px] shrink-0 ${dot}`} />
-                {label}
-              </div>
-            );
-          })}
-        </div>
-      </header>
-
-      {/* ── Salt chips ── */}
-      {saltsOfInterest.length > 0 && (
-        <div className="flex items-center gap-2 px-5 py-2 bg-slate-50 border-b border-slate-200 overflow-x-auto shrink-0">
-          <span className="text-[11px] font-semibold text-slate-400 shrink-0 mr-1 tracking-widest uppercase">
-            Salt View:
-          </span>
-          {saltsOfInterest.map((s) => {
-            const isActive = s === activeSaltId;
-            return (
-              <button
-                key={s}
-                onClick={() => setActiveSaltId(isActive ? null : s)}
-                title={
-                  isActive ? "Reset to LSI view" : `Switch chart to ${s} SI`
-                }
-                className={`text-[13px] px-3 py-1 rounded-full border font-semibold shrink-0 transition-all duration-150 cursor-pointer ${
-                  isActive
-                    ? "border-blue-500 text-white bg-blue-600 shadow shadow-blue-100"
-                    : "border-slate-300 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50"
-                }`}
-              >
-                {s}
-                {isActive && (
-                  <span className="ml-1 text-[11px] font-normal opacity-75">
-                    ✓
+            <div className="text-[12px] text-slate-400 mt-0.5 flex flex-wrap gap-x-4">
+              {assetName && (
+                <span className="text-slate-600 font-semibold">
+                  {assetName}
+                </span>
+              )}
+              {(cocMin > 0 || cocMax > 0) && (
+                <span>
+                  CoC {cocMin}–{cocMax}
+                </span>
+              )}
+              {(tempMin > 0 || tempMax > 0) && (
+                <span>
+                  Temp {tempMin}–{tempMax} °{tempUnit}
+                </span>
+              )}
+              {dosage > 0 && <span>Dosage {dosage} ppm</span>}
+              {meta?.totalGridPoints && <span>{meta.totalGridPoints} pts</span>}
+            </div>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            {summary && (
+              <div className="flex gap-1.5 text-[12px]">
+                {summary.green > 0 && (
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold">
+                    {summary.green} Protected
                   </span>
                 )}
-              </button>
-            );
-          })}
-          {activeSaltId && (
-            <button
-              onClick={() => setActiveSaltId(null)}
-              className="text-[11px] px-2.5 py-1 rounded-full border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-400 bg-white transition-all ml-1 shrink-0"
-            >
-              Reset to LSI
-            </button>
-          )}
-          <span className="text-[10px] text-slate-300 ml-auto shrink-0 hidden sm:block italic">
-            Click a salt to switch the chart axis
-          </span>
-        </div>
-      )}
-
-      {/* ── Main ── */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* 3-D viewport */}
-        <div
-          ref={wrapRef}
-          className="flex-1 min-w-0 relative overflow-hidden"
-          style={{ background: "#f8fafc" }}
-        >
-          {isEmpty ? (
-            <div className="flex flex-col items-center justify-center h-full gap-3 text-slate-400">
-              <div className="text-5xl opacity-20">⬛</div>
-              <p className="text-[14px]">
-                No grid data — pass an{" "}
-                <code className="text-slate-500 bg-slate-100 px-1 rounded">
-                  apiResponse
-                </code>{" "}
-                prop.
-              </p>
-            </div>
-          ) : (
-            <>
-              <canvas
-                ref={canvasRef}
-                className="block w-full h-full cursor-grab"
-              />
-              {/* Axis legend */}
-              <div
-                className="absolute bottom-4 left-4 pointer-events-none bg-white border border-slate-200 rounded-xl px-3 py-2.5 shadow-md"
-                style={{ zIndex: 20 }}
-              >
-                {[
-                  {
-                    color: "#2563eb",
-                    label: "X — Cycles of Concentration (CoC)",
-                  },
-                  {
-                    color: "#ea580c",
-                    label: `Z — Temperature (°${tempUnit})`,
-                  },
-                  {
-                    color: "#059669",
-                    label: activeSaltId
-                      ? `Y — ${activeSaltId} Saturation Index`
-                      : "Y — LSI (Langelier)",
-                  },
-                ].map(({ color, label }) => (
-                  <div
-                    key={label}
-                    className="flex items-center gap-2 text-[11px] text-slate-600 py-0.5"
-                  >
-                    <div
-                      className="w-5 h-[2px] rounded shrink-0"
-                      style={{ background: color }}
-                    />
-                    {label}
-                  </div>
-                ))}
-              </div>
-              {/* Controls hint */}
-              <div
-                className="absolute bottom-4 right-4 pointer-events-none bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm text-[11px] text-slate-400"
-                style={{ zIndex: 20 }}
-              >
-                Left-drag · Rotate &nbsp;|&nbsp; Right-drag · Pan up/down
-                &nbsp;|&nbsp; Scroll · Zoom &nbsp;|&nbsp; Click · Pin
-              </div>
-            </>
-          )}
-        </div>
-
-        {/* ── Resize handle ── */}
-        <div
-          onMouseDown={onResizeMouseDown}
-          className="w-[5px] shrink-0 bg-slate-200 hover:bg-blue-400 active:bg-blue-500 cursor-col-resize transition-colors relative group"
-          style={{ zIndex: 30 }}
-          title="Drag to resize sidebar"
-        >
-          <div className="absolute inset-y-0 left-[1px] w-[3px] flex flex-col items-center justify-center gap-[5px] opacity-0 group-hover:opacity-100 transition-opacity">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="w-[3px] h-[3px] rounded-full bg-white" />
-            ))}
-          </div>
-        </div>
-
-        {/* ── Sidebar ── */}
-        <aside
-          style={{
-            width: sidebarWidth,
-            minWidth: SIDEBAR_MIN,
-            maxWidth: SIDEBAR_MAX,
-          }}
-          className="shrink-0 bg-white border-l border-slate-200 overflow-y-auto p-4"
-        >
-          {!d ? (
-            <div className="text-center py-8">
-              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-2xl">
-                📊
-              </div>
-              <p className="text-[14px] font-semibold text-slate-600 mb-1">
-                Hover or click a bar
-              </p>
-              <p className="text-[12px] text-slate-400">
-                to inspect grid-point details
-              </p>
-
-              <div className="mt-6 space-y-2.5">
-                {[
-                  {
-                    label: "Protected",
-                    sub: "SI within safe band",
-                    hex: COLOR_HEX.green,
-                    bg: "bg-emerald-50 border-emerald-200",
-                  },
-                  {
-                    label: "Caution",
-                    sub: "Mild scaling tendency",
-                    hex: COLOR_HEX.yellow,
-                    bg: "bg-amber-50   border-amber-200",
-                  },
-                  {
-                    label: "Scale Risk",
-                    sub: "High CaCO₃ scale risk",
-                    hex: COLOR_HEX.red,
-                    bg: "bg-red-50     border-red-200",
-                  },
-                ].map(({ label, sub, hex, bg }) => (
-                  <div
-                    key={label}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border ${bg} text-left`}
-                  >
-                    <div
-                      className="w-3 h-9 rounded shrink-0"
-                      style={{ background: hex }}
-                    />
-                    <div>
-                      <div className="text-[13px] font-semibold text-slate-700">
-                        {label}
-                      </div>
-                      <div className="text-[11px] text-slate-400">{sub}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 border-t border-slate-100 pt-5 space-y-2.5 text-left">
-                <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-3">
-                  Axis Legend
-                </p>
-                {[
-                  { color: "#2563eb", label: "X — Cycles of Concentration" },
-                  {
-                    color: "#ea580c",
-                    label: `Z — Temperature (°${tempUnit})`,
-                  },
-                  {
-                    color: "#059669",
-                    label: activeSaltId
-                      ? `Y — ${activeSaltId} SI`
-                      : "Y — LSI (Langelier)",
-                  },
-                ].map(({ color, label }) => (
-                  <div key={label} className="flex items-center gap-2.5">
-                    <div
-                      className="w-6 h-[2px] shrink-0 rounded-full"
-                      style={{ background: color }}
-                    />
-                    <span className="text-[12px] text-slate-500">{label}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-5 border-t border-slate-100 pt-4 space-y-1">
-                <p className="text-[11px] text-slate-400 italic">
-                  ↔ Left-drag to rotate
-                </p>
-                <p className="text-[11px] text-slate-400 italic">
-                  ↕ Right-drag to pan up / down / sideways
-                </p>
-                <p className="text-[11px] text-slate-400 italic">
-                  🖱 Scroll to zoom in / out
-                </p>
-                <p className="text-[11px] text-slate-400 italic">
-                  ↔ Drag the left edge to resize this panel
-                </p>
-              </div>
-            </div>
-          ) : (
-            <>
-              <SSection title="Grid Point">
-                <SRow label="CoC" value={String(d._grid_CoC)} />
-                <SRow
-                  label="Temperature"
-                  value={`${d._grid_temp} °${tempUnit}`}
-                />
-                <SRow label="pH" value={String(d._grid_pH)} />
-                <SRow
-                  label="Ionic Strength"
-                  value={d.ionic_strength?.toFixed(5) ?? "—"}
-                />
-                {d.description_of_solution?.activity_of_water != null && (
-                  <SRow
-                    label="Activity H₂O"
-                    value={d.description_of_solution.activity_of_water.toFixed(
-                      3,
-                    )}
-                  />
+                {summary.yellow > 0 && (
+                  <span className="px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-semibold">
+                    {summary.yellow} Caution
+                  </span>
                 )}
-                {d.charge_balance_error_pct !== undefined && (
-                  <SRow
-                    label="Charge Bal. Err"
-                    value={`${d.charge_balance_error_pct}%`}
-                  />
+                {summary.red > 0 && (
+                  <span className="px-2.5 py-1 rounded-full bg-red-50 text-red-700 border border-red-200 font-semibold">
+                    {summary.red} Scale Risk
+                  </span>
                 )}
-              </SSection>
-
-              <SSection
-                title={activeSaltId ? `${activeSaltId} SI` : "Deposition Index"}
-              >
-                <SRow
-                  label={activeSaltId ? "Saturation Index" : "LSI"}
-                  value={displaySI !== null ? displaySI.toFixed(2) : "—"}
-                  bold
-                />
-                <div className="flex justify-between items-center py-[6px]">
-                  <span className="text-[13px] text-slate-500">Status</span>
-                  <Badge text={statusLabel} variant={statusVar} />
+              </div>
+            )}
+            {(["Caution", "Scale Risk", "Protected"] as const).map((label) => {
+              const dot =
+                label === "Caution"
+                  ? "bg-amber-400"
+                  : label === "Scale Risk"
+                    ? "bg-red-500"
+                    : "bg-emerald-500";
+              return (
+                <div
+                  key={label}
+                  className="flex items-center gap-1.5 text-[12px] text-slate-500"
+                >
+                  <span
+                    className={`w-2.5 h-2.5 rounded-[2px] shrink-0 ${dot}`}
+                  />
+                  {label}
                 </div>
-              </SSection>
+              );
+            })}
+          </div>
+        </header>
 
-              {saltsOfInterest.length > 0 &&
-                Object.keys(d.saturation_indices).length > 0 && (
-                  <SSection title="Key Salts SI">
-                    {saltsOfInterest.map((salt) => {
-                      const entry = d.saturation_indices[salt];
-                      const isActive = salt === activeSaltId;
+        {/* ── Salt chips ── */}
+        {saltsOfInterest.length > 0 && (
+          <div className="flex items-center gap-2 px-5 py-2 bg-slate-50 border-b border-slate-200 overflow-x-auto shrink-0">
+            <span className="text-[11px] font-semibold text-slate-400 shrink-0 mr-1 tracking-widest uppercase">
+              Salt View:
+            </span>
+            {saltsOfInterest.map((s) => {
+              const isActive = s === activeSaltId;
+              return (
+                <button
+                  key={s}
+                  onClick={() => setActiveSaltId(isActive ? null : s)}
+                  title={
+                    isActive ? "Reset to LSI view" : `Switch chart to ${s} SI`
+                  }
+                  className={`text-[13px] px-3 py-1 rounded-full border font-semibold shrink-0 transition-all duration-150 cursor-pointer ${
+                    isActive
+                      ? "border-blue-500 text-white bg-blue-600 shadow shadow-blue-100"
+                      : "border-slate-300 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50"
+                  }`}
+                >
+                  {s}
+                  {isActive && (
+                    <span className="ml-1 text-[11px] font-normal opacity-75">
+                      ✓
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+            {activeSaltId && (
+              <button
+                onClick={() => setActiveSaltId(null)}
+                className="text-[11px] px-2.5 py-1 rounded-full border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-400 bg-white transition-all ml-1 shrink-0"
+              >
+                Reset to LSI
+              </button>
+            )}
+            <span className="text-[10px] text-slate-300 ml-auto shrink-0 hidden sm:block italic">
+              Click a salt to switch the chart axis
+            </span>
+          </div>
+        )}
+
+        {/* ── Main ── */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* 3-D viewport */}
+          <div
+            ref={wrapRef}
+            className="flex-1 min-w-0 relative overflow-hidden"
+            style={{ background: "#f8fafc" }}
+          >
+            {isEmpty ? (
+              <div className="flex flex-col items-center justify-center h-full gap-3 text-slate-400">
+                <div className="text-5xl opacity-20">⬛</div>
+                <p className="text-[14px]">
+                  No grid data — pass an{" "}
+                  <code className="text-slate-500 bg-slate-100 px-1 rounded">
+                    apiResponse
+                  </code>{" "}
+                  prop.
+                </p>
+              </div>
+            ) : (
+              <>
+                <canvas
+                  ref={canvasRef}
+                  className="block w-full h-full cursor-grab"
+                />
+                {/* Axis legend */}
+                <div
+                  className="absolute bottom-4 left-4 pointer-events-none bg-white border border-slate-200 rounded-xl px-3 py-2.5 shadow-md"
+                  style={{ zIndex: 20 }}
+                >
+                  {[
+                    {
+                      color: "#2563eb",
+                      label: "X — Cycles of Concentration (CoC)",
+                    },
+                    {
+                      color: "#ea580c",
+                      label: `Z — Temperature (°${tempUnit})`,
+                    },
+                    {
+                      color: "#059669",
+                      label: activeSaltId
+                        ? `Y — ${activeSaltId} Saturation Index`
+                        : "Y — LSI (Langelier)",
+                    },
+                  ].map(({ color, label }) => (
+                    <div
+                      key={label}
+                      className="flex items-center gap-2 text-[11px] text-slate-600 py-0.5"
+                    >
+                      <div
+                        className="w-5 h-[2px] rounded shrink-0"
+                        style={{ background: color }}
+                      />
+                      {label}
+                    </div>
+                  ))}
+                </div>
+                {/* Controls hint */}
+                <div
+                  className="absolute bottom-4 right-4 pointer-events-none bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 shadow-sm text-[11px] text-slate-400"
+                  style={{ zIndex: 20 }}
+                >
+                  Left-drag · Rotate &nbsp;|&nbsp; Right-drag · Pan up/down
+                  &nbsp;|&nbsp; Scroll · Zoom &nbsp;|&nbsp; Click · Pin
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* ── Resize handle ── */}
+          <div
+            onMouseDown={onResizeMouseDown}
+            className="w-[5px] shrink-0 bg-slate-200 hover:bg-blue-400 active:bg-blue-500 cursor-col-resize transition-colors relative group"
+            style={{ zIndex: 30 }}
+            title="Drag to resize sidebar"
+          >
+            <div className="absolute inset-y-0 left-[1px] w-[3px] flex flex-col items-center justify-center gap-[5px] opacity-0 group-hover:opacity-100 transition-opacity">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="w-[3px] h-[3px] rounded-full bg-white"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Sidebar ── */}
+          <aside
+            style={{
+              width: sidebarWidth,
+              minWidth: SIDEBAR_MIN,
+              maxWidth: SIDEBAR_MAX,
+            }}
+            className="shrink-0 bg-white border-l border-slate-200 overflow-y-auto p-4"
+          >
+            {!d ? (
+              <div className="text-center py-8">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-2xl">
+                  📊
+                </div>
+                <p className="text-[14px] font-semibold text-slate-600 mb-1">
+                  Hover or click a bar
+                </p>
+                <p className="text-[12px] text-slate-400">
+                  to inspect grid-point details
+                </p>
+
+                <div className="mt-6 space-y-2.5">
+                  {[
+                    {
+                      label: "Protected",
+                      sub: "SI within safe band",
+                      hex: COLOR_HEX.green,
+                      bg: "bg-emerald-50 border-emerald-200",
+                    },
+                    {
+                      label: "Caution",
+                      sub: "Mild scaling tendency",
+                      hex: COLOR_HEX.yellow,
+                      bg: "bg-amber-50   border-amber-200",
+                    },
+                    {
+                      label: "Scale Risk",
+                      sub: "High CaCO₃ scale risk",
+                      hex: COLOR_HEX.red,
+                      bg: "bg-red-50     border-red-200",
+                    },
+                  ].map(({ label, sub, hex, bg }) => (
+                    <div
+                      key={label}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-lg border ${bg} text-left`}
+                    >
+                      <div
+                        className="w-3 h-9 rounded shrink-0"
+                        style={{ background: hex }}
+                      />
+                      <div>
+                        <div className="text-[13px] font-semibold text-slate-700">
+                          {label}
+                        </div>
+                        <div className="text-[11px] text-slate-400">{sub}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-6 border-t border-slate-100 pt-5 space-y-2.5 text-left">
+                  <p className="text-[10px] text-slate-400 uppercase tracking-widest font-semibold mb-3">
+                    Axis Legend
+                  </p>
+                  {[
+                    { color: "#2563eb", label: "X — Cycles of Concentration" },
+                    {
+                      color: "#ea580c",
+                      label: `Z — Temperature (°${tempUnit})`,
+                    },
+                    {
+                      color: "#059669",
+                      label: activeSaltId
+                        ? `Y — ${activeSaltId} SI`
+                        : "Y — LSI (Langelier)",
+                    },
+                  ].map(({ color, label }) => (
+                    <div key={label} className="flex items-center gap-2.5">
+                      <div
+                        className="w-6 h-[2px] shrink-0 rounded-full"
+                        style={{ background: color }}
+                      />
+                      <span className="text-[12px] text-slate-500">
+                        {label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5 border-t border-slate-100 pt-4 space-y-1">
+                  <p className="text-[11px] text-slate-400 italic">
+                    ↔ Left-drag to rotate
+                  </p>
+                  <p className="text-[11px] text-slate-400 italic">
+                    ↕ Right-drag to pan up / down / sideways
+                  </p>
+                  <p className="text-[11px] text-slate-400 italic">
+                    🖱 Scroll to zoom in / out
+                  </p>
+                  <p className="text-[11px] text-slate-400 italic">
+                    ↔ Drag the left edge to resize this panel
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <SSection title="Grid Point">
+                  <SRow label="CoC" value={String(d._grid_CoC)} />
+                  <SRow
+                    label="Temperature"
+                    value={`${d._grid_temp} °${tempUnit}`}
+                  />
+                  <SRow label="pH" value={String(d._grid_pH)} />
+                  <SRow
+                    label="Ionic Strength"
+                    value={d.ionic_strength?.toFixed(5) ?? "—"}
+                  />
+                  {d.description_of_solution?.activity_of_water != null && (
+                    <SRow
+                      label="Activity H₂O"
+                      value={d.description_of_solution.activity_of_water.toFixed(
+                        3,
+                      )}
+                    />
+                  )}
+                  {d.charge_balance_error_pct !== undefined && (
+                    <SRow
+                      label="Charge Bal. Err"
+                      value={`${d.charge_balance_error_pct}%`}
+                    />
+                  )}
+                </SSection>
+
+                <SSection
+                  title={
+                    activeSaltId ? `${activeSaltId} SI` : "Deposition Index"
+                  }
+                >
+                  <SRow
+                    label={activeSaltId ? "Saturation Index" : "LSI"}
+                    value={displaySI !== null ? displaySI.toFixed(2) : "—"}
+                    bold
+                  />
+                  <div className="flex justify-between items-center py-[6px]">
+                    <span className="text-[13px] text-slate-500">Status</span>
+                    <Badge text={statusLabel} variant={statusVar} />
+                  </div>
+                </SSection>
+
+                {saltsOfInterest.length > 0 &&
+                  Object.keys(d.saturation_indices).length > 0 && (
+                    <SSection title="Key Salts SI">
+                      {saltsOfInterest.map((salt) => {
+                        const entry = d.saturation_indices[salt];
+                        const isActive = salt === activeSaltId;
+                        return (
+                          <div
+                            key={salt}
+                            className="flex justify-between items-center py-[6px] border-b border-slate-100 last:border-0"
+                          >
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span
+                                className={`text-[13px] truncate ${isActive ? "font-semibold text-blue-700" : "text-slate-500"}`}
+                              >
+                                {salt}
+                              </span>
+                              {entry?.chemical_formula && (
+                                <span className="text-[10px] text-slate-300 shrink-0">
+                                  {entry.chemical_formula}
+                                </span>
+                              )}
+                            </div>
+                            <span
+                              className={`text-[13px] font-semibold shrink-0 ${entry && entry.SI > 0 ? "text-red-600" : "text-slate-400"}`}
+                            >
+                              {entry ? entry.SI.toFixed(2) : "—"}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </SSection>
+                  )}
+
+                <SSection title="Deposition Indices">
+                  <SRow
+                    label="LSI"
+                    value={d.indices.lsi.lsi.toFixed(2)}
+                    badge={d.indices.lsi.risk}
+                  />
+                  <SRow
+                    label="RSI"
+                    value={d.indices.ryznar.ri.toFixed(2)}
+                    badge={d.indices.ryznar.risk}
+                  />
+                  <SRow
+                    label="PSI"
+                    value={d.indices.puckorius.index.toFixed(2)}
+                    badge={d.indices.puckorius.risk}
+                  />
+                  <SRow
+                    label="Larson-Skold"
+                    value={
+                      d.indices.larson_skold.index != null
+                        ? d.indices.larson_skold.index.toFixed(3)
+                        : "N/A"
+                    }
+                    badge={`${d.indices.larson_skold.risk_level} Risk`}
+                  />
+                  <SRow
+                    label="Stiff-Davis"
+                    value={
+                      d.indices.stiff_davis.index != null
+                        ? d.indices.stiff_davis.index.toFixed(3)
+                        : "N/A"
+                    }
+                    badge={
+                      d.indices.stiff_davis.risk ??
+                      d.indices.stiff_davis.interpretation ??
+                      ""
+                    }
+                  />
+                  <SRow
+                    label="CCPP (ppm)"
+                    value={
+                      d.indices.ccpp.ccpp_ppm != null
+                        ? String(d.indices.ccpp.ccpp_ppm)
+                        : "N/A"
+                    }
+                    badge={d.indices.ccpp.risk}
+                  />
+                </SSection>
+
+                {Object.keys(d.corrosion).length > 0 && (
+                  <SSection title="Corrosion Rates">
+                    {Object.entries(d.corrosion).map(([key, metal]) => {
+                      if (!metal) return null;
+                      const label = key
+                        .replace(/_/g, " ")
+                        .replace(/\b\w/g, (c) => c.toUpperCase());
                       return (
                         <div
-                          key={salt}
-                          className="flex justify-between items-center py-[6px] border-b border-slate-100 last:border-0"
+                          key={key}
+                          className="py-[6px] border-b border-slate-100 last:border-0"
                         >
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            <span
-                              className={`text-[13px] truncate ${isActive ? "font-semibold text-blue-700" : "text-slate-500"}`}
-                            >
-                              {salt}
+                          <div className="flex justify-between items-center">
+                            <span className="text-[13px] text-slate-600 font-medium">
+                              {label}
                             </span>
-                            {entry?.chemical_formula && (
-                              <span className="text-[10px] text-slate-300 shrink-0">
-                                {entry.chemical_formula}
-                              </span>
-                            )}
+                            <Badge text={metal.rating} />
                           </div>
-                          <span
-                            className={`text-[13px] font-semibold shrink-0 ${entry && entry.SI > 0 ? "text-red-600" : "text-slate-400"}`}
-                          >
-                            {entry ? entry.SI.toFixed(2) : "—"}
-                          </span>
+                          <div className="flex justify-between mt-1">
+                            <span className="text-[11px] text-slate-400">
+                              Treated / Base
+                            </span>
+                            <span className="text-[11px] text-slate-600">
+                              {metal.cr_mpy.toFixed(2)} /{" "}
+                              {(metal.cr_base_mpy ?? 0).toFixed(2)} mpy
+                              {metal.total_inhibition_percent !== undefined && (
+                                <span className="text-emerald-600 font-semibold ml-1.5">
+                                  −{metal.total_inhibition_percent}%
+                                </span>
+                              )}
+                            </span>
+                          </div>
                         </div>
                       );
                     })}
                   </SSection>
                 )}
 
-              <SSection title="Deposition Indices">
-                <SRow
-                  label="LSI"
-                  value={d.indices.lsi.lsi.toFixed(2)}
-                  badge={d.indices.lsi.risk}
-                />
-                <SRow
-                  label="RSI"
-                  value={d.indices.ryznar.ri.toFixed(2)}
-                  badge={d.indices.ryznar.risk}
-                />
-                <SRow
-                  label="PSI"
-                  value={d.indices.puckorius.index.toFixed(2)}
-                  badge={d.indices.puckorius.risk}
-                />
-                <SRow
-                  label="Larson-Skold"
-                  value={
-                    d.indices.larson_skold.index != null
-                      ? d.indices.larson_skold.index.toFixed(3)
-                      : "N/A"
-                  }
-                  badge={`${d.indices.larson_skold.risk_level} Risk`}
-                />
-                <SRow
-                  label="Stiff-Davis"
-                  value={
-                    d.indices.stiff_davis.index != null
-                      ? d.indices.stiff_davis.index.toFixed(3)
-                      : "N/A"
-                  }
-                  badge={
-                    d.indices.stiff_davis.risk ??
-                    d.indices.stiff_davis.interpretation ??
-                    ""
-                  }
-                />
-                <SRow
-                  label="CCPP (ppm)"
-                  value={
-                    d.indices.ccpp.ccpp_ppm != null
-                      ? String(d.indices.ccpp.ccpp_ppm)
-                      : "N/A"
-                  }
-                  badge={d.indices.ccpp.risk}
-                />
-              </SSection>
-
-              {Object.keys(d.corrosion).length > 0 && (
-                <SSection title="Corrosion Rates">
-                  {Object.entries(d.corrosion).map(([key, metal]) => {
-                    if (!metal) return null;
-                    const label = key
-                      .replace(/_/g, " ")
-                      .replace(/\b\w/g, (c) => c.toUpperCase());
-                    return (
-                      <div
-                        key={key}
-                        className="py-[6px] border-b border-slate-100 last:border-0"
-                      >
-                        <div className="flex justify-between items-center">
-                          <span className="text-[13px] text-slate-600 font-medium">
-                            {label}
-                          </span>
-                          <Badge text={metal.rating} />
-                        </div>
-                        <div className="flex justify-between mt-1">
-                          <span className="text-[11px] text-slate-400">
-                            Treated / Base
-                          </span>
-                          <span className="text-[11px] text-slate-600">
-                            {metal.cr_mpy.toFixed(2)} /{" "}
-                            {(metal.cr_base_mpy ?? 0).toFixed(2)} mpy
-                            {metal.total_inhibition_percent !== undefined && (
-                              <span className="text-emerald-600 font-semibold ml-1.5">
-                                −{metal.total_inhibition_percent}%
-                              </span>
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </SSection>
-              )}
-
-              {Object.keys(d.saturation_indices).length > 0 && (
-                <SSection title="All Minerals SI">
-                  {Object.entries(d.saturation_indices)
-                    .sort((a, b) => b[1].SI - a[1].SI)
-                    .map(([key, val]) => {
-                      const isTarget = key === activeSaltId;
-                      const isInterest = saltsOfInterest.includes(key);
-                      return (
-                        <div
-                          key={key}
-                          className={`flex justify-between items-center py-[5px] border-b border-slate-50 last:border-0 ${isTarget ? "bg-blue-50 -mx-1 px-1 rounded" : ""}`}
-                        >
-                          <div className="flex items-center gap-1 min-w-0">
-                            <span
-                              className={`text-[13px] truncate ${isTarget ? "font-bold text-blue-700" : isInterest ? "font-semibold text-slate-700" : "text-slate-400"}`}
-                            >
-                              {key}
-                            </span>
-                            {val.chemical_formula && (
-                              <span className="text-[10px] text-slate-300 shrink-0 hidden sm:inline">
-                                {val.chemical_formula}
-                              </span>
-                            )}
-                          </div>
-                          <span
-                            className={`text-[13px] shrink-0 font-semibold ${val.SI > 0 ? "text-red-600" : "text-slate-300"} ${isTarget ? "font-bold" : ""}`}
+                {Object.keys(d.saturation_indices).length > 0 && (
+                  <SSection title="All Minerals SI">
+                    {Object.entries(d.saturation_indices)
+                      .sort((a, b) => b[1].SI - a[1].SI)
+                      .map(([key, val]) => {
+                        const isTarget = key === activeSaltId;
+                        const isInterest = saltsOfInterest.includes(key);
+                        return (
+                          <div
+                            key={key}
+                            className={`flex justify-between items-center py-[5px] border-b border-slate-50 last:border-0 ${isTarget ? "bg-blue-50 -mx-1 px-1 rounded" : ""}`}
                           >
-                            {val.SI.toFixed(2)}
-                          </span>
-                        </div>
-                      );
-                    })}
-                </SSection>
-              )}
-            </>
-          )}
-        </aside>
+                            <div className="flex items-center gap-1 min-w-0">
+                              <span
+                                className={`text-[13px] truncate ${isTarget ? "font-bold text-blue-700" : isInterest ? "font-semibold text-slate-700" : "text-slate-400"}`}
+                              >
+                                {key}
+                              </span>
+                              {val.chemical_formula && (
+                                <span className="text-[10px] text-slate-300 shrink-0 hidden sm:inline">
+                                  {val.chemical_formula}
+                                </span>
+                              )}
+                            </div>
+                            <span
+                              className={`text-[13px] shrink-0 font-semibold ${val.SI > 0 ? "text-red-600" : "text-slate-300"} ${isTarget ? "font-bold" : ""}`}
+                            >
+                              {val.SI.toFixed(2)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                  </SSection>
+                )}
+              </>
+            )}
+          </aside>
+        </div>
       </div>
-
-      <div>{JSON.stringify(apiResponse)}</div>
-    </div>
+      <div>
+        <h3>Summary</h3>
+        <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
+      </div>
+    </>
   );
 }
