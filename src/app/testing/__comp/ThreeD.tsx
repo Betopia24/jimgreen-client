@@ -3893,7 +3893,7 @@ interface Props {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export default function SaturationDashboard({ apiResponse }: Props) {
-  console.log(apiResponse?.run_id);
+  const soltId = apiResponse?.run_id;
   const meta = useMemo(() => resolveMeta(apiResponse), [apiResponse]);
   const gridResults = useMemo(
     (): GridResult[] => meta?.gridResults ?? [],
