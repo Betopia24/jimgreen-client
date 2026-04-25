@@ -117,6 +117,14 @@ export const analysisApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["reportAnalysis"],
     }),
+    saltAnalysis: builder.mutation({
+      query: (payload) => ({
+        url: `/report-analysis/saturation/switch-salt`,
+        method: "POST",
+        body: payload,
+      }),
+      invalidatesTags: ["reportAnalysis"],
+    }),
 
     getSaltSaturation: builder.query({
       query: () => ({
@@ -138,4 +146,5 @@ export const {
   useGetCoustomerAndAsetListQuery,
   useSaturatonAnalysisMutation,
   useGetSaltSaturationQuery,
+  useSaltAnalysisMutation,
 } = analysisApi;
