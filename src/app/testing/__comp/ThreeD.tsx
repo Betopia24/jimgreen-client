@@ -5318,124 +5318,6 @@ export default function SaturationDashboard({ apiResponse }: Props) {
         </header>
 
         {/* ── Salt chips ── */}
-        {/* {saltsOfInterest.length > 0 && (
-          <div className="flex items-center gap-2 px-5 py-3 bg-slate-50 border-b border-slate-200 overflow-x-auto shrink-0 max-h-[58px] flex-nowrap">
-            <span className="text-[11px] font-semibold text-slate-400 shrink-0 mr-1 tracking-widest uppercase">
-              Salt View:
-            </span>
-            {saltsOfInterest.map((s) => {
-              const isActive = s === activeSaltId;
-              return (
-                <button
-                  key={s}
-                  onClick={() => handleSaltChipClick(s)}
-                  disabled={isLoading}
-                  title={
-                    isLoading
-                      ? "Loading…"
-                      : isActive
-                        ? "Reset to LSI view"
-                        : `Switch chart to ${s} SI`
-                  }
-                  className={`text-[13px] px-3 py-1 rounded-full border font-semibold shrink-0 transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-                    isActive
-                      ? "border-blue-500 text-white bg-blue-600 shadow shadow-blue-100"
-                      : "border-slate-300 text-slate-600 bg-white hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50"
-                  }`}
-                >
-                  {isLoading && isActive ? (
-                    <span className="inline-flex items-center gap-1.5">
-                      <svg
-                        className="animate-spin w-3 h-3"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v8z"
-                        />
-                      </svg>
-                      {s}
-                    </span>
-                  ) : (
-                    <>
-                      {s}
-                      {isActive && (
-                        <span className="ml-1 text-[11px] font-normal opacity-75">
-                          ✓
-                        </span>
-                      )}
-                    </>
-                  )}
-                </button>
-              );
-            })}
-            {activeSaltId && (
-              <button
-                onClick={handleResetToLsi}
-                disabled={isLoading}
-                className="text-[11px] px-2.5 py-1 rounded-full border border-slate-200 text-slate-400 hover:text-slate-700 hover:border-slate-400 bg-white transition-all ml-1 shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Reset to LSI
-              </button>
-            )}
-            <span className="text-[10px] text-slate-300 ml-auto shrink-0 hidden sm:block italic">
-              Click a salt to fetch &amp; switch the chart axis
-            </span>
-          </div>
-        )} */}
-
-        {/* ── Available Salts Chips ── */}
-        {/* {saltsOfInterest.length > 0 && (
-          <div className="bg-slate-50 border-b border-slate-200 shrink-0">
-            <div className="px-5 py-2.5 flex items-center gap-2 overflow-x-auto">
-              <span className="text-[11px] font-semibold text-slate-400 shrink-0 tracking-widest uppercase whitespace-nowrap">
-                AVAILABLE SALTS:
-              </span>
-              <div className="flex gap-1.5 flex-nowrap">
-                {saltsOfInterest.map((s) => {
-                  const isActive = s === activeSaltId;
-                  return (
-                    <button
-                      key={s}
-                      onClick={() => handleSaltChipClick(s)}
-                      disabled={isLoading}
-                      className={`text-[13px] px-3.5 py-1 rounded-full border font-medium whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                        isActive
-                          ? "bg-blue-600 text-white border-blue-600 shadow"
-                          : "bg-white border-slate-300 text-slate-700 hover:border-blue-400 hover:text-blue-700"
-                      }`}
-                    >
-                      {s}
-                      {isActive && (
-                        <span className="text-xs opacity-75">●</span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {activeSaltId && (
-                <button
-                  onClick={handleResetToLsi}
-                  disabled={isLoading}
-                  className="ml-2 text-xs px-3 py-1 rounded-full border border-slate-300 text-slate-500 hover:bg-slate-100 whitespace-nowrap"
-                >
-                  Reset to LSI
-                </button>
-              )}
-            </div>
-          </div>
-        )} */}
 
         {/* ── Available + Unavailable Salts ── */}
         {(saltsOfInterest.length > 0 || unavailableSalts.length > 0) && (
@@ -5486,7 +5368,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                   UNAVAILABLE:
                 </span>
                 <div className="flex gap-1.5 flex-nowrap flex-wrap">
-                  {unavailableSalts.map(({ salt, reason }) => (
+                  {unavailableSalts.map(({ salt, reason }: any) => (
                     <button
                       key={salt}
                       onClick={() => setUnavailableModal({ salt, reason })}
