@@ -5246,7 +5246,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <>
-      <div className="bg-white text-slate-800 border font-sans text-[14px] h-screen overflow-hidden flex flex-col select-none">
+      <div className="bg-white text-slate-800 border font-sans text-[14px] h-screen overflow-hidden flex flex-col select-none max-w-[1566px]">
         {/* ── Header ── */}
         <header className="flex items-center justify-between px-5 py-3 bg-white border-b border-slate-200 shadow-sm shrink-0 gap-4 flex-wrap">
           <div>
