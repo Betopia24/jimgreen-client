@@ -3831,6 +3831,7 @@
 //     </>
 //   );
 // }
+
 "use client";
 
 import { useSaltAnalysisMutation } from "@/redux/api/reportAnalysis/reportAnalysisSliceApi";
@@ -4539,8 +4540,10 @@ function buildScene(
   cocTitle.position.set((xMin + xMax) / 2, 0, axOriginZ + 2.1);
   scene.add(cocTitle);
 
-  tempUniq.forEach((_temp, ti) => {
-    const temp = tempUniq[tempUniq.length - 1 - ti];
+  // tempUniq.forEach((_temp, ti) => {
+  //   const temp = tempUniq[tempUniq.length - 1 - ti];
+  //   const z = ti * SPACING + tempOffset;
+  tempUniq.forEach((temp, ti) => {
     const z = ti * SPACING + tempOffset;
     const lbl = makeLabel(`${temp}°${tempUnit}`, {
       color: "#c2410c",
@@ -5691,7 +5694,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                   )}
                 </SSection>
 
-                <SSection
+                {/* <SSection
                   title={
                     activeSaltId ? `${activeSaltId} SI` : "Deposition Index"
                   }
@@ -5699,6 +5702,23 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                   <SRow
                     label={activeSaltId ? "Saturation Index" : "LSI"}
                     value={displaySI !== null ? displaySI.toFixed(2) : "—"}
+                    bold
+                  /> */}
+                <SSection
+                  title={
+                    activeSaltId ? `${activeSaltId} SR` : "Deposition Index"
+                  }
+                >
+                  <SRow
+                    label={activeSaltId ? "Saturation Ratio (SR)" : "LSI"}
+                    value={
+                      activeSaltId &&
+                      d?.saturation_indices[activeSaltId]?.SR != null
+                        ? d.saturation_indices[activeSaltId].SR!.toFixed(4)
+                        : displaySI !== null
+                          ? displaySI.toFixed(2)
+                          : "—"
+                    }
                     bold
                   />
                   <div className="flex justify-between items-center py-[6px]">
@@ -5876,6 +5896,11 @@ export default function SaturationDashboard({ apiResponse }: Props) {
             )}
           </aside>
         </div>
+      </div>
+      {/* optional  */}
+      <div>
+        <h3>Summary</h3>
+        <pre>{JSON.stringify(apiResponse, null, 2)}</pre>
       </div>
     </>
   );
