@@ -1197,6 +1197,8 @@ interface AssetInfo {
   systemMetallurgy: string[];
   systemMaterials: string[];
   recirculationRate: number;
+  recirculationRateType: string;
+  systemVolumeType: string;
 }
 
 interface Summary {
@@ -1331,8 +1333,14 @@ const SaturationAnalysisDetails: React.FC = () => {
                 ["Name", asset_info.name],
                 ["Type", asset_info.type],
                 ["Tower", asset_info.towerType],
-                ["Volume", `${asset_info.systemVolume} m³`],
-                ["Recirculation", `${asset_info.recirculationRate} m³/h`],
+                [
+                  "Volume",
+                  `${asset_info.systemVolume} ${asset_info.systemVolumeType}`,
+                ],
+                [
+                  "Recirculation",
+                  `${asset_info.recirculationRate}  ${asset_info.recirculationRateType}`,
+                ],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between">
                   <span className="text-gray-600">{label}</span>
