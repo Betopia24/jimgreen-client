@@ -2274,8 +2274,16 @@ const COLOR_HEX: Record<string, string> = {
 };
 
 // Gray gradient endpoints for "green" / Protected bars
-const GRAY_LIGHT = 0xd1d5db; // tailwind gray-300 – low SI
-const GRAY_DARK = 0x374151; // tailwind gray-700 – high SI
+const GRAY_LIGHT = 0xd1d5db; // tailwind gray-300   – low SI
+const GRAY_DARK = 0x374151; // tailwind gray-700   – high SI
+
+// Yellow gradient endpoints for "yellow" / Caution bars
+const YELLOW_LIGHT = 0xfef9c3; // tailwind yellow-100 – low SI
+const YELLOW_DARK = 0x92400e; // tailwind amber-800  – high SI
+
+// Red gradient endpoints for "red" / Scale Risk bars
+const RED_LIGHT = 0xfee2e2; // tailwind red-100    – low SI
+const RED_DARK = 0x7f1d1d; // tailwind red-900    – high SI
 
 const BAR_W = 1.55;
 const SPACING = 2.4;
@@ -2670,15 +2678,17 @@ function buildScene(
     const x = ci * SPACING + cocOffset;
     const z = ti * SPACING + tempOffset;
 
-    // ── Dynamic gray gradient for "green" / Protected bars ──────────────────
-    // t = 0 → light gray (low SI, well protected)
-    // t = 1 → dark gray  (SI approaching maxSI boundary)
+    // ── Dynamic gradient for all bar types ──────────────────────────────────
+    // t = 0 → light shade (low SI)   t = 1 → dark shade (high SI)
+    const t = Math.min(1, maxSI > 0 ? displayVal / maxSI : 0);
     let clr: number;
     if (d.color_code === "green") {
-      const t = Math.min(1, maxSI > 0 ? displayVal / maxSI : 0);
       clr = lerpHex(GRAY_LIGHT, GRAY_DARK, t);
+    } else if (d.color_code === "yellow") {
+      clr = lerpHex(YELLOW_LIGHT, YELLOW_DARK, t);
     } else {
-      clr = COLOR_MAP[d.color_code] ?? 0xd93025;
+      // red
+      clr = lerpHex(RED_LIGHT, RED_DARK, t);
     }
 
     const geo = new THREE.BoxGeometry(BAR_W, h, BAR_W);
