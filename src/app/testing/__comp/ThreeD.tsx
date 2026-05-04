@@ -2273,9 +2273,9 @@ const COLOR_HEX: Record<string, string> = {
   green: "#9ca3af", // used only in legend/UI (not 3-D bars)
 };
 
-// Gray gradient endpoints for "green" / Protected bars
-const GRAY_LIGHT = 0xd1d5db; // tailwind gray-300   – low SI
-const GRAY_DARK = 0x374151; // tailwind gray-700   – high SI
+// Green gradient endpoints for "green" / Protected bars
+const GRAY_LIGHT = 0xd1fae5; // tailwind green-100  – low SI
+const GRAY_DARK = 0x064e3b; // tailwind green-900  – high SI
 
 // Yellow gradient endpoints for "yellow" / Caution bars
 const YELLOW_LIGHT = 0xfef9c3; // tailwind yellow-100 – low SI
@@ -2902,8 +2902,8 @@ function buildScene(
 
   // ── Y-axis label: "Saturation Ratio (SI)" ────────────────────────────────
   const yAxisLabel = activeSaltId
-    ? `Saturation Ratio (SI) — ${activeSaltId}`
-    : "Saturation Ratio (SI) — Langelier";
+    ? `Saturation Ratio (SR) — ${activeSaltId}`
+    : "Saturation Ratio (SR) — Langelier";
   const siTitle = makeLabel(yAxisLabel, {
     color: "#065f46",
     fontSize: "11px",
@@ -3771,8 +3771,8 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                     {
                       color: "#059669",
                       label: activeSaltId
-                        ? `Y — ${activeSaltId} Saturation Ratio (SI)`
-                        : "Y — Saturation Ratio (SI) — Langelier",
+                        ? `Y — ${activeSaltId} Saturation Ratio (SR)`
+                        : "Y — Saturation Ratio (SR) — Langelier",
                     },
                   ].map(({ color, label }) => (
                     <div
@@ -3907,8 +3907,8 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                     {
                       color: "#059669",
                       label: activeSaltId
-                        ? `Y — ${activeSaltId} Saturation Ratio (SI)`
-                        : "Y — Saturation Ratio (SI)",
+                        ? `Y — ${activeSaltId} Saturation Ratio (SR)`
+                        : "Y — Saturation Ratio (SR)",
                     },
                   ].map(({ color, label }) => (
                     <div key={label} className="flex items-center gap-2.5">
