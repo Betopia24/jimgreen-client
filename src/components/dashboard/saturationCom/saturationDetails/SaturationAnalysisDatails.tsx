@@ -1376,6 +1376,7 @@ const SaturationAnalysisDetails: React.FC = () => {
         {/* Analysis Config */}
 
         {/* 3D Dashboard */}
+
         <SaturationDashboard apiResponse={aiResponse as any} />
 
         {/* Footer */}
