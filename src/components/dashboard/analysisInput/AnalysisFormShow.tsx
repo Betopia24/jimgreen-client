@@ -286,7 +286,7 @@ export default function WaterChemistryForm() {
 
           return {
             name: displayNameMapping[key] || key,
-            value: Number(value),
+            value: Number(value) || 0,
             unit: param?.unit || "",
             detection_limit: param?.detectionLimit ?? null,
           };
