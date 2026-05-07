@@ -11,7 +11,7 @@ interface Mineral {
   log_k: number;
 }
 
-interface SaturationItem {
+export interface SaturationItem {
   coc: number;
   temperature: number;
   temp_unit: string;
