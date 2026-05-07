@@ -175,7 +175,6 @@ const LatestReportTable = () => {
         <table className="w-full">
           <thead className="bg-gray-50 border-b">
             <tr>
-              <th className="text-left px-6 py-3 text-sm">Report ID</th>
               <th className="text-left px-6 py-3 text-sm">Customer</th>
               <th className="text-left px-6 py-3 text-sm">Type</th>
               <th className="text-left px-6 py-3 text-sm">Created</th>
@@ -187,8 +186,6 @@ const LatestReportTable = () => {
           <tbody>
             {reports.map((report) => (
               <tr key={report.id} className="border-b hover:bg-gray-50">
-                <td className="px-6 py-4 text-blue-600">{report.reportId}</td>
-
                 <td className="px-6 py-4">{report.customer}</td>
 
                 <td className="px-6 py-4">{report.type}</td>
