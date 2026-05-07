@@ -6307,7 +6307,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                                   : "text-slate-400"
                               }`}
                             >
-                              {srDisplay != null ? srDisplay.toFixed(4) : "—"}
+                              {srDisplay != null ? srDisplay : "—"}
                             </span>
                           </div>
                         );
@@ -6446,7 +6446,7 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                             <span
                               className={`text-[13px] shrink-0 font-semibold ${srVal > 0 ? "text-red-600" : "text-slate-300"} ${isTarget ? "font-bold" : ""}`}
                             >
-                              {srVal.toFixed(4)}
+                              {srVal}
                             </span>
                           </div>
                         );
