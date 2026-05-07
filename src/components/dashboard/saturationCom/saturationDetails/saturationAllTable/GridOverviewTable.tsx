@@ -357,7 +357,7 @@ const GridOverviewTable: React.FC<GridOverviewTableProps> = ({
             <div className="flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-blue-600 shadow-[0_0_8px_#3b82f6]" />
               <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 group-hover:text-gray-600 transition-colors">
-                Data Table
+                Grid Overview
               </span>
               <span className="text-[10px] text-gray-500 bg-gray-100 rounded-full px-2.5 py-0.5 border border-gray-200">
                 {processedRows.length} rows
@@ -444,30 +444,3 @@ const GridOverviewTable: React.FC<GridOverviewTableProps> = ({
 };
 
 export default GridOverviewTable;
-
-// ─── Usage ────────────────────────────────────────────────────────────────────
-//
-// import GridOverviewTable from "@/components/GridOverviewTable";
-//
-// <GridOverviewTable
-//   grid_overview={{
-//     salt_id: "CaCO3",
-//     temp_unit: "°C",
-//     rows: apiResponse.grid_overview,   // ← pass your array here
-//   }}
-// />
-//
-// Props shape:
-//
-// grid_overview: {
-//   salt_id?:  string          — displayed as the page title
-//   temp_unit?: string         — e.g. "°C" or "°F" (default: "°C")
-//   rows:      GridRow[]       — the data array; required
-// }
-//
-// GridRow fields (all optional — columns appear dynamically):
-//   coc, temperature, ph, si, sr, color, color_hex,
-//   ionic_strength, charge_balance_error_pct
-//
-// Any field that is undefined / null / "" across ALL rows
-// is automatically hidden from the table and detail cards.

@@ -8,8 +8,7 @@ import CoolingTowerTable from "./saturationAllTable/Coolingtowertable ";
 import GridOverviewTable, {
   GridRow,
 } from "./saturationAllTable/GridOverviewTable";
-import SpeciesTable, { Condition } from "./saturationAllTable/SpeciesTable";
-import SpeciesDataTable from "./saturationAllTable/SpeciesTable";
+
 import CorssosionRateTable from "./saturationAllTable/CorroesionRates";
 import ChemicalDosageTable, {
   ChemicalDosageItem,
@@ -20,16 +19,23 @@ import DescriptionSolutionTable, {
 import WaterBalanceTable, {
   WaterBalanceItem,
 } from "./saturationAllTable/WaterBalanceTable";
+import DepositionIndicesTable, {
+  DepositionIndicesItem,
+} from "./saturationAllTable/DepositionIndicesTable";
+import SaturationIndicesTable, {
+  SaturationItem,
+} from "./saturationAllTable/SaturationIndicesTable";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
 interface AllTallTable {
   grid_overview: GridRow[];
-  saturation_indices: Condition[];
+  saturation_indices: SaturationItem[];
   corrosion_rates: [];
   chemical_dosage: ChemicalDosageItem[];
   description_of_solution: DescriptionSolutionItem[];
   water_balance: WaterBalanceItem[];
+  deposition_indices: DepositionIndicesItem[];
 }
 interface AssetInfo {
   name: string;
@@ -218,12 +224,17 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div>
         {/* Analysis Config */}
         {/* 3D Dashboard */}
+        <DepositionIndicesTable
+          data={aiResponse?.table_data?.deposition_indices}
+        />
         <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}
-        />{" "}
+        />
         <WaterBalanceTable data={aiResponse?.table_data?.water_balance} />
         <ChemicalDosageTable data={aiResponse?.table_data?.chemical_dosage} />
-        <SpeciesDataTable data={aiResponse?.table_data?.saturation_indices} />
+        <SaturationIndicesTable
+          data={aiResponse?.table_data?.saturation_indices}
+        />
         <CorssosionRateTable data={aiResponse?.table_data?.corrosion_rates} />
         <GridOverviewTable
           grid_overview={{
