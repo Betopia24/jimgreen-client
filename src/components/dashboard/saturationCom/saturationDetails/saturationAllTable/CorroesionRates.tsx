@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import React, { useState, useMemo } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -86,13 +87,13 @@ function CollapseButton({
         transition-all duration-200 select-none
       "
     >
-      <span
-        className="inline-block transition-transform duration-300"
-        style={{ transform: collapsed ? "rotate(-90deg)" : "rotate(0deg)" }}
-      >
-        ▾
-      </span>
-      {collapsed ? "Expand" : "Collapse"}
+      <button className="p-2 rounded-lg hover:bg-gray-200 transition">
+        <ChevronDown
+          className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
+            collapsed ? "-rotate-90" : "rotate-0"
+          }`}
+        />
+      </button>
     </button>
   );
 }
@@ -217,14 +218,13 @@ export default function CorssosionRateTable({
         </div>
 
         {/* Arrow */}
-        <div
-          className={`
-            text-lg transition-transform duration-300
-            ${open ? "rotate-0" : "-rotate-90"}
-          `}
-        >
-          ▼
-        </div>
+        <button className="p-2 rounded-lg hover:bg-gray-200 transition">
+          <ChevronDown
+            className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
+              open ? "-rotate-90" : "rotate-0"
+            }`}
+          />
+        </button>
       </div>
 
       {/* Table Area */}
