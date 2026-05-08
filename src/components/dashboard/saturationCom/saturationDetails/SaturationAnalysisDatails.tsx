@@ -162,7 +162,7 @@ const SaturationAnalysisDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="space-y-8">
+      <div className="space-y-4">
         {/* Header */}
         <div className="bg-white rounded-3xl shadow-sm border p-8">
           <div className="flex flex-col md:flex-row justify-between gap-4">
