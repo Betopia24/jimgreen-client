@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 export interface ChemicalDosageItem {
@@ -18,7 +19,7 @@ export default function ChemicalDosageTable({
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white shadow-lg overflow-hidden">
+    <div className="w-full rounded-2xl border border-slate-200 bg-white  overflow-hidden">
       {/* Header */}
       <div
         onClick={() => setOpen(!open)}
@@ -40,14 +41,13 @@ export default function ChemicalDosageTable({
         </div>
 
         {/* Arrow */}
-        <div
-          className={`
-            text-lg transition-transform duration-300
-            ${open ? "rotate-0" : "-rotate-90"}
-          `}
-        >
-          ▼
-        </div>
+        <button className="p-2 rounded-lg hover:bg-gray-200 transition">
+          <ChevronDown
+            className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
+              open ? "-rotate-90" : "rotate-0"
+            }`}
+          />
+        </button>
       </div>
 
       {/* Table */}

@@ -27,31 +27,36 @@ export default function SaturationIndicesTable({
   data,
   title = "Saturation Indices",
 }: Props) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <div className="w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div className="w-full bg-white border border-gray-200 rounded-2xl  overflow-hidden">
       {/* Header */}
+
       <div
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-between px-5 py-4 bg-gray-50 border-b"
+        className="
+          flex items-center justify-between
+          px-5 py-4
+          cursor-pointer
+         
+        "
       >
         <div className="flex items-center gap-3">
-          <div className="flext items-center gap-4">
-            <h2 className="text-lg font-bold inline-block  text-gray-800">
-              {title}
-            </h2>
-            <p className="text-xs bg-gray-400 inline-block px-2 ml-4  py-1 rounded-2xl ">
-              {data.length} Rows
-            </p>
-          </div>
+          <h2 className="text-sm md:text-base font-bold tracking-wider uppercase">
+            Saturation Indices
+          </h2>
+
+          <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
+            {data.length} Rows
+          </span>
         </div>
 
-        {/* Collapse Icon */}
+        {/* Arrow */}
         <button className="p-2 rounded-lg hover:bg-gray-200 transition">
           <ChevronDown
             className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
-              collapsed ? "-rotate-90" : "rotate-0"
+              !collapsed ? "-rotate-90" : "rotate-0"
             }`}
           />
         </button>
