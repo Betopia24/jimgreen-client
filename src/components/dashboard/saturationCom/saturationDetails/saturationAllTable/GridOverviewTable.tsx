@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDown } from "lucide-react";
 import React, { useState, useMemo } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -350,25 +351,35 @@ const GridOverviewTable: React.FC<GridOverviewTableProps> = ({
         {/* ── Table Card ── */}
         <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-xl shadow-gray-300/50 bg-white">
           {/* Collapse toggle header */}
-          <button
+
+          <div
             onClick={() => setCollapsed((c) => !c)}
-            className="w-full flex items-center justify-between px-5 py-4 bg-white border-b border-gray-200 hover:bg-gray-50 transition-colors group"
+            className="
+                    flex items-center justify-between
+                    px-5 py-4
+                    cursor-pointer
+                   
+                  "
           >
             <div className="flex items-center gap-3">
-              <span className="w-2 h-2 rounded-full bg-blue-600 shadow-[0_0_8px_#3b82f6]" />
-              <span className="text-xs font-bold tracking-[0.2em] uppercase text-gray-500 group-hover:text-gray-600 transition-colors">
+              <h2 className="text-sm md:text-base font-bold tracking-wider uppercase">
                 Grid Overview
-              </span>
-              <span className="text-[10px] text-gray-500 bg-gray-100 rounded-full px-2.5 py-0.5 border border-gray-200">
+              </h2>
+
+              <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
                 {processedRows.length} rows
               </span>
             </div>
-            <span
-              className={`text-gray-400 text-xs transition-transform duration-300 ${collapsed ? "" : "rotate-180"}`}
-            >
-              ▾
-            </span>
-          </button>
+
+            {/* Arrow */}
+            <button className="p-2 rounded-lg hover:bg-gray-200 transition">
+              <ChevronDown
+                className={`w-5 h-5 text-gray-700 transition-transform duration-300 ${
+                  !collapsed ? "-rotate-90" : "rotate-0"
+                }`}
+              />
+            </button>
+          </div>
 
           {/* Table body */}
           {!collapsed && (
@@ -427,17 +438,7 @@ const GridOverviewTable: React.FC<GridOverviewTableProps> = ({
               </table>
             </div>
           )}
-
-          {collapsed && (
-            <div className="px-5 py-5 text-center text-gray-400 text-sm italic bg-gray-50">
-              Table collapsed — click the header above to expand
-            </div>
-          )}
         </div>
-
-        <p className="text-[11px] text-gray-500 mt-3 text-right tracking-wide">
-          Click any row to expand details · Click column header to sort
-        </p>
       </div>
     </div>
   );
