@@ -203,9 +203,7 @@ export default function CorssosionRateTable({
           flex items-center justify-between
           px-5 py-4
           cursor-pointer
-          bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500
-          text-white
-          select-none
+         
         "
       >
         <div className="flex items-center gap-3">
@@ -213,7 +211,7 @@ export default function CorssosionRateTable({
             Corrosion Rate Table
           </h2>
 
-          <span className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-medium">
+          <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
             {data.length} Rows
           </span>
         </div>
