@@ -51,9 +51,7 @@ export default function DepositionIndicesTable({
           flex items-center justify-between
           px-5 py-4
           cursor-pointer
-          bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500
-          text-white
-          select-none
+         
         "
       >
         <div className="flex items-center gap-3">
@@ -61,7 +59,7 @@ export default function DepositionIndicesTable({
             Deposition Indices
           </h2>
 
-          <span className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-medium">
+          <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
             {data.length} Rows
           </span>
         </div>

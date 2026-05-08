@@ -48,9 +48,7 @@ export default function WaterBalanceTable({
           flex items-center justify-between
           px-5 py-4
           cursor-pointer
-          bg-gradient-to-r from-sky-500 via-cyan-500 to-blue-500
-          text-white
-          select-none
+      
         "
       >
         <div className="flex items-center gap-3">
@@ -58,7 +56,7 @@ export default function WaterBalanceTable({
             Water Balance Table
           </h2>
 
-          <span className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-medium">
+          <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
             {data.length} Rows
           </span>
         </div>

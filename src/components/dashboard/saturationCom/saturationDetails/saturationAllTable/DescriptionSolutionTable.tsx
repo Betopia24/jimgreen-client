@@ -26,17 +26,15 @@ export default function DescriptionSolutionTable({
           flex items-center justify-between
           px-5 py-4
           cursor-pointer
-          bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500
-          text-white
-          select-none
+         
         "
       >
         <div className="flex items-center gap-3">
-          <h2 className="text-sm md:text-base font-bold tracking-wider uppercase">
+          <h2 className="text-sm md:text-base  font-bold tracking-wider uppercase">
             Description Of Solution
           </h2>
 
-          <span className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-medium">
+          <span className="px-2.5 py-1 border rounded-full bg-white/20 text-xs font-medium">
             {data.length} Rows
           </span>
         </div>

@@ -25,6 +25,9 @@ import DepositionIndicesTable, {
 import SaturationIndicesTable, {
   SaturationItem,
 } from "./saturationAllTable/SaturationIndicesTable";
+import DistributionOfSpeciesTable, {
+  DistributionItem,
+} from "./saturationAllTable/DistributionOfSpeciesTable";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
@@ -36,6 +39,8 @@ interface AllTallTable {
   description_of_solution: DescriptionSolutionItem[];
   water_balance: WaterBalanceItem[];
   deposition_indices: DepositionIndicesItem[];
+
+  distribution_of_species: DistributionItem[];
 }
 interface AssetInfo {
   name: string;
@@ -224,6 +229,9 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div>
         {/* Analysis Config */}
         {/* 3D Dashboard */}
+        <DistributionOfSpeciesTable
+          data={aiResponse?.table_data?.distribution_of_species}
+        />
         <DepositionIndicesTable
           data={aiResponse?.table_data?.deposition_indices}
         />

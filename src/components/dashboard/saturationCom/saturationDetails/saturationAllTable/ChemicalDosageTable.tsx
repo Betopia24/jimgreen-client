@@ -26,17 +26,15 @@ export default function ChemicalDosageTable({
           flex items-center justify-between
           px-5 py-4
           cursor-pointer
-          bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500
-          text-white
-          select-none
+          
         "
       >
         <div className="flex items-center gap-3">
-          <h2 className="text-sm md:text-base font-bold tracking-wider uppercase">
+          <h2 className="text-sm md:text-base uppercase font-bold tracking-wider uppercase">
             Chemical Dosage Table
           </h2>
 
-          <span className="px-2.5 py-1 rounded-full bg-white/20 text-xs font-medium">
+          <span className="px-2.5 py-1 rounded-full border bg-white/20 text-xs font-medium">
             {data.length} Rows
           </span>
         </div>
