@@ -30,7 +30,7 @@ export default function SaturationIndicesTable({
   const [collapsed, setCollapsed] = useState(true);
 
   return (
-    <div className="w-full bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+    <div className="w-full bg-white border border-gray-200 rounded-2xl  overflow-hidden">
       {/* Header */}
 
       <div

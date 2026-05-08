@@ -41,7 +41,7 @@ export default function WaterBalanceTable({
   };
 
   return (
-    <div className="w-full rounded-2xl border border-slate-200 bg-white shadow-lg overflow-hidden">
+    <div className="w-full rounded-2xl border border-slate-200 bg-white  overflow-hidden">
       {/* Header */}
       <div
         onClick={() => setOpen(!open)}

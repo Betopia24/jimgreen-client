@@ -349,7 +349,7 @@ const GridOverviewTable: React.FC<GridOverviewTableProps> = ({
     <div className="">
       <div className="go-display">
         {/* ── Table Card ── */}
-        <div className="rounded-2xl border border-gray-200 overflow-hidden shadow-xl shadow-gray-300/50 bg-white">
+        <div className="rounded-2xl border border-gray-200 overflow-hidden  shadow-gray-300/50 bg-white">
           {/* Collapse toggle header */}
 
           <div
