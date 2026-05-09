@@ -238,19 +238,19 @@ const SaturationAnalysisDetails: React.FC = () => {
         <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}
         />
-        <WaterBalanceTable data={aiResponse?.table_data?.water_balance} />
-        <ChemicalDosageTable data={aiResponse?.table_data?.chemical_dosage} />
-        <SaturationIndicesTable
+        {/* <WaterBalanceTable data={aiResponse?.table_data?.water_balance} /> */}
+        {/* <ChemicalDosageTable data={aiResponse?.table_data?.chemical_dosage} /> */}
+        {/* <SaturationIndicesTable
           data={aiResponse?.table_data?.saturation_indices}
-        />
-        <CorssosionRateTable data={aiResponse?.table_data?.corrosion_rates} />
-        <GridOverviewTable
+        /> */}
+        {/* <CorssosionRateTable data={aiResponse?.table_data?.corrosion_rates} /> */}
+        {/* <GridOverviewTable
           grid_overview={{
             salt_id: "CaCO3",
             temp_unit: "°C",
             rows: aiResponse?.table_data?.grid_overview, // ← pass your array here
           }}
-        />
+        /> */}
         <CoolingTowerTable data={aiResponse?.cooling_tower_analysis as any} />
         <SaturationDashboard apiResponse={aiResponse as any} />
         {/* Footer */}
