@@ -26,17 +26,17 @@ export default function DepositionIndicesTable({
   const [open, setOpen] = useState(true);
 
   const getInterpretationColor = (text: string) => {
-    const value = text.toLowerCase();
+    const value = text?.toLowerCase();
 
-    if (value.includes("heavy corrosion") || value.includes("high risk")) {
+    if (value?.includes("heavy corrosion") || value?.includes("high risk")) {
       return "bg-red-100 text-red-700";
     }
 
-    if (value.includes("corrosive") || value.includes("dissolution")) {
+    if (value?.includes("corrosive") || value?.includes("dissolution")) {
       return "bg-orange-100 text-orange-700";
     }
 
-    if (value.includes("scale")) {
+    if (value?.includes("scale")) {
       return "bg-yellow-100 text-yellow-700";
     }
 
