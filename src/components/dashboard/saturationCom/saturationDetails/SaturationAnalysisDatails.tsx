@@ -85,7 +85,7 @@ interface AiResponse {
   created_at: string;
   cooling_tower_analysis: {};
   table_data: AllTallTable;
-  asset_summary?: {};
+  asset_summary: AssetSummaryProps | undefined;
 }
 
 interface SaturationAnalysisData {
@@ -233,7 +233,7 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div>
         {/* Analysis Config */}
         {/* 3D Dashboard */}
-        <AssetSummaryTable data={aiResponse?.asset_summary} />
+        <AssetSummaryTable data={aiResponse?.asset_summary as any} />
         <DistributionOfSpeciesTable
           data={aiResponse?.table_data?.distribution_of_species}
         />
