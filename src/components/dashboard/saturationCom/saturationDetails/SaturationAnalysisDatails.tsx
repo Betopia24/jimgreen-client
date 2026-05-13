@@ -28,6 +28,9 @@ import SaturationIndicesTable, {
 import DistributionOfSpeciesTable, {
   DistributionItem,
 } from "./saturationAllTable/DistributionOfSpeciesTable";
+import AssetSummaryTable, {
+  AssetSummaryProps,
+} from "./saturationAllTable/AssetSummaryTable";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
@@ -82,6 +85,7 @@ interface AiResponse {
   created_at: string;
   cooling_tower_analysis: {};
   table_data: AllTallTable;
+  asset_summary?: {};
 }
 
 interface SaturationAnalysisData {
@@ -229,6 +233,7 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div>
         {/* Analysis Config */}
         {/* 3D Dashboard */}
+        <AssetSummaryTable data={aiResponse?.asset_summary} />
         <DistributionOfSpeciesTable
           data={aiResponse?.table_data?.distribution_of_species}
         />
