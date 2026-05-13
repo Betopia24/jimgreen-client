@@ -2311,6 +2311,7 @@ export interface GridResult {
   description_of_solution?: { pH?: number; activity_of_water?: number } | null;
   calculations?: Record<string, unknown>;
   bar_data?: BarData;
+  dissolved_oxygen_ppm?: number;
 }
 
 export interface SaturationApiResponseFlat {
@@ -4297,6 +4298,12 @@ export default function SaturationDashboard({ apiResponse }: Props) {
                     label="Ionic Strength"
                     value={d.ionic_strength?.toFixed(5) ?? "—"}
                   />
+                  {d.dissolved_oxygen_ppm != null && (
+                    <SRow
+                      label="Dissolved O₂"
+                      value={`${d.dissolved_oxygen_ppm.toFixed(2)} ppm`}
+                    />
+                  )}
                   {d.description_of_solution?.activity_of_water != null && (
                     <SRow
                       label="Activity H₂O"
