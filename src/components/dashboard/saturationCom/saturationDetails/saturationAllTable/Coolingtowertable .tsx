@@ -1037,7 +1037,7 @@ function SystemSection({ system }: { system: SystemData }) {
               value={`${system.evaporation_factor_pct}%`}
             />
             <TableRow label="Range" value={system.range.range_f} unit="°F" />
-            {/* <TableRow label="Range Note" value={system.range.note} /> */}
+            <TableRow label="Range Note" value={system.range.note} />
             <TableRow
               label="Approach"
               value={system.approach.approach_f}
@@ -1101,6 +1101,7 @@ function CocSection({ perCoc }: { perCoc: CocEntry[] }) {
     <Section
       title="Per Cycle of Concentration"
       badge={`${perCoc.length} CoC levels`}
+      defaultOpen={false}
     >
       {/* Tab bar */}
       <div className="flex gap-1 px-6 pt-4 pb-0 border-b border-slate-100 overflow-x-auto">
