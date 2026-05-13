@@ -1037,7 +1037,7 @@ function SystemSection({ system }: { system: SystemData }) {
               value={`${system.evaporation_factor_pct}%`}
             />
             <TableRow label="Range" value={system.range.range_f} unit="°F" />
-            <TableRow label="Range Note" value={system.range.note} />
+            {/* <TableRow label="Range Note" value={system.range.note} /> */}
             <TableRow
               label="Approach"
               value={system.approach.approach_f}
