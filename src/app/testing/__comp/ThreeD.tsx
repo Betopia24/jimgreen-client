@@ -3193,21 +3193,24 @@ function buildScene(
   scene.add(tempTitle);
 
   // Y-axis ticks
+  // AFTER (fixed)
+  const safMaxSR = maxSR > 0 ? maxSR : 1;
   const srStep =
-    maxSR <= 1
+    safMaxSR <= 1
       ? 0.25
-      : maxSR <= 2
+      : safMaxSR <= 2
         ? 0.5
-        : maxSR <= 5
+        : safMaxSR <= 5
           ? 1.0
-          : maxSR <= 20
+          : safMaxSR <= 20
             ? 5
             : 10;
   const srTicks: number[] = [];
-  for (let v = 0; v <= maxSR + srStep * 0.5; v += srStep)
+  const srTickLimit = safMaxSR + srStep * 0.5;
+  for (let v = 0; v <= srTickLimit && srTicks.length < 50; v += srStep)
     srTicks.push(parseFloat(v.toFixed(3)));
 
-  srTicks.forEach((v) => {
+  srTicks?.forEach((v) => {
     const yPos = (v / maxSR) * BAR_MAX_H;
     const lbl = makeLabel(v.toFixed(2), {
       color: "#065f46",
