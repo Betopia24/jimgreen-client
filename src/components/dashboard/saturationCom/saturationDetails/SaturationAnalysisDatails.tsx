@@ -32,6 +32,7 @@ import AssetSummaryTable, {
   AssetSummaryProps,
 } from "./saturationAllTable/AssetSummaryTable";
 import CoolingTowerAnalysis from "./saturationAllTable/NewCooligTower";
+import PerCycleConcentration from "./saturationAllTable/PerCycleConcentration";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
@@ -87,6 +88,7 @@ interface AiResponse {
   cooling_tower_analysis: {};
   table_data: AllTallTable;
   asset_summary: AssetSummaryProps | undefined;
+  Per_Cycle_Conection: [];
 }
 
 interface SaturationAnalysisData {
@@ -239,6 +241,7 @@ const SaturationAnalysisDetails: React.FC = () => {
         />
         {/* <AssetSummaryTable data={aiResponse?.asset_summary as any} /> */}
         <SaturationDashboard apiResponse={aiResponse as any} />
+        <PerCycleConcentration data={aiResponse.Per_Cycle_Conection as any} />
 
         <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}
