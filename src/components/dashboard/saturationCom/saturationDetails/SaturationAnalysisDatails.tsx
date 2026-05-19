@@ -234,11 +234,11 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div> */}
         {/* Analysis Config */}
         {/* 3D Dashboard */}
-        {/* <CoolingTowerAnalysis
+        <CoolingTowerAnalysis
           asset_summary={aiResponse?.asset_summary as any}
-        /> */}
+        />
         {/* <AssetSummaryTable data={aiResponse?.asset_summary as any} /> */}
-        {/* <SaturationDashboard apiResponse={aiResponse as any} /> */}
+        <SaturationDashboard apiResponse={aiResponse as any} />
 
         <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}

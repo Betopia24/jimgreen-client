@@ -446,41 +446,11 @@ function MobileCard({
 /* ─── Main Component ──────────────────────────────── */
 
 export default function DescriptionSolutionTable({ data }: Props) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Google Font import — DM Mono for that scientific/industrial feel */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap');
-
-        .ds-table th { font-family: 'Syne', sans-serif; }
-        .ds-table td { font-family: 'DM Mono', monospace; }
-
-        .ds-header-title { font-family: 'Syne', sans-serif; }
-
-        .ds-chevron-btn { transition: background 0.15s; }
-        .ds-chevron-btn:hover { background: #E2E8F0; }
-
-        .ds-row { transition: background 0.15s; }
-        .ds-row:hover td { background: #ECFDF5 !important; }
-
-        /* subtle dot-grid background */
-        .ds-wrapper {
-          background-color: #FFFFFF;
-          background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
-          background-size: 22px 22px;
-          background-attachment: local;
-        }
-
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .ds-animate { animation: fadeSlideIn 0.35s ease both; }
-      `}</style>
-
-      <div className=" w-full rounded-2xl border border-slate-200 overflow-hidden shadow-md">
+      <div className=" w-full rounded-2xl border border-slate-200 bg-white overflow-hidden ">
         {/* ── Header ──────────────────────────────── */}
         <div
           onClick={() => setOpen(!open)}

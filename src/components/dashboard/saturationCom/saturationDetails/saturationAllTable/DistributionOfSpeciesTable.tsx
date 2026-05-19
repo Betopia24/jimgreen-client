@@ -26,7 +26,7 @@ export default function DistributionOfSpeciesTable({
   data,
   title = "Distribution Of Species",
 }: Props) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <div className="w-full rounded-2xl border border-slate-200 bg-white  overflow-hidden">
