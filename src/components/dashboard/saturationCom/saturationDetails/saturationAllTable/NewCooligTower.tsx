@@ -714,7 +714,7 @@ export default function CoolingTowerAnalysis({
 
         {/* Tab Bar */}
         <div className="flex gap-1 mb-5">
-          {["System Parameters", "Operating Conditions"].map((tab, i) => (
+          {["System Parameters"].map((tab, i) => (
             <div
               key={tab}
               className={`px-4 py-2 rounded-lg text-sm cursor-default select-none ${
