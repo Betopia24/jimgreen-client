@@ -31,6 +31,7 @@ import DistributionOfSpeciesTable, {
 import AssetSummaryTable, {
   AssetSummaryProps,
 } from "./saturationAllTable/AssetSummaryTable";
+import CoolingTowerAnalysis from "./saturationAllTable/NewCooligTower";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
@@ -233,7 +234,10 @@ const SaturationAnalysisDetails: React.FC = () => {
         </div>
         {/* Analysis Config */}
         {/* 3D Dashboard */}
-        <AssetSummaryTable data={aiResponse?.asset_summary as any} />
+        <CoolingTowerAnalysis
+          asset_summary={aiResponse?.asset_summary as any}
+        />
+        {/* <AssetSummaryTable data={aiResponse?.asset_summary as any} /> */}
         <DistributionOfSpeciesTable
           data={aiResponse?.table_data?.distribution_of_species}
         />
