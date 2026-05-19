@@ -31,6 +31,8 @@ import DistributionOfSpeciesTable, {
 import AssetSummaryTable, {
   AssetSummaryProps,
 } from "./saturationAllTable/AssetSummaryTable";
+import CoolingTowerAnalysis from "./saturationAllTable/NewCooligTower";
+import PerCycleConcentration from "./saturationAllTable/PerCycleConcentration";
 
 // ==================== FULL TYPE DEFINITIONS ====================
 
@@ -86,6 +88,7 @@ interface AiResponse {
   cooling_tower_analysis: {};
   table_data: AllTallTable;
   asset_summary: AssetSummaryProps | undefined;
+  Per_Cycle_Conection: [];
 }
 
 interface SaturationAnalysisData {
@@ -184,7 +187,7 @@ const SaturationAnalysisDetails: React.FC = () => {
           </div>
         </div>
         {/* Asset Info + Materials */}
-        <div className="grid grid-cols-1 -2 gap-6">
+        {/* <div className="grid grid-cols-1 -2 gap-6">
           <div className="bg-white rounded-3xl shadow-sm border p-7">
             <h2 className="text-xl font-semibold mb-5">Asset Information</h2>
             <div className="space-y-4">
@@ -230,19 +233,26 @@ const SaturationAnalysisDetails: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Analysis Config */}
         {/* 3D Dashboard */}
-        <AssetSummaryTable data={aiResponse?.asset_summary as any} />
-        <DistributionOfSpeciesTable
-          data={aiResponse?.table_data?.distribution_of_species}
+        <CoolingTowerAnalysis
+          asset_summary={aiResponse?.asset_summary as any}
         />
-        <DepositionIndicesTable
-          data={aiResponse?.table_data?.deposition_indices}
-        />
+        {/* <AssetSummaryTable data={aiResponse?.asset_summary as any} /> */}
+        <SaturationDashboard apiResponse={aiResponse as any} />
+        <PerCycleConcentration data={aiResponse.Per_Cycle_Conection as any} />
+
         <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}
         />
+        <DistributionOfSpeciesTable
+          data={aiResponse?.table_data?.distribution_of_species}
+        />
+        {/* <DepositionIndicesTable
+          data={aiResponse?.table_data?.deposition_indices}
+        /> */}
+
         {/* <WaterBalanceTable data={aiResponse?.table_data?.water_balance} /> */}
         {/* <ChemicalDosageTable data={aiResponse?.table_data?.chemical_dosage} /> */}
         {/* <SaturationIndicesTable
@@ -256,8 +266,8 @@ const SaturationAnalysisDetails: React.FC = () => {
             rows: aiResponse?.table_data?.grid_overview, // ← pass your array here
           }}
         /> */}
-        <CoolingTowerTable data={aiResponse?.cooling_tower_analysis as any} />
-        <SaturationDashboard apiResponse={aiResponse as any} />
+        {/* <CoolingTowerTable data={aiResponse?.cooling_tower_analysis as any} /> */}
+
         {/* Footer */}
         <div className="text-center text-xs text-gray-400 py-6">
           Database: {database_used} • pH Mode: {ph_mode} • Balance:{" "}
