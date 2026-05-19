@@ -117,7 +117,7 @@ function MetricCard({
   accent: string;
 }) {
   return (
-    <div className="relative bg-white border border-slate-200 rounded-xl p-3 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div className="relative bg-white border border-slate-200 rounded-sm p-3 overflow-hidden hover:shadow-md transition-shadow duration-200">
       <div
         className={`absolute inset-x-0 top-0 h-[3px] rounded-t-xl ${accent}`}
       />
@@ -328,76 +328,43 @@ function CoCPanelContent({ entry }: { entry: CoCEntry }) {
           </div>
         </div>
 
-        {/* Phreeqc terminal */}
+        {/* ── Chemical Dosing ── */}
         <div>
-          <SectionLabel>Phreeqc Input for CoC</SectionLabel>
-          <div className="bg-slate-900 rounded-xl p-4 font-mono text-[11px] leading-[2] overflow-x-auto">
-            <div>
-              <span className="text-sky-300 inline-block w-28">pH</span>
-              <span className="text-emerald-300">{cwp.pH}</span>
-            </div>
-            {PHREEQC_ORDER.map(({ key, pname }) => {
-              const p = params[key];
-              if (!p) return null;
-              return (
-                <div key={key}>
-                  <span className="text-sky-300 inline-block w-28">
-                    {pname}
-                  </span>
-                  <span className="text-emerald-300">{fmt(p.value, 4)}</span>
-                  {p.as && (
-                    <span className="text-slate-500 ml-2 text-[10px]">
-                      as {p.as}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-            <div>
-              <span className="text-sky-300 inline-block w-28">Temp</span>
-              <span className="text-emerald-300">{cwp.temperature_c}</span>
-              <span className="text-slate-500 ml-2 text-[10px]">°C</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Chemical Dosing ── */}
-      <div>
-        <SectionLabel>Chemical Dosing</SectionLabel>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Product card */}
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-4 flex flex-col gap-3">
-            <div className="flex items-start justify-between gap-3 flex-wrap">
-              <span className="text-[9px] font-bold tracking-[0.15em] uppercase text-emerald-600">
-                Product / Raw Material
-              </span>
-              <span className="bg-white border border-emerald-200 text-emerald-700 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm">
-                {ch.product}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between border-t border-emerald-100 pt-2">
-              <span className="text-[9px] font-bold tracking-[0.15em] uppercase text-emerald-600">
-                Dosage
-              </span>
-              <span className="font-mono font-bold text-emerald-900 text-sm">
-                {fmt(ch.dosage_ppm)} ppm
-              </span>
-            </div>
-
-            {ch.note && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-[10px] font-medium text-amber-700 leading-snug">
-                ⚠ {ch.note}
+          <SectionLabel>Chemical Dosing</SectionLabel>
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+            {/* Product card */}
+            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-xl p-4 flex flex-col gap-3">
+              <div className="flex items-start justify-between gap-3 flex-wrap">
+                <span className="text-[9px] font-bold tracking-[0.15em] uppercase text-emerald-600">
+                  Product / Raw Material
+                </span>
+                <span className="bg-white border border-emerald-200 text-emerald-700 font-bold text-[11px] px-3 py-1 rounded-full shadow-sm">
+                  {ch.product}
+                </span>
               </div>
-            )}
-          </div>
 
-          {/* Chemical metric cards */}
-          <div className="grid grid-cols-2 gap-2">
-            {chemCards.map((c) => (
-              <MetricCard key={c.label} {...c} note={null} />
-            ))}
+              <div className="flex items-center justify-between border-t border-emerald-100 pt-2">
+                <span className="text-[9px] font-bold tracking-[0.15em] uppercase text-emerald-600">
+                  Dosage
+                </span>
+                <span className="font-mono font-bold text-emerald-900 text-sm">
+                  {fmt(ch.dosage_ppm)} ppm
+                </span>
+              </div>
+
+              {ch.note && (
+                <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-[10px] font-medium text-amber-700 leading-snug">
+                  ⚠ {ch.note}
+                </div>
+              )}
+            </div>
+
+            {/* Chemical metric cards */}
+            <div className="grid grid-cols-2 gap-2">
+              {chemCards.map((c) => (
+                <MetricCard key={c.label} {...c} note={null} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
