@@ -241,12 +241,12 @@ const SaturationAnalysisDetails: React.FC = () => {
         <SaturationDashboard apiResponse={aiResponse as any} />
         <PerCycleConcentration data={aiResponse.Per_Cycle_Conection as any} />
 
-        <DescriptionSolutionTable
+        {/* <DescriptionSolutionTable
           data={aiResponse?.table_data?.description_of_solution}
         />
         <DistributionOfSpeciesTable
           data={aiResponse?.table_data?.distribution_of_species}
-        />
+        /> */}
         {/* <DepositionIndicesTable
           data={aiResponse?.table_data?.deposition_indices}
         /> */}
