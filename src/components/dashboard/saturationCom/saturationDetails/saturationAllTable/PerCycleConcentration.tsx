@@ -307,22 +307,6 @@ function CoCPanelContent({ entry }: { entry: CoCEntry }) {
                     </tr>
                   );
                 })}
-
-                {/* Temperature */}
-                <tr className="hover:bg-slate-50/70 transition-colors">
-                  <td className="px-3 py-2 text-slate-600 font-medium">
-                    Temperature
-                  </td>
-                  <td className="px-3 py-2 text-right font-mono font-bold text-slate-800">
-                    {fmt(cwp.temperature, 1)}
-                  </td>
-                  <td className="px-3 py-2 text-slate-400">
-                    °F
-                    <span className="ml-1 text-[9px] text-slate-300">
-                      ({fmt(cwp.temperature_c, 2)} °C)
-                    </span>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>
